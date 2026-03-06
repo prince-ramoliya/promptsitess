@@ -12,8 +12,8 @@ const Footer = () => (
         <span className="font-bold text-foreground font-display tracking-tight">PromptLab</span>
       </Link>
       <div className="flex items-center gap-8">
+        <Link to="/library" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Library</Link>
         <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Pricing</Link>
-        <Link to="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">How It Works</Link>
       </div>
       <p className="text-xs text-muted-foreground">© 2026 PromptLab. All rights reserved.</p>
     </div>
