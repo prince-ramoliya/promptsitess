@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, LayoutGrid, List, FolderOpen } from 'lucide-react';
+import { Search, LayoutGrid, FolderOpen, Crown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
 
-interface Category { id: string; name: string; slug: string; }
+interface Category { id: string; name: string; slug: string; is_pro: boolean; }
 interface ComponentWithCategory {
   id: string;
   title: string;
@@ -15,7 +15,7 @@ interface ComponentWithCategory {
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
-  categories: { name: string; slug: string } | null;
+  categories: { name: string; slug: string; is_pro: boolean } | null;
 }
 
 const Library = () => {
@@ -27,11 +27,11 @@ const Library = () => {
 
   const fetchData = async () => {
     const [compsRes, catsRes] = await Promise.all([
-      supabase.from('components').select('*, categories(name, slug)'),
+      supabase.from('components').select('*, categories(name, slug, is_pro)'),
       supabase.from('categories').select('*'),
     ]);
     if (compsRes.data) setComponents(compsRes.data as any);
-    if (catsRes.data) setCategories(catsRes.data);
+    if (catsRes.data) setCategories(catsRes.data as any);
     setLoading(false);
   };
 
@@ -54,6 +54,10 @@ const Library = () => {
 
   const getCategoryCount = (slug: string) =>
     components.filter(c => c.categories?.slug === slug).length;
+
+  // A component is effectively pro if it's marked pro OR its category is pro
+  const isEffectivelyPro = (comp: ComponentWithCategory) =>
+    comp.is_pro || (comp.categories?.is_pro ?? false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -91,6 +95,7 @@ const Library = () => {
                   <span className="flex items-center gap-2.5">
                     <FolderOpen className="w-4 h-4" />
                     {cat.name}
+                    {cat.is_pro && <Crown className="w-3 h-3 text-accent" />}
                   </span>
                   <span className="text-xs opacity-60">{getCategoryCount(cat.slug)}</span>
                 </button>
@@ -101,12 +106,7 @@ const Library = () => {
 
         {/* Main Content */}
         <main className="flex-1 p-6 lg:p-10">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-foreground font-display tracking-tight mb-2">
               Component <span className="gradient-text">Library</span>
             </h1>
@@ -115,13 +115,7 @@ const Library = () => {
             </p>
           </motion.div>
 
-          {/* Search + Mobile Category Filter */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
-            className="mb-8 space-y-4"
-          >
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8 space-y-4">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
@@ -132,8 +126,6 @@ const Library = () => {
                 className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:shadow-[0_0_20px_-5px_hsl(var(--primary)/0.15)] transition-all duration-300 text-sm"
               />
             </div>
-
-            {/* Mobile category pills */}
             <div className="flex gap-2 flex-wrap lg:hidden">
               <button
                 onClick={() => setSelectedCategory('all')}
@@ -145,22 +137,21 @@ const Library = () => {
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.slug)}
-                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${selectedCategory === cat.slug ? 'bg-primary text-primary-foreground' : 'bg-card/60 border border-border/40 text-muted-foreground'}`}
+                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${selectedCategory === cat.slug ? 'bg-primary text-primary-foreground' : 'bg-card/60 border border-border/40 text-muted-foreground'}`}
                 >
                   {cat.name}
+                  {cat.is_pro && <Crown className="w-3 h-3" />}
                 </button>
               ))}
             </div>
           </motion.div>
 
-          {/* Results info */}
           <div className="mb-6 flex items-center justify-between">
             <span className="text-sm text-muted-foreground">
               {filtered.length} component{filtered.length !== 1 ? 's' : ''} found
             </span>
           </div>
 
-          {/* Grid */}
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
@@ -188,7 +179,7 @@ const Library = () => {
                     categoryName={comp.categories?.name}
                     tags={comp.tags || []}
                     secretPrompt={comp.secret_prompt}
-                    isPro={comp.is_pro}
+                    isPro={isEffectivelyPro(comp)}
                   />
                 </motion.div>
               ))}
