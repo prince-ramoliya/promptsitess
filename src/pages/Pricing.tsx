@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,6 +12,7 @@ const plans = [
     features: ['10 free components', 'Basic prompts', 'Community access', 'Copy & paste prompts'],
     cta: 'Get Started',
     highlighted: false,
+    icon: Zap,
   },
   {
     name: 'Pro',
@@ -21,19 +22,22 @@ const plans = [
     features: ['Full library access', 'Premium prompts', 'Weekly new components', 'Priority support', 'Early access to new features'],
     cta: 'Go Pro',
     highlighted: true,
+    icon: Sparkles,
   },
 ];
 
 const Pricing = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-background relative">
+    <div className="absolute inset-0 noise-bg opacity-30" />
     <Navbar />
-    <section className="section-padding pt-32">
+    <section className="section-padding pt-32 relative z-10">
       <div className="max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <span className="badge-tag text-[10px] mb-4 inline-block">PRICING</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-5 font-display tracking-tight">
             Simple <span className="gradient-text">Pricing</span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+          <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto">
             Start free. Upgrade when you need the full power of PromptLab.
           </p>
         </motion.div>
@@ -46,7 +50,7 @@ const Pricing = () => (
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.15 }}
               className={`relative rounded-2xl p-8 ${plan.highlighted
-                ? 'bg-gradient-to-b from-primary/10 to-accent/5 border-2 border-primary/30 shadow-[0_0_40px_-10px_hsl(var(--primary)/0.2)]'
+                ? 'bg-gradient-to-b from-primary/8 to-accent/4 border-2 border-primary/25 shadow-[0_0_60px_-15px_hsl(var(--primary)/0.2)]'
                 : 'glass-card'}`}
             >
               {plan.highlighted && (
@@ -54,22 +58,28 @@ const Pricing = () => (
                   <Sparkles className="w-3 h-3" /> Most Popular
                 </div>
               )}
-              <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+                <plan.icon className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2 font-display">{plan.name}</h3>
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-4xl font-extrabold text-foreground">{plan.price}</span>
+                <span className="text-5xl font-extrabold text-foreground font-display">{plan.price}</span>
                 {plan.period && <span className="text-muted-foreground text-sm">{plan.period}</span>}
               </div>
-              <p className="text-muted-foreground text-sm mb-6">{plan.description}</p>
-              <ul className="space-y-3 mb-8">
+              <p className="text-muted-foreground text-sm mb-7">{plan.description}</p>
+              <ul className="space-y-3.5 mb-8">
                 {plan.features.map(f => (
                   <li key={f} className="flex items-center gap-3 text-sm text-foreground">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" /> {f}
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                    {f}
                   </li>
                 ))}
               </ul>
               <Link
                 to="/auth?mode=signup"
-                className={`block text-center w-full py-3 rounded-xl font-semibold text-sm transition-all ${plan.highlighted ? 'glow-button' : 'glow-button-outline'}`}
+                className={`block text-center w-full py-3.5 rounded-xl font-semibold text-sm transition-all ${plan.highlighted ? 'glow-button' : 'glow-button-outline'}`}
               >
                 {plan.cta}
               </Link>
