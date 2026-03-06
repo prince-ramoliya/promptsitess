@@ -18,18 +18,21 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          is_pro: boolean
           name: string
           slug: string
         }
         Insert: {
           created_at?: string
           id?: string
+          is_pro?: boolean
           name: string
           slug: string
         }
         Update: {
           created_at?: string
           id?: string
+          is_pro?: boolean
           name?: string
           slug?: string
         }
