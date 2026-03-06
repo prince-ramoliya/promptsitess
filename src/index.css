@@ -87,10 +87,10 @@
     @apply glass-card transition-all duration-500 hover:border-primary/25 hover:shadow-[0_0_50px_-12px_hsl(var(--primary)/0.15)];
   }
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--accent))] to-[hsl(var(--cyan))];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--cyan))] via-[hsl(var(--pink))] to-[hsl(var(--yellow))];
   }
   .gradient-text-alt {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--cyan))] to-[hsl(var(--emerald))];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--emerald))] to-[hsl(var(--cyan))];
   }
   .glow-button {
     @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-xl px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:scale-[1.02] active:scale-[0.98];
@@ -113,11 +113,11 @@
   .gradient-text-animated {
     background: linear-gradient(
       135deg,
-      hsl(var(--primary)),
-      hsl(var(--accent)),
       hsl(var(--cyan)),
+      hsl(var(--pink)),
+      hsl(var(--yellow)),
       hsl(var(--emerald)),
-      hsl(var(--primary))
+      hsl(var(--cyan))
     );
     background-size: 300% 300%;
     -webkit-background-clip: text;
