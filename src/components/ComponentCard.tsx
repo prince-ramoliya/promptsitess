@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Copy, Check, Lock } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Copy, Check, Lock, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -38,36 +38,45 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
       className="glass-card-hover group relative overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.3 }}
     >
       {/* Preview image */}
-      <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-muted/30">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-muted/20">
         {previewUrl ? (
-          <img src={previewUrl} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <img src={previewUrl} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-            <span className="text-muted-foreground text-sm">Preview</span>
+          <div className="w-full h-full bg-gradient-to-br from-primary/8 via-accent/5 to-cyan/8 flex items-center justify-center">
+            <Sparkles className="w-8 h-8 text-muted-foreground/30" />
           </div>
         )}
 
         {/* Hover overlay */}
-        {hovered && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center"
-          >
-            <button onClick={handleCopy} className="glow-button flex items-center gap-2 text-sm !px-5 !py-2.5">
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copied ? 'Copied!' : 'Copy Prompt'}
-            </button>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center"
+            >
+              <motion.button
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                onClick={handleCopy}
+                className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy Prompt'}
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Pro badge */}
         {isPro && (
-          <div className="absolute top-3 right-3 badge-pro flex items-center gap-1">
+          <div className="absolute top-3 right-3 badge-pro flex items-center gap-1 text-[10px]">
             <Lock className="w-3 h-3" /> PRO
           </div>
         )}
@@ -75,15 +84,13 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
 
       {/* Card content */}
       <div className="p-5">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="font-semibold text-foreground text-sm">{title}</h3>
-        </div>
+        <h3 className="font-semibold text-foreground text-sm mb-2 font-display">{title}</h3>
         {categoryName && (
-          <span className="badge-tag text-[11px] mb-3 inline-block">{categoryName}</span>
+          <span className="badge-tag text-[10px] mb-3 inline-block">{categoryName}</span>
         )}
         <div className="flex flex-wrap gap-1.5 mt-2">
           {tags?.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{tag}</span>
+            <span key={tag} className="text-[10px] px-2.5 py-0.5 rounded-full bg-muted/60 text-muted-foreground border border-border/30">{tag}</span>
           ))}
         </div>
       </div>
