@@ -1,12 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Zap, Menu, X } from 'lucide-react';
+import { Zap, Menu, X, BookOpen } from 'lucide-react';
 import { useState } from 'react';
 
 const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const linkClass = (path: string) =>
+    `text-sm transition-colors duration-300 ${isActive(path) ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/60 backdrop-blur-2xl">
@@ -19,9 +25,13 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Home</Link>
-          <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Pricing</Link>
-          <Link to="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">How It Works</Link>
+          <Link to="/" className={linkClass('/')}>Home</Link>
+          <Link to="/library" className={`${linkClass('/library')} flex items-center gap-1.5`}>
+            <BookOpen className="w-3.5 h-3.5" />
+            Library
+          </Link>
+          <Link to="/pricing" className={linkClass('/pricing')}>Pricing</Link>
+          <Link to="/how-it-works" className={linkClass('/how-it-works')}>How It Works</Link>
           {isAdmin && (
             <Link to="/admin" className="text-sm text-primary hover:text-primary/80 transition-colors duration-300 font-medium">Admin</Link>
           )}
@@ -49,6 +59,9 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden border-t border-border/30 bg-background/95 backdrop-blur-2xl p-6 space-y-4">
           <Link to="/" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">Home</Link>
+          <Link to="/library" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5" /> Library
+          </Link>
           <Link to="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">Pricing</Link>
           <Link to="/how-it-works" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">How It Works</Link>
           {isAdmin && <Link to="/admin" onClick={() => setMobileOpen(false)} className="block text-sm text-primary font-medium">Admin</Link>}

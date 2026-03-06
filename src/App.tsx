@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminComponents from "./pages/AdminComponents";
 import AdminCategories from "./pages/AdminCategories";
+import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/library" element={<Library />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/auth" element={<Auth />} />
