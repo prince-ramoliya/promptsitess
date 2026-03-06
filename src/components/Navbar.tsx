@@ -31,7 +31,7 @@ const Navbar = () => {
             Library
           </Link>
           <Link to="/pricing" className={linkClass('/pricing')}>Pricing</Link>
-          <a href="/#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">How It Works</a>
+          <Link to="/how-it-works" className={linkClass('/how-it-works')}>How It Works</Link>
           {isAdmin && (
             <Link to="/admin" className="text-sm text-primary hover:text-primary/80 transition-colors duration-300 font-medium">Admin</Link>
           )}
@@ -63,7 +63,7 @@ const Navbar = () => {
             <BookOpen className="w-3.5 h-3.5" /> Library
           </Link>
           <Link to="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">Pricing</Link>
-          <a href="/#how-it-works" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">How It Works</a>
+          <Link to="/how-it-works" onClick={() => setMobileOpen(false)} className="block text-sm text-muted-foreground">How It Works</Link>
           {isAdmin && <Link to="/admin" onClick={() => setMobileOpen(false)} className="block text-sm text-primary font-medium">Admin</Link>}
           {user ? (
             <button onClick={() => { signOut(); setMobileOpen(false); }} className="text-sm text-muted-foreground">Log Out</button>
