@@ -1,8 +1,20 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Zap, Copy } from 'lucide-react';
 
+const rotatingWords = ['Beautiful', 'Stunning', 'Premium', 'Powerful', 'Modern'];
+
 const HeroSection = () => {
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Animated gradient orbs */}
@@ -85,7 +97,20 @@ const HeroSection = () => {
           Steal the Prompts
           <br />
           Behind{' '}
-          <span className="gradient-text">Beautiful</span>
+          <span className="relative inline-block w-[4.5ch] sm:w-[5ch] text-left align-bottom">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={rotatingWords[wordIndex]}
+                initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -30, filter: 'blur(8px)' }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute left-0 bg-gradient-to-r from-primary via-accent to-cyan bg-clip-text text-transparent"
+              >
+                {rotatingWords[wordIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
           <br />
           <span className="gradient-text">Websites</span>
         </motion.h1>
