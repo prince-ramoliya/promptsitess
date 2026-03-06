@@ -1,15 +1,27 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Zap, Copy } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+const rotatingWords = ['Beautiful', 'Stunning', 'Premium', 'Modern', 'Powerful'];
 
 const HeroSection = () => {
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Animated gradient orbs */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[150px] animate-glow-pulse" />
         <div className="absolute bottom-1/4 right-1/5 w-[400px] h-[400px] bg-accent/12 rounded-full blur-[130px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan/8 rounded-full blur-[180px] animate-glow-pulse" style={{ animationDelay: '4s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[hsl(var(--cyan))]/8 rounded-full blur-[180px] animate-glow-pulse" style={{ animationDelay: '4s' }} />
       </div>
 
       {/* Subtle grid */}
@@ -42,7 +54,7 @@ const HeroSection = () => {
         animate={{ y: [0, -22, 0], rotate: [0, -1, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
       >
-        <div className="h-20 rounded-xl bg-gradient-to-br from-accent/15 to-cyan/15 mb-3 border border-border/30 flex items-center justify-center">
+        <div className="h-20 rounded-xl bg-gradient-to-br from-accent/15 to-[hsl(var(--cyan))]/15 mb-3 border border-border/30 flex items-center justify-center">
           <Zap className="w-6 h-6 text-accent/50" />
         </div>
         <div className="h-2 bg-muted/40 rounded-full w-2/3" />
@@ -54,8 +66,8 @@ const HeroSection = () => {
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
       >
         <div className="flex gap-2 items-center">
-          <div className="w-7 h-7 rounded-lg bg-emerald/20 flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-3.5 h-3.5 text-emerald" />
+          <div className="w-7 h-7 rounded-lg bg-[hsl(var(--emerald))]/20 flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-3.5 h-3.5 text-[hsl(var(--emerald))]" />
           </div>
           <div className="space-y-1 flex-1">
             <div className="h-2 bg-muted/40 rounded-full w-full" />
@@ -85,7 +97,20 @@ const HeroSection = () => {
           Steal the Prompts
           <br />
           Behind{' '}
-          <span className="gradient-text">Beautiful</span>
+          <span className="inline-block relative h-[1.1em] align-bottom overflow-hidden" style={{ minWidth: '4ch' }}>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={rotatingWords[wordIndex]}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: '0%', opacity: 1 }}
+                exit={{ y: '-100%', opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 gradient-text-animated"
+              >
+                {rotatingWords[wordIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
           <br />
           <span className="gradient-text">Websites</span>
         </motion.h1>
