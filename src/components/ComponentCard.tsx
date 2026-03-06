@@ -18,8 +18,11 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
   const [hovered, setHovered] = useState(false);
   const { user } = useAuth();
 
+  const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
+  const canCopy = !isPro || !!user;
+
   const handleCopy = async () => {
-    if (isPro && !user) {
+    if (!canCopy) {
       toast.error('Sign in to access Pro prompts');
       return;
     }
@@ -41,10 +44,14 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
       whileHover={{ y: -6 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Preview image */}
+      {/* Preview */}
       <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-muted/20">
         {previewUrl ? (
-          <img src={previewUrl} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          isVideo(previewUrl) ? (
+            <video src={previewUrl} className="w-full h-full object-cover" muted loop playsInline autoPlay />
+          ) : (
+            <img src={previewUrl} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          )
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-primary/8 via-accent/5 to-cyan/8 flex items-center justify-center">
             <Sparkles className="w-8 h-8 text-muted-foreground/30" />
@@ -61,15 +68,27 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
               transition={{ duration: 0.2 }}
               className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center"
             >
-              <motion.button
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                onClick={handleCopy}
-                className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? 'Copied!' : 'Copy Prompt'}
-              </motion.button>
+              {canCopy ? (
+                <motion.button
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  onClick={handleCopy}
+                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                >
+                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? 'Copied!' : 'Copy Prompt'}
+                </motion.button>
+              ) : (
+                <motion.div
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  className="flex flex-col items-center gap-2"
+                >
+                  <Lock className="w-6 h-6 text-primary" />
+                  <span className="text-sm text-foreground font-medium">Sign in to unlock</span>
+                  <span className="text-xs text-muted-foreground">Pro prompt requires authentication</span>
+                </motion.div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
