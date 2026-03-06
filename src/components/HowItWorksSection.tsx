@@ -9,7 +9,7 @@ const steps = [
 ];
 
 const HowItWorksSection = () => (
-  <section className="py-32 px-6 relative">
+  <section id="how-it-works" className="py-32 px-6 relative scroll-mt-20">
     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
     <div className="max-w-5xl mx-auto relative z-10">
       <motion.div
