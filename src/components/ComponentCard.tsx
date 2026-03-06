@@ -19,7 +19,7 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  const canCopy = !isPro || !!user;
+  const canCopy = !isPro;
 
   const handleCopy = async () => {
     if (!canCopy) {
@@ -78,17 +78,17 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {copied ? 'Copied!' : 'Copy Prompt'}
                 </motion.button>
-              ) : (
-                <motion.div
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  className="flex flex-col items-center gap-2"
-                >
-                  <Lock className="w-6 h-6 text-primary" />
-                  <span className="text-sm text-foreground font-medium">Sign in to unlock</span>
-                  <span className="text-xs text-muted-foreground">Pro prompt requires authentication</span>
-                </motion.div>
-              )}
+               ) : (
+                 <motion.div
+                   initial={{ scale: 0.9 }}
+                   animate={{ scale: 1 }}
+                   className="flex flex-col items-center gap-2"
+                 >
+                   <Lock className="w-6 h-6 text-primary" />
+                   <span className="text-sm text-foreground font-medium">Pro Content Locked</span>
+                   <span className="text-xs text-muted-foreground">This is a premium prompt</span>
+                 </motion.div>
+               )}
             </motion.div>
           )}
         </AnimatePresence>
