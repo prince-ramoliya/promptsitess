@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, LayoutGrid, FolderOpen, Crown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, LayoutGrid, FolderOpen, Crown, SlidersHorizontal, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -17,6 +17,68 @@ interface ComponentWithCategory {
   is_pro: boolean;
   categories: { name: string; slug: string; is_pro: boolean } | null;
 }
+
+const FilterDropdown = ({ categories, selectedCategory, onSelect }: { categories: Category[]; selectedCategory: string; onSelect: (s: string) => void }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const activeLabel = selectedCategory === 'all' ? 'All' : categories.find(c => c.slug === selectedCategory)?.name || 'All';
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className={`flex items-center gap-2 px-4 py-3.5 rounded-xl border text-sm font-medium transition-all duration-300 ${
+          open || selectedCategory !== 'all'
+            ? 'bg-primary/10 border-primary/40 text-primary'
+            : 'bg-card/60 backdrop-blur-xl border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30'
+        }`}
+      >
+        <SlidersHorizontal className="w-4 h-4" />
+        <span className="hidden sm:inline">{activeLabel}</span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-50 p-2 space-y-0.5"
+          >
+            <button
+              onClick={() => { onSelect('all'); setOpen(false); }}
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                selectedCategory === 'all' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+              }`}
+            >
+              <LayoutGrid className="w-4 h-4" /> All Categories
+            </button>
+            {categories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => { onSelect(cat.slug); setOpen(false); }}
+                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                  selectedCategory === cat.slug ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                }`}
+              >
+                <FolderOpen className="w-4 h-4" />
+                {cat.name}
+                {cat.is_pro && <Crown className="w-3 h-3 text-accent ml-auto" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const Library = () => {
   const [components, setComponents] = useState<ComponentWithCategory[]>([]);
@@ -116,14 +178,21 @@ const Library = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8 space-y-4">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search components, tags..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:shadow-[0_0_20px_-5px_hsl(var(--primary)/0.15)] transition-all duration-300 text-sm"
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search components, tags..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:shadow-[0_0_20px_-5px_hsl(var(--primary)/0.15)] transition-all duration-300 text-sm"
+                />
+              </div>
+              <FilterDropdown
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelect={setSelectedCategory}
               />
             </div>
             <div className="flex gap-2 flex-wrap lg:hidden">
