@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Zap, LayoutGrid, FolderOpen, LogOut } from 'lucide-react';
+import { Zap, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus } from 'lucide-react';
 
 const Admin = () => {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -26,6 +26,7 @@ const Admin = () => {
     { path: '/admin', label: 'Dashboard', icon: LayoutGrid, exact: true },
     { path: '/admin/components', label: 'Components', icon: LayoutGrid },
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
+    { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus },
   ];
 
   return (

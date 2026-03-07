@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminComponents from "./pages/AdminComponents";
 import AdminCategories from "./pages/AdminCategories";
+import AdminSuggestions from "./components/AdminSuggestions";
 import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="components" element={<AdminComponents />} />
               <Route path="categories" element={<AdminCategories />} />
+              <Route path="suggestions" element={<AdminSuggestions />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
