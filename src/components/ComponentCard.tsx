@@ -49,6 +49,7 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
   };
 
   return (
+    <>
     <motion.div
       className="glass-card-hover group relative overflow-hidden"
       onMouseEnter={() => setHovered(true)}
