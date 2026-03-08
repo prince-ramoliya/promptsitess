@@ -120,11 +120,11 @@
   .glow-button-animated {
     background: linear-gradient(
       90deg,
-      hsl(var(--cyan)),
-      hsl(var(--pink)),
-      hsl(var(--yellow)),
-      hsl(var(--emerald)),
-      hsl(var(--cyan))
+      hsl(var(--instagram-purple)),
+      hsl(var(--instagram-pink)),
+      hsl(var(--instagram-orange)),
+      hsl(var(--instagram-yellow)),
+      hsl(var(--instagram-purple))
     );
     background-size: 300% 100%;
     animation: gradient-shift 4s ease infinite;
