@@ -170,12 +170,43 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Title *</label>
               <input value={title} onChange={e => setTitle(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" />
             </div>
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Category</label>
-              <select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50">
-                <option value="">None</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+            <div className="relative">
+              <label className="text-xs text-muted-foreground mb-1 block">Categories</label>
+              <div
+                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm cursor-pointer focus:outline-none focus:border-primary/50 min-h-[42px] flex flex-wrap gap-1.5 items-center"
+              >
+                {selectedCategoryIds.length === 0 && <span className="text-muted-foreground">Select categories...</span>}
+                {selectedCategoryIds.map(id => {
+                  const cat = categories.find(c => c.id === id);
+                  return cat ? (
+                    <span key={id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/20 text-primary text-xs">
+                      {cat.name}
+                      <X className="w-3 h-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); setSelectedCategoryIds(prev => prev.filter(cid => cid !== id)); }} />
+                    </span>
+                  ) : null;
+                })}
+              </div>
+              {showCategoryDropdown && (
+                <div className="absolute z-10 mt-1 w-full rounded-xl bg-background border border-border/50 shadow-lg max-h-48 overflow-y-auto">
+                  {categories.map(c => (
+                    <div
+                      key={c.id}
+                      onClick={() => {
+                        setSelectedCategoryIds(prev =>
+                          prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id]
+                        );
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-muted/50 cursor-pointer text-sm text-foreground"
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedCategoryIds.includes(c.id) ? 'bg-primary border-primary' : 'border-border'}`}>
+                        {selectedCategoryIds.includes(c.id) && <Check className="w-3 h-3 text-primary-foreground" />}
+                      </div>
+                      {c.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Preview Upload */}
