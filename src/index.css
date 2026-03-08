@@ -45,16 +45,20 @@
     --sidebar-border: 240 10% 14%;
     --sidebar-ring: 217 91% 60%;
 
-    /* Custom tokens — Blue, Yellow, Pink, Green */
-    --gradient-start: 217 91% 60%;
-    --gradient-end: 330 80% 62%;
-    --glow-primary: 217 91% 60%;
-    --glow-accent: 330 80% 62%;
+    /* Custom tokens — Instagram gradient palette */
+    --gradient-start: 280 70% 50%;
+    --gradient-end: 30 95% 55%;
+    --glow-primary: 280 70% 50%;
+    --glow-accent: 330 85% 55%;
     --surface-glass: 240 12% 10%;
-    --yellow: 45 96% 58%;
-    --pink: 330 80% 62%;
-    --cyan: 217 91% 60%;
-    --emerald: 152 76% 50%;
+    --yellow: 35 95% 58%;
+    --pink: 330 85% 55%;
+    --cyan: 280 70% 50%;
+    --emerald: 15 90% 55%;
+    --instagram-purple: 280 70% 50%;
+    --instagram-pink: 330 85% 55%;
+    --instagram-orange: 15 90% 55%;
+    --instagram-yellow: 35 95% 58%;
   }
 }
 
