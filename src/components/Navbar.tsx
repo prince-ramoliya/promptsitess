@@ -42,8 +42,8 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="group">
-          <img src={logo} alt="PromptSites" className="h-9 object-contain" />
+        <Link to="/" className="group transition-transform duration-300 hover:scale-105 active:scale-95">
+          <img src={logo} alt="PromptSites" className="h-6 sm:h-7 object-contain" />
         </Link>
 
         {/* Desktop nav links */}
