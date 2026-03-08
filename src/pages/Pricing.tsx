@@ -156,17 +156,89 @@ const PricingFAQ = () => {
 
 const Pricing = () => {
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(null);
+  const [basePriceUsd, setBasePriceUsd] = useState(19);
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; amount: number } | null>(null);
+  const [discountError, setDiscountError] = useState('');
+  const [checkingCode, setCheckingCode] = useState(false);
 
+  // Fetch base price from DB
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
+      if (data) setBasePriceUsd(Number((data as any).base_price_usd));
+    };
+    fetchPrice();
+
+    // Realtime price updates
+    const channel = supabase
+      .channel('pricing-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pricing_config' }, (payload: any) => {
+        if (payload.new?.base_price_usd) setBasePriceUsd(Number(payload.new.base_price_usd));
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  // Fetch geo pricing
   useEffect(() => {
     supabase.functions.invoke('get-geo-pricing').then(({ data }) => {
       if (data) setGeoPricing(data);
     }).catch(() => {});
   }, []);
 
+  // Calculate final price
+  const finalPriceUsd = appliedDiscount
+    ? appliedDiscount.percent > 0
+      ? basePriceUsd * (1 - appliedDiscount.percent / 100)
+      : Math.max(0, basePriceUsd - appliedDiscount.amount)
+    : basePriceUsd;
+
+  const geoRate = geoPricing && geoPricing.currency !== 'USD' ? Number(geoPricing.localPrice) / geoPricing.usdPrice : 1;
   const displayPrice = geoPricing && geoPricing.currency !== 'USD'
-    ? `${geoPricing.symbol}${geoPricing.localPrice}`
-    : '$19';
+    ? `${geoPricing.symbol}${Math.round(finalPriceUsd * geoRate)}`
+    : `$${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)}`;
   const isLocalCurrency = geoPricing && geoPricing.currency !== 'USD';
+
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) return;
+    setCheckingCode(true);
+    setDiscountError('');
+    const { data, error } = await supabase
+      .from('discount_codes')
+      .select('*')
+      .eq('code', discountCode.trim().toUpperCase())
+      .eq('is_active', true)
+      .limit(1)
+      .single();
+
+    setCheckingCode(false);
+    if (error || !data) {
+      setDiscountError('Invalid or expired code');
+      setAppliedDiscount(null);
+      return;
+    }
+    const d = data as any;
+    if (d.expires_at && new Date(d.expires_at) < new Date()) {
+      setDiscountError('This code has expired');
+      setAppliedDiscount(null);
+      return;
+    }
+    if (d.max_uses !== null && d.current_uses >= d.max_uses) {
+      setDiscountError('This code has reached its max uses');
+      setAppliedDiscount(null);
+      return;
+    }
+    setAppliedDiscount({ code: d.code, percent: d.discount_percent, amount: Number(d.discount_amount) });
+    setDiscountError('');
+  };
+
+  const removeDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    setDiscountError('');
+  };
 
   const particles = useMemo(
     () =>
