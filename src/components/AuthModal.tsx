@@ -68,7 +68,7 @@ const AuthModal = ({ open, onClose }: AuthModalProps) => {
             </button>
 
             <div className="mb-5">
-              <img src={logo} alt="PromptSites" className="h-7 object-contain" />
+              <Logo size="lg" linkTo="" />
             </div>
 
             <h2 className="text-xl font-bold text-foreground mb-1 font-display">
