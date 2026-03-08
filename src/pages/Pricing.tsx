@@ -151,53 +151,108 @@ const PricingFAQ = () => {
 };
 
 const Pricing = () => {
-  const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(null);
+  const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
+    // Instant currency detection via browser timezone/locale
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      const tzCountryMap: Record<string, string> = {
+        'Asia/Kolkata': 'IN', 'Asia/Calcutta': 'IN', 'Asia/Colombo': 'LK',
+        'Europe/London': 'GB', 'Europe/Berlin': 'DE', 'Europe/Paris': 'FR',
+        'Europe/Rome': 'IT', 'Europe/Madrid': 'ES', 'Europe/Amsterdam': 'NL',
+        'Europe/Brussels': 'BE', 'Europe/Vienna': 'AT', 'Europe/Lisbon': 'PT',
+        'Europe/Dublin': 'IE', 'Europe/Helsinki': 'FI', 'Europe/Athens': 'GR',
+        'Asia/Tokyo': 'JP', 'Asia/Shanghai': 'CN', 'Asia/Seoul': 'KR',
+        'America/Sao_Paulo': 'BR', 'America/Toronto': 'CA', 'Australia/Sydney': 'AU',
+        'America/Mexico_City': 'MX', 'Europe/Moscow': 'RU', 'Europe/Istanbul': 'TR',
+        'Asia/Riyadh': 'SA', 'Asia/Dubai': 'AE', 'Africa/Johannesburg': 'ZA',
+        'Africa/Lagos': 'NG', 'Africa/Cairo': 'EG', 'Asia/Karachi': 'PK',
+        'Asia/Dhaka': 'BD', 'Asia/Jakarta': 'ID', 'Asia/Bangkok': 'TH',
+        'Asia/Ho_Chi_Minh': 'VN', 'Asia/Manila': 'PH', 'Asia/Kuala_Lumpur': 'MY',
+        'Asia/Singapore': 'SG', 'Asia/Hong_Kong': 'HK', 'Asia/Taipei': 'TW',
+        'Europe/Stockholm': 'SE', 'Europe/Oslo': 'NO', 'Europe/Copenhagen': 'DK',
+        'Europe/Zurich': 'CH', 'Europe/Warsaw': 'PL', 'Europe/Prague': 'CZ',
+        'Europe/Budapest': 'HU', 'Europe/Bucharest': 'RO', 'Asia/Jerusalem': 'IL',
+        'America/Santiago': 'CL', 'America/Bogota': 'CO', 'America/Argentina/Buenos_Aires': 'AR',
+        'America/Lima': 'PE', 'Pacific/Auckland': 'NZ', 'Africa/Nairobi': 'KE',
+        'Africa/Accra': 'GH', 'Asia/Kathmandu': 'NP', 'Europe/Kiev': 'UA',
+        'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US',
+        'America/Los_Angeles': 'US',
+      };
+      const currencyMap: Record<string, { code: string; symbol: string; rate: number }> = {
+        US: { code: 'USD', symbol: '$', rate: 1 }, IN: { code: 'INR', symbol: '₹', rate: 83 },
+        GB: { code: 'GBP', symbol: '£', rate: 0.79 }, DE: { code: 'EUR', symbol: '€', rate: 0.92 },
+        FR: { code: 'EUR', symbol: '€', rate: 0.92 }, IT: { code: 'EUR', symbol: '€', rate: 0.92 },
+        ES: { code: 'EUR', symbol: '€', rate: 0.92 }, NL: { code: 'EUR', symbol: '€', rate: 0.92 },
+        JP: { code: 'JPY', symbol: '¥', rate: 149 }, CN: { code: 'CNY', symbol: '¥', rate: 7.24 },
+        KR: { code: 'KRW', symbol: '₩', rate: 1320 }, BR: { code: 'BRL', symbol: 'R$', rate: 4.97 },
+        CA: { code: 'CAD', symbol: 'CA$', rate: 1.36 }, AU: { code: 'AUD', symbol: 'A$', rate: 1.53 },
+        MX: { code: 'MXN', symbol: 'MX$', rate: 17.15 }, TR: { code: 'TRY', symbol: '₺', rate: 30.2 },
+        SA: { code: 'SAR', symbol: 'ر.س', rate: 3.75 }, AE: { code: 'AED', symbol: 'د.إ', rate: 3.67 },
+        ZA: { code: 'ZAR', symbol: 'R', rate: 18.6 }, NG: { code: 'NGN', symbol: '₦', rate: 1550 },
+        PK: { code: 'PKR', symbol: '₨', rate: 278 }, BD: { code: 'BDT', symbol: '৳', rate: 110 },
+        ID: { code: 'IDR', symbol: 'Rp', rate: 15600 }, TH: { code: 'THB', symbol: '฿', rate: 35.5 },
+        VN: { code: 'VND', symbol: '₫', rate: 24500 }, PH: { code: 'PHP', symbol: '₱', rate: 56 },
+        MY: { code: 'MYR', symbol: 'RM', rate: 4.65 }, SG: { code: 'SGD', symbol: 'S$', rate: 1.34 },
+        HK: { code: 'HKD', symbol: 'HK$', rate: 7.82 }, TW: { code: 'TWD', symbol: 'NT$', rate: 31.5 },
+        SE: { code: 'SEK', symbol: 'kr', rate: 10.5 }, NO: { code: 'NOK', symbol: 'kr', rate: 10.6 },
+        CH: { code: 'CHF', symbol: 'CHF', rate: 0.88 }, PL: { code: 'PLN', symbol: 'zł', rate: 4.02 },
+        CZ: { code: 'CZK', symbol: 'Kč', rate: 22.8 }, HU: { code: 'HUF', symbol: 'Ft', rate: 355 },
+        IL: { code: 'ILS', symbol: '₪', rate: 3.65 }, NZ: { code: 'NZD', symbol: 'NZ$', rate: 1.64 },
+        KE: { code: 'KES', symbol: 'KSh', rate: 153 }, LK: { code: 'LKR', symbol: 'Rs', rate: 325 },
+        NP: { code: 'NPR', symbol: 'रू', rate: 133 }, UA: { code: 'UAH', symbol: '₴', rate: 37.5 },
+      };
+      const locale = navigator.language || 'en-US';
+      let country = tzCountryMap[tz] || '';
+      if (!country && locale.includes('-')) country = locale.split('-').pop()?.toUpperCase() || 'US';
+      if (!country) country = 'US';
+      const info = currencyMap[country] || currencyMap['US'];
+      const price = 19;
+      const converted = info.rate >= 10 ? Math.round(price * info.rate).toString() : (price * info.rate) % 1 === 0 ? (price * info.rate).toString() : (price * info.rate).toFixed(2);
+      return { country, currency: info.code, symbol: info.symbol, localPrice: converted, usdPrice: price };
+    } catch {
+      return { country: 'US', currency: 'USD', symbol: '$', localPrice: '19', usdPrice: 19 };
+    }
+  });
   const [basePriceUsd, setBasePriceUsd] = useState(19);
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; amount: number } | null>(null);
   const [discountError, setDiscountError] = useState('');
   const [checkingCode, setCheckingCode] = useState(false);
 
-  // Fetch base price from DB
+  // Fetch base price from DB and update geo pricing
   useEffect(() => {
     const fetchPrice = async () => {
       const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
-      if (data) setBasePriceUsd(Number((data as any).base_price_usd));
+      if (data) {
+        const price = Number((data as any).base_price_usd);
+        setBasePriceUsd(price);
+        setGeoPricing(prev => {
+          if (!prev) return prev;
+          const rate = prev.usdPrice > 0 ? Number(prev.localPrice) / prev.usdPrice : 1;
+          const converted = rate >= 10 ? Math.round(price * rate).toString() : (price * rate) % 1 === 0 ? (price * rate).toString() : (price * rate).toFixed(2);
+          return { ...prev, localPrice: converted, usdPrice: price };
+        });
+      }
     };
     fetchPrice();
 
-    // Realtime price updates
     const channel = supabase
       .channel('pricing-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'pricing_config' }, (payload: any) => {
-        if (payload.new?.base_price_usd) setBasePriceUsd(Number(payload.new.base_price_usd));
+        if (payload.new?.base_price_usd) {
+          const price = Number(payload.new.base_price_usd);
+          setBasePriceUsd(price);
+          setGeoPricing(prev => {
+            if (!prev) return prev;
+            const rate = prev.usdPrice > 0 ? Number(prev.localPrice) / prev.usdPrice : 1;
+            const converted = rate >= 10 ? Math.round(price * rate).toString() : (price * rate) % 1 === 0 ? (price * rate).toString() : (price * rate).toFixed(2);
+            return { ...prev, localPrice: converted, usdPrice: price };
+          });
+        }
       })
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, []);
-
-  // Fetch geo pricing with client IP detection
-  useEffect(() => {
-    const fetchGeoPricing = async () => {
-      try {
-        // Get the client's public IP first
-        let clientIp: string | null = null;
-        try {
-          const ipRes = await fetch('https://api.ipify.org?format=json');
-          if (ipRes.ok) {
-            const ipData = await ipRes.json();
-            clientIp = ipData.ip;
-          }
-        } catch {}
-
-        const { data } = await supabase.functions.invoke('get-geo-pricing', {
-          body: { clientIp },
-        });
-        if (data) setGeoPricing(data);
-      } catch {}
-    };
-    fetchGeoPricing();
   }, []);
 
   // Calculate final price
@@ -508,7 +563,7 @@ const Pricing = () => {
                     {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
                   </span>
                 )}
-                <span className="text-8xl md:text-9xl font-extrabold text-foreground font-display leading-none">{displayPrice}</span>
+                <span className="text-8xl md:text-9xl font-extrabold text-foreground leading-none" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>{displayPrice}</span>
               </div>
 
               {isLocalCurrency && (
