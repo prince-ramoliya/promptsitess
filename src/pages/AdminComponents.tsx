@@ -52,7 +52,7 @@ const AdminComponents = () => {
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setCategoryId(''); setTagsStr(''); setSecretPrompt(''); setIsPro(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false);
     setEditing(null); setShowForm(false);
   };
 
