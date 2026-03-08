@@ -101,9 +101,15 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
       <div className="p-5 flex items-center justify-between gap-2">
         <div>
           <h3 className="font-semibold text-foreground text-sm mb-1 font-display">{title}</h3>
-          {categoryName && (
-            <span className="badge-tag text-xs inline-block">{categoryName}</span>
-          )}
+          <div className="flex flex-wrap gap-1">
+            {categoryNames && categoryNames.length > 0 ? (
+              categoryNames.map((name) => (
+                <span key={name} className="badge-tag text-xs inline-block">{name}</span>
+              ))
+            ) : categoryName ? (
+              <span className="badge-tag text-xs inline-block">{categoryName}</span>
+            ) : null}
+          </div>
         </div>
         {isPro && (
           <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)] flex-shrink-0">
