@@ -508,7 +508,7 @@ const Pricing = () => {
                     {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
                   </span>
                 )}
-                <span className="text-8xl md:text-9xl font-extrabold text-foreground font-display leading-none">{displayPrice}</span>
+                <span className="text-8xl md:text-9xl font-extrabold text-foreground leading-none" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>{displayPrice}</span>
               </div>
 
               {isLocalCurrency && (
