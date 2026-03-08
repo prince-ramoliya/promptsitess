@@ -39,14 +39,14 @@ const GridLine = ({ orientation, position, delay }: { orientation: 'h' | 'v'; po
 );
 
 /* Floating icon elements for pricing context */
-const FloatingIcon = ({ icon: Icon, x, y, delay, size = 20 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
+const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
   <motion.div
-    className="absolute flex items-center justify-center w-10 h-10 rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 text-muted-foreground/30"
+    className="absolute flex items-center justify-center w-14 h-14 rounded-2xl bg-card/50 backdrop-blur-md border border-border/30 text-muted-foreground/50 shadow-lg shadow-primary/5"
     style={{ left: x, top: y }}
     animate={{
-      y: [0, -15, 0, 15, 0],
-      rotate: [0, 5, 0, -5, 0],
-      opacity: [0.2, 0.5, 0.2],
+      y: [0, -20, 0, 20, 0],
+      rotate: [0, 8, 0, -8, 0],
+      opacity: [0.3, 0.7, 0.3],
     }}
     transition={{ duration: 8 + delay, delay, repeat: Infinity, ease: 'easeInOut' }}
   >
@@ -80,31 +80,25 @@ const Pricing = () => {
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(ellipse 80% 60% at 20% 30%, hsl(var(--cyan) / 0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 80% at 80% 20%, hsl(var(--pink) / 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 70% 50% at 50% 80%, hsl(var(--emerald) / 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 50% 70% at 10% 70%, hsl(var(--yellow) / 0.05) 0%, transparent 70%)
+                radial-gradient(ellipse 80% 60% at 20% 30%, hsl(var(--cyan) / 0.15) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 80% 20%, hsl(var(--pink) / 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 70% 50% at 50% 80%, hsl(var(--emerald) / 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 70% at 10% 70%, hsl(var(--yellow) / 0.1) 0%, transparent 70%)
               `,
             }}
-            animate={{
-              opacity: [0.6, 1, 0.6],
-            }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           />
-          {/* Second layer — offset mesh for movement feel */}
           <motion.div
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(ellipse 60% 50% at 70% 60%, hsl(var(--cyan) / 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 60% at 30% 50%, hsl(var(--accent) / 0.05) 0%, transparent 60%),
-                radial-gradient(ellipse 80% 40% at 60% 20%, hsl(var(--yellow) / 0.04) 0%, transparent 60%)
+                radial-gradient(ellipse 60% 50% at 70% 60%, hsl(var(--cyan) / 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 30% 50%, hsl(var(--accent) / 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 40% at 60% 20%, hsl(var(--yellow) / 0.08) 0%, transparent 60%)
               `,
             }}
-            animate={{
-              opacity: [0.4, 0.8, 0.4],
-              scale: [1, 1.05, 1],
-            }}
+            animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.08, 1] }}
             transition={{ duration: 8, delay: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
