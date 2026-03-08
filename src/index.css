@@ -93,10 +93,10 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--emerald))] to-[hsl(var(--cyan))];
   }
   .glow-button {
-    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-xl px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:scale-[1.02] active:scale-[0.98];
+    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:scale-[1.02] active:scale-[0.98];
   }
   .glow-button-outline {
-    @apply relative border border-primary/30 text-foreground font-semibold rounded-xl px-8 py-3 transition-all duration-500 hover:border-primary/60 hover:shadow-[0_0_30px_-8px_hsl(var(--primary)/0.25)] hover:bg-primary/5 active:scale-[0.98];
+    @apply relative border border-primary/30 text-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:border-primary/60 hover:shadow-[0_0_30px_-8px_hsl(var(--primary)/0.25)] hover:bg-primary/5 active:scale-[0.98];
   }
   .section-padding {
     @apply px-6 py-24 md:px-12 lg:px-24;
