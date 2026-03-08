@@ -181,11 +181,27 @@ const Pricing = () => {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  // Fetch geo pricing
+  // Fetch geo pricing with client IP detection
   useEffect(() => {
-    supabase.functions.invoke('get-geo-pricing').then(({ data }) => {
-      if (data) setGeoPricing(data);
-    }).catch(() => {});
+    const fetchGeoPricing = async () => {
+      try {
+        // Get the client's public IP first
+        let clientIp: string | null = null;
+        try {
+          const ipRes = await fetch('https://api.ipify.org?format=json');
+          if (ipRes.ok) {
+            const ipData = await ipRes.json();
+            clientIp = ipData.ip;
+          }
+        } catch {}
+
+        const { data } = await supabase.functions.invoke('get-geo-pricing', {
+          body: { clientIp },
+        });
+        if (data) setGeoPricing(data);
+      } catch {}
+    };
+    fetchGeoPricing();
   }, []);
 
   // Calculate final price

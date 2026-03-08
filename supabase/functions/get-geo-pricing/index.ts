@@ -3,15 +3,13 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// Country to currency mapping with exchange rates (approximate, USD base)
 const COUNTRY_CURRENCY: Record<string, { code: string; symbol: string; rate: number }> = {
   US: { code: 'USD', symbol: '$', rate: 1 },
   IN: { code: 'INR', symbol: '₹', rate: 83 },
   GB: { code: 'GBP', symbol: '£', rate: 0.79 },
-  EU: { code: 'EUR', symbol: '€', rate: 0.92 },
   DE: { code: 'EUR', symbol: '€', rate: 0.92 },
   FR: { code: 'EUR', symbol: '€', rate: 0.92 },
   IT: { code: 'EUR', symbol: '€', rate: 0.92 },
@@ -68,17 +66,14 @@ const COUNTRY_CURRENCY: Record<string, { code: string; symbol: string; rate: num
   UA: { code: 'UAH', symbol: '₴', rate: 37.5 },
 };
 
-const DEFAULT_BASE_PRICE = 19;
-
 function formatPrice(amount: number, rate: number): string {
-  const converted = Math.round(amount * rate);
-  // For currencies where the converted value is very large, use no decimals
-  if (rate > 100) return converted.toString();
-  if (rate > 10) return converted.toString();
-  // For currencies close to USD, show two decimals
-  const val = amount * rate;
-  return val % 1 === 0 ? val.toString() : val.toFixed(2);
+  const converted = amount * rate;
+  if (rate >= 100) return Math.round(converted).toString();
+  if (rate >= 10) return Math.round(converted).toString();
+  return converted % 1 === 0 ? converted.toString() : converted.toFixed(2);
 }
+
+const DEFAULT_BASE_PRICE = 19;
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -94,17 +89,60 @@ serve(async (req) => {
       const supabase = createClient(supabaseUrl, supabaseKey);
       const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
       if (data) basePriceUsd = Number(data.base_price_usd);
+    } catch (e) {
+      console.error('Failed to fetch pricing config:', e);
+    }
+
+    // Detect country - try multiple methods
+    let countryCode = 'US';
+
+    // 1. Check request body for client-provided IP hint
+    let clientIp: string | null = null;
+    try {
+      if (req.method === 'POST') {
+        const body = await req.clone().json();
+        if (body?.clientIp) clientIp = body.clientIp;
+      }
     } catch {}
 
-    // Get country from headers
-    const country = req.headers.get('cf-ipcountry') 
-      || req.headers.get('x-vercel-ip-country')
-      || req.headers.get('x-country-code')
-      || null;
-
-    const countryCode = country?.toUpperCase() || 'US';
-    const currencyInfo = COUNTRY_CURRENCY[countryCode] || COUNTRY_CURRENCY['US'];
+    // 2. Check forwarded headers
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    const realIp = req.headers.get('x-real-ip');
+    const cfCountry = req.headers.get('cf-ipcountry');
     
+    if (cfCountry && cfCountry !== 'XX') {
+      countryCode = cfCountry.toUpperCase();
+    } else {
+      // Use IP geolocation API
+      const ip = clientIp || (forwardedFor ? forwardedFor.split(',')[0].trim() : realIp);
+      
+      if (ip && ip !== '127.0.0.1' && !ip.startsWith('10.') && !ip.startsWith('192.168.')) {
+        try {
+          const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`);
+          if (geoRes.ok) {
+            const geoData = await geoRes.json();
+            if (geoData.countryCode) countryCode = geoData.countryCode;
+          }
+        } catch (e) {
+          console.error('IP geolocation failed:', e);
+        }
+      }
+
+      // If still US, try without IP (uses the edge function server's IP as fallback)
+      if (countryCode === 'US' && !ip) {
+        try {
+          const geoRes = await fetch('http://ip-api.com/json/?fields=countryCode');
+          if (geoRes.ok) {
+            const geoData = await geoRes.json();
+            if (geoData.countryCode) countryCode = geoData.countryCode;
+          }
+        } catch (e) {
+          console.error('IP geolocation fallback failed:', e);
+        }
+      }
+    }
+
+    const currencyInfo = COUNTRY_CURRENCY[countryCode] || COUNTRY_CURRENCY['US'];
     const convertedPrice = formatPrice(basePriceUsd, currencyInfo.rate);
 
     return new Response(JSON.stringify({
