@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
