@@ -142,20 +142,21 @@ const Navbar = () => {
           >
             <div className="p-6 space-y-2">
               {[
-                { path: '/', label: 'Home' },
-                { path: '/library', label: 'Library' },
-                { path: '/pricing', label: 'Pricing' },
-              ].map(({ path, label }) => (
+                { path: '/', label: 'Home', icon: <Home className="w-4 h-4" /> },
+                { path: '/library', label: 'Library', icon: <BookOpen className="w-4 h-4" /> },
+                { path: '/pricing', label: 'Pricing', icon: <Tag className="w-4 h-4" /> },
+              ].map(({ path, label, icon }) => (
                 <Link
                   key={path}
                   to={path}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     isActive(path)
                       ? 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:bg-muted/20'
                   }`}
                 >
+                  {icon}
                   {label}
                 </Link>
               ))}
