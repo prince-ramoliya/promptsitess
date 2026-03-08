@@ -351,6 +351,7 @@ const Library = () => {
               })}
             </div>
           </div>
+          </div>{/* end scrollable content */}
         </aside>
 
         {/* Main Content */}
