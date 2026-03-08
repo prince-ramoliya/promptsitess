@@ -386,18 +386,18 @@ const Library = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-10 bg-background">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-2">
+        <main className="flex-1 px-4 py-4 lg:px-6 lg:py-6 bg-background">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight mb-1">
               <span style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Component</span> <span className="gradient-text" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Library</span>
             </h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs">
               Browse {components.length} premium UI components with ready-to-use AI prompts.
             </p>
           </motion.div>
 
           {/* Mobile search + category chips */}
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8 lg:hidden">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-4 lg:hidden">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
@@ -458,7 +458,7 @@ const Library = () => {
           </motion.div>
 
           {/* Result count + active filters */}
-          <div className="mb-6 flex items-center gap-3 flex-wrap">
+          <div className="mb-4 flex items-center gap-3 flex-wrap">
             <span className="text-sm text-muted-foreground">
               {filtered.length} component{filtered.length !== 1 ? 's' : ''}
             </span>
@@ -483,19 +483,19 @@ const Library = () => {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {[...Array(8)].map((_, i) => (
                 <div key={i} className="glass-card animate-pulse">
-                  <div className="aspect-[16/10] bg-muted/20 rounded-t-2xl" />
-                  <div className="p-5 space-y-3">
-                    <div className="h-4 bg-muted/30 rounded-full w-2/3" />
-                    <div className="h-3 bg-muted/20 rounded-full w-1/3" />
+                  <div className="aspect-[16/10] bg-muted/20 rounded-t-xl" />
+                  <div className="p-3 space-y-2">
+                    <div className="h-3.5 bg-muted/30 rounded-full w-2/3" />
+                    <div className="h-2.5 bg-muted/20 rounded-full w-1/3" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filtered.map((comp, i) => (
                 <motion.div
                   key={comp.id}

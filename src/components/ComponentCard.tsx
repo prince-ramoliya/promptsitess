@@ -74,7 +74,7 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       transition={{ duration: 0.3 }}
     >
       {/* Preview */}
-      <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-muted/20">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl bg-muted/20">
         {previewUrl ? (
           isVideo(previewUrl) ? (
             <video src={previewUrl} className="w-full h-full object-cover" muted loop playsInline autoPlay />
@@ -134,8 +134,8 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       </div>
 
       {/* Card content */}
-      <div className="p-5 flex items-center justify-between gap-2">
-        <h3 className="font-semibold text-foreground text-sm font-display truncate flex-1 min-w-0">{title}</h3>
+      <div className="p-3 flex items-center justify-between gap-2">
+        <h3 className="font-semibold text-foreground text-xs font-display truncate flex-1 min-w-0">{title}</h3>
         <div className="flex items-center gap-2 flex-shrink-0">
           {isPro && (
             <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)]">
