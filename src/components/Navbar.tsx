@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Zap, Menu, X, BookOpen, ChevronRight } from 'lucide-react';
+import { Zap, Menu, X, Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -55,9 +55,9 @@ const Navbar = () => {
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-1 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-1.5 py-1.5">
           {[
-            { path: '/', label: 'Home' },
+            { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5" /> },
             { path: '/library', label: 'Library', icon: <BookOpen className="w-3.5 h-3.5" /> },
-            { path: '/pricing', label: 'Pricing' },
+            { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5" /> },
           ].map(({ path, label, icon }) => (
             <Link
               key={path}
