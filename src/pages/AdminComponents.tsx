@@ -291,7 +291,7 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Tags (comma separated)</label>
               <input value={tagsStr} onChange={e => setTagsStr(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" placeholder="hero, landing, dark" />
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 flex-wrap">
               <div className="flex items-center gap-3">
                 <label className="text-sm text-muted-foreground">Pro Only</label>
                 <button
@@ -310,6 +310,26 @@ const AdminComponents = () => {
                   className={`w-10 h-6 rounded-full transition-colors ${isFeatured ? 'bg-[hsl(var(--yellow))]' : 'bg-muted'} relative`}
                 >
                   <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
+                </button>
+              </div>
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-muted-foreground">Trending</label>
+                <button
+                  type="button"
+                  onClick={() => setIsTrending(!isTrending)}
+                  className={`w-10 h-6 rounded-full transition-colors ${isTrending ? 'bg-accent' : 'bg-muted'} relative`}
+                >
+                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isTrending ? 'left-[18px]' : 'left-0.5'}`} />
+                </button>
+              </div>
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-muted-foreground">Newest</label>
+                <button
+                  type="button"
+                  onClick={() => setIsNewest(!isNewest)}
+                  className={`w-10 h-6 rounded-full transition-colors ${isNewest ? 'bg-accent' : 'bg-muted'} relative`}
+                >
+                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isNewest ? 'left-[18px]' : 'left-0.5'}`} />
                 </button>
               </div>
             </div>
