@@ -160,7 +160,7 @@ const HeroSection = () => {
           
           Steal the Prompts{' '}
           <br className="sm:hidden" />
-          Behind <span className="gradient-text" style={{ fontFamily: "'Caveat', cursive" }}>Beautiful</span>{' '}
+          Behind <span className="gradient-text text-6xl font-mono font-extrabold text-left" style={{ fontFamily: "'Caveat', cursive" }}>Beautiful</span>{' '}
           <span className="gradient-text">Websites</span>
         </motion.h1>
 
