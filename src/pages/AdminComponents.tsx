@@ -13,8 +13,6 @@ interface Component {
   secret_prompt: string;
   is_pro: boolean;
   is_featured: boolean;
-  is_trending: boolean;
-  is_newest: boolean;
   categoryIds?: string[];
 }
 
@@ -32,8 +30,6 @@ const AdminComponents = () => {
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
   const [isFeatured, setIsFeatured] = useState(false);
-  const [isTrending, setIsTrending] = useState(false);
-  const [isNewest, setIsNewest] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,7 +51,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
@@ -63,7 +59,7 @@ const AdminComponents = () => {
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsFeatured(false); setIsTrending(false); setIsNewest(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsFeatured(false);
     setEditing(null); setShowForm(false);
   };
 
@@ -97,8 +93,6 @@ const AdminComponents = () => {
       secret_prompt: secretPrompt,
       is_pro: isPro,
       is_featured: isFeatured,
-      is_trending: isTrending,
-      is_newest: isNewest,
     };
 
     let componentId: string;
@@ -146,8 +140,6 @@ const AdminComponents = () => {
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
     setIsFeatured(comp.is_featured);
-    setIsTrending(comp.is_trending);
-    setIsNewest(comp.is_newest);
     setShowForm(true);
   };
 
@@ -312,26 +304,6 @@ const AdminComponents = () => {
                   <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
                 </button>
               </div>
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Trending</label>
-                <button
-                  type="button"
-                  onClick={() => setIsTrending(!isTrending)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isTrending ? 'bg-accent' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isTrending ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Newest</label>
-                <button
-                  type="button"
-                  onClick={() => setIsNewest(!isNewest)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isNewest ? 'bg-primary' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isNewest ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
             </div>
             <div className="md:col-span-2">
               <label className="text-xs text-muted-foreground mb-1 block">Secret Prompt *</label>
@@ -365,16 +337,6 @@ const AdminComponents = () => {
                 {comp.is_featured && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--yellow))]/15 text-[hsl(var(--yellow))] border border-[hsl(var(--yellow))]/20">
                     ★ FEATURED
-                  </span>
-                )}
-                {comp.is_trending && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/20">
-                    ↗ TRENDING
-                  </span>
-                )}
-                {comp.is_newest && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
-                    ✦ NEWEST
                   </span>
                 )}
               </div>
