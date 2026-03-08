@@ -1,91 +1,110 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+
+const features = [
+  {
+    title: 'Create Your Free Account',
+    description: 'Sign up in seconds using your email address or mobile number.',
+  },
+  {
+    title: 'Connect Your Bank Accounts',
+    description: 'Securely link your bank accounts, cards, or digital wallets.',
+  },
+  {
+    title: 'Set Your Financial Goals',
+    description: 'Customize your savings, spending, or investment goals with ease.',
+  },
+  {
+    title: 'Track, Grow, and Optimize',
+    description: 'Watch your money work for you in real time and receive insights.',
+  },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-0">
-      {/* Animated gradient orbs */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/3 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/15 rounded-full blur-[100px] md:blur-[150px] animate-glow-pulse" />
-        <div className="absolute bottom-1/4 right-[20%] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-accent/12 rounded-full blur-[80px] md:blur-[130px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover scale-150 object-left-top origin-top-left"
+      >
+        <source
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260207_050933_33e2620d-09cd-43a2-80ef-4cdbb42f4194.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-      {/* Subtle grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px]" />
-      
-      {/* Noise texture */}
-      <div className="absolute inset-0 noise-bg opacity-50" />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/70" />
 
-      {/* Hero content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 text-center">
+      {/* Hero Content */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-8 mt-24">
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 badge-tag mb-6 md:mb-8"
+          className="text-white text-sm px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md"
         >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span className="text-xs sm:text-sm">Premium UI Prompts for AI Tools</span>
+          Real-Time Budget Tracking
         </motion.div>
 
+        {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-[1.1] mb-5 md:mb-7 tracking-tight font-display"
+          className="text-white font-semibold leading-tight tracking-[-0.02em] max-w-[900px] text-[44px] sm:text-[72px] lg:text-[100px] font-display"
         >
-          Steal the Prompts
-          <br />
-          Behind{' '}
-          <span className="gradient-text-animated">Beautiful</span>
-          <br />
-          <span className="gradient-text">Websites</span>
+          Build Wealth That Lasts Generations
         </motion.h1>
 
+        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-8 md:mb-12 leading-relaxed px-2"
+          className="text-white/80 text-[18px] max-w-[640px] leading-relaxed"
         >
-          Browse premium UI components and copy the exact AI prompts used to build them.
-          Paste into Lovable, Cursor, or Bolt to generate instantly.
+          Transform today's earnings into tomorrow's family fortune with proven wealth-building strategies
         </motion.p>
 
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
-          <a href="#gallery" className="glow-button flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
-            Browse Components <ArrowRight className="w-4 h-4" />
-          </a>
-          <Link to="/pricing" className="glow-button-outline flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
-            Get Pro Access
+          <Link
+            to="/auth?mode=signup"
+            className="inline-block bg-white text-black px-8 py-4 rounded-full font-medium text-lg hover:scale-105 transition-transform"
+          >
+            Start Building Wealth
           </Link>
         </motion.div>
-
-        {/* Stats bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 md:mt-20 flex items-center justify-center gap-8 md:gap-12 text-center"
-        >
-          {[
-            { value: '100+', label: 'Components' },
-            { value: '50+', label: 'Categories' },
-            { value: '10K+', label: 'Prompts Copied' },
-          ].map(stat => (
-            <div key={stat.label}>
-              <p className="text-xl md:text-3xl font-bold text-foreground font-display">{stat.value}</p>
-              <p className="text-[10px] md:text-xs text-muted-foreground mt-1">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
       </div>
+
+      {/* Bottom Feature Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[1100px] px-6 z-10"
+      >
+        <div className="bg-black/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature) => (
+              <div key={feature.title} className="flex flex-col gap-2">
+                <h3 className="text-white font-medium">{feature.title}</h3>
+                <p className="text-white/70 text-sm leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };
