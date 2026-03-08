@@ -1,10 +1,33 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Copy, Sparkles, Layers, Zap } from 'lucide-react';
+
+const platformFeatures = [
+  {
+    icon: <Copy className="w-5 h-5" />,
+    title: 'Copy Any Prompt',
+    description: 'Browse components, click copy, and get the exact AI prompt used to build it.',
+  },
+  {
+    icon: <Sparkles className="w-5 h-5" />,
+    title: 'Paste & Generate',
+    description: 'Drop the prompt into Lovable, Cursor, or Bolt and watch it come to life.',
+  },
+  {
+    icon: <Layers className="w-5 h-5" />,
+    title: 'Premium Library',
+    description: 'Access 100+ hand-crafted UI components across 50+ categories.',
+  },
+  {
+    icon: <Zap className="w-5 h-5" />,
+    title: 'Ship 10x Faster',
+    description: 'Stop writing prompts from scratch. Use battle-tested ones that actually work.',
+  },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
       {/* Background Video */}
       <video
         autoPlay
@@ -23,7 +46,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-background/80" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-8">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-6 sm:gap-8 pt-28 sm:pt-32">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -40,7 +63,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold leading-[1.1] tracking-tight max-w-[900px] text-[44px] sm:text-[72px] lg:text-[100px] font-display"
+          className="text-foreground font-extrabold leading-[1.1] tracking-tight max-w-[900px] text-4xl sm:text-6xl lg:text-8xl font-display"
         >
           Steal the Prompts Behind{' '}
           <span className="gradient-text-animated">Beautiful</span>{' '}
@@ -73,6 +96,34 @@ const HeroSection = () => {
           </Link>
         </motion.div>
       </div>
+
+      {/* Platform Features Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.5 }}
+        className="relative z-10 w-full max-w-[1100px] mx-auto px-6 mt-16 sm:mt-20 pb-10"
+      >
+        <div className="bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {platformFeatures.map((feature, i) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                className="flex flex-col gap-3 text-left"
+              >
+                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                  {feature.icon}
+                </div>
+                <h3 className="text-foreground font-semibold text-sm font-display">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };
