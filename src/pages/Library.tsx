@@ -18,6 +18,8 @@ interface ComponentData {
   secret_prompt: string;
   is_pro: boolean;
   is_featured: boolean;
+  is_trending: boolean;
+  is_newest: boolean;
   created_at: string;
   categorySlugs: string[];
   categoryNames: string[];
