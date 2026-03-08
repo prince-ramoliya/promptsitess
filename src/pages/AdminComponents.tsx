@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -12,6 +12,7 @@ interface Component {
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
+  categoryIds?: string[];
 }
 
 const AdminComponents = () => {
