@@ -367,6 +367,16 @@ const AdminComponents = () => {
                     ★ FEATURED
                   </span>
                 )}
+                {comp.is_trending && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/20">
+                    ↗ TRENDING
+                  </span>
+                )}
+                {comp.is_newest && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+                    ✦ NEWEST
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-2">
