@@ -55,7 +55,97 @@ const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: st
   </motion.div>
 );
 
-const Pricing = () => {
+const pricingFaqs = [
+  {
+    question: 'Is this really a one-time payment?',
+    answer: 'Yes! You pay $19 once and get lifetime access to the entire component library, all premium prompts, and every future update. No subscriptions, no recurring charges.',
+  },
+  {
+    question: 'What do I get with Pro access?',
+    answer: 'Pro gives you access to all premium UI prompts, exclusive component categories, weekly new additions, priority support, and early access to new features.',
+  },
+  {
+    question: 'Can I get a refund?',
+    answer: 'We offer a 7-day money-back guarantee. If you\'re not satisfied with the library, contact us within 7 days of purchase for a full refund.',
+  },
+  {
+    question: 'Will I get access to future components?',
+    answer: 'Absolutely! Your lifetime access includes all future components and updates. We add new premium prompts every week.',
+  },
+  {
+    question: 'How does the copy & paste workflow work?',
+    answer: 'Browse the library, find a component you like, copy the AI prompt, and paste it into tools like Lovable, Cursor, or Bolt. The AI generates the full production-ready component for you.',
+  },
+  {
+    question: 'Is there a free trial?',
+    answer: 'We offer free components so you can try the platform before purchasing. Pro components are marked with a golden crown badge.',
+  },
+];
+
+const PricingFAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <section className="section-padding relative z-10 pt-8 pb-24">
+      <div className="max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <span className="badge-tag text-[10px] mb-4 inline-block">FAQ</span>
+          <h2 className="text-2xl md:text-3xl font-extrabold font-display tracking-tight">
+            Common <span className="gradient-text">Questions</span>
+          </h2>
+        </motion.div>
+
+        <div className="space-y-3">
+          {pricingFaqs.map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className={`w-full text-left px-6 py-5 rounded-2xl glass-card transition-all duration-300 group ${
+                  openIndex === i ? 'border-primary/30 shadow-[0_0_30px_-10px_hsl(var(--primary)/0.15)]' : ''
+                }`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm font-semibold text-foreground">{faq.question}</span>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                    openIndex === i ? 'bg-primary/20 text-primary rotate-0' : 'bg-muted/30 text-muted-foreground'
+                  }`}>
+                    {openIndex === i ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                  </div>
+                </div>
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, (_, i) => ({
