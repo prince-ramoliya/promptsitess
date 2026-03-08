@@ -454,7 +454,7 @@ const Pricing = () => {
 
               {/* CTA */}
               <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-4 rounded-xl font-semibold text-sm">
-                Get Lifetime Access — $19
+                Get Lifetime Access — {displayPrice}
               </Link>
 
               {/* Subtle note */}
