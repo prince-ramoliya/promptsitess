@@ -284,7 +284,7 @@ const Library = () => {
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
           {/* Discover section */}
           <div className="px-3 pt-4 pb-2 space-y-0.5">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
