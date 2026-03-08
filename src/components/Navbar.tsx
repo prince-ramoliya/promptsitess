@@ -31,8 +31,8 @@ const Navbar = () => {
           : 'bg-transparent'
       }`}
     >
-      {/* Mobile layout: logo left, toggle right */}
-      <div className="flex md:hidden items-center justify-center px-4 h-14">
+      {/* Mobile layout: logo centered with top margin */}
+      <div className="flex md:hidden items-center justify-center px-4 h-12 mt-2">
         <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
           <img src={logo} alt="PromptSites" className="h-6 object-contain" />
         </Link>
