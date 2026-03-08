@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 
 const navItems = [
 { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
