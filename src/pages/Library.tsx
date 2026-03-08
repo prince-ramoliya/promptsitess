@@ -86,8 +86,8 @@ const Library = () => {
     return () => {supabase.removeChannel(channel);};
   }, []);
 
-  const isEffectivelyPro = (comp: ComponentWithCategory) =>
-  comp.is_pro || (comp.categories?.is_pro ?? false);
+  const isEffectivelyPro = (comp: ComponentData) =>
+  comp.is_pro || comp.categoryIsPro;
 
   const getCategoryCount = (slug: string) =>
   components.filter((c) => c.categories?.slug === slug).length;
