@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Copy, Sparkles, Layers, Zap } from 'lucide-react';
+import { useMemo } from 'react';
 
 const platformFeatures = [
   {
