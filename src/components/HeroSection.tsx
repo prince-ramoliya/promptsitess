@@ -232,7 +232,7 @@ const HeroSection = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                 {feature.icon}
               </div>
-              <span className="text-foreground text-xs font-medium">{feature.title}</span>
+              <span className="text-foreground text-xs font-medium" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>{feature.title}</span>
             </motion.div>
           )}
         </div>
