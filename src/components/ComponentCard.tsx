@@ -137,6 +137,8 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
         )}
       </div>
     </motion.div>
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
+    </>
   );
 };
 
