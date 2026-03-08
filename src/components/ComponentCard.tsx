@@ -70,8 +70,8 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       className="glass-card-hover group relative overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25 }}
     >
       {/* Preview */}
       <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl bg-muted/20">
