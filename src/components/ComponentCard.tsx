@@ -74,7 +74,7 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       transition={{ duration: 0.3 }}
     >
       {/* Preview */}
-      <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-muted/20">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl bg-muted/20">
         {previewUrl ? (
           isVideo(previewUrl) ? (
             <video src={previewUrl} className="w-full h-full object-cover" muted loop playsInline autoPlay />
