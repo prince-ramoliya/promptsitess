@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Star, TrendingUp, Clock } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -13,6 +13,8 @@ interface Component {
   secret_prompt: string;
   is_pro: boolean;
   is_featured: boolean;
+  is_trending: boolean;
+  is_newest: boolean;
   categoryIds?: string[];
 }
 
@@ -30,10 +32,11 @@ const AdminComponents = () => {
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
   const [isFeatured, setIsFeatured] = useState(false);
+  const [isTrending, setIsTrending] = useState(false);
+  const [isNewest, setIsNewest] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Search & filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategoryId, setFilterCategoryId] = useState<string>('all');
   const [filterProStatus, setFilterProStatus] = useState<string>('all');
@@ -51,7 +54,13 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({
+        ...c,
+        is_featured: (c as any).is_featured ?? false,
+        is_trending: (c as any).is_trending ?? false,
+        is_newest: (c as any).is_newest ?? false,
+        categoryIds: catMap.get(c.id) || [],
+      })));
     }
     if (cats.data) setCategories(cats.data);
   };
@@ -59,7 +68,8 @@ const AdminComponents = () => {
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsFeatured(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt('');
+    setIsPro(false); setIsFeatured(false); setIsTrending(false); setIsNewest(false);
     setEditing(null); setShowForm(false);
   };
 
@@ -70,7 +80,6 @@ const AdminComponents = () => {
     const isVideo = file.type.startsWith('video/');
     if (!isImage && !isVideo) { toast.error('Please upload an image or video file'); return; }
     if (file.size > 20 * 1024 * 1024) { toast.error('File must be under 20MB'); return; }
-
     setUploading(true);
     const ext = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
@@ -93,6 +102,8 @@ const AdminComponents = () => {
       secret_prompt: secretPrompt,
       is_pro: isPro,
       is_featured: isFeatured,
+      is_trending: isTrending,
+      is_newest: isNewest,
     };
 
     let componentId: string;
@@ -124,10 +135,11 @@ const AdminComponents = () => {
     fetchData();
   };
 
-  const toggleFeatured = async (comp: Component) => {
-    const { error } = await supabase.from('components').update({ is_featured: !comp.is_featured }).eq('id', comp.id);
+  const quickToggle = async (comp: Component, field: 'is_featured' | 'is_trending' | 'is_newest') => {
+    const { error } = await supabase.from('components').update({ [field]: !comp[field] }).eq('id', comp.id);
     if (error) { toast.error(error.message); return; }
-    toast.success(comp.is_featured ? 'Removed from featured' : 'Added to featured');
+    const labels = { is_featured: 'Featured', is_trending: 'Trending', is_newest: 'Newest' };
+    toast.success(`${comp[field] ? 'Removed from' : 'Added to'} ${labels[field]}`);
     fetchData();
   };
 
@@ -140,6 +152,8 @@ const AdminComponents = () => {
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
     setIsFeatured(comp.is_featured);
+    setIsTrending(comp.is_trending);
+    setIsNewest(comp.is_newest);
     setShowForm(true);
   };
 
@@ -149,10 +163,24 @@ const AdminComponents = () => {
     return components.filter(comp => {
       const matchesSearch = !searchQuery || comp.title.toLowerCase().includes(searchQuery.toLowerCase()) || comp.secret_prompt.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
-      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : filterProStatus === 'featured' ? comp.is_featured : !comp.is_pro);
+      const matchesPro = filterProStatus === 'all'
+        || (filterProStatus === 'pro' ? comp.is_pro : filterProStatus === 'featured' ? comp.is_featured : filterProStatus === 'trending' ? comp.is_trending : filterProStatus === 'newest' ? comp.is_newest : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
+
+  const Toggle = ({ label, active, onToggle, color = 'bg-primary' }: { label: string; active: boolean; onToggle: () => void; color?: string }) => (
+    <div className="flex items-center gap-3">
+      <label className="text-sm text-muted-foreground">{label}</label>
+      <button
+        type="button"
+        onClick={onToggle}
+        className={`w-10 h-6 rounded-full transition-colors ${active ? color : 'bg-muted'} relative`}
+      >
+        <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${active ? 'left-[18px]' : 'left-0.5'}`} />
+      </button>
+    </div>
+  );
 
   return (
     <div>
@@ -190,7 +218,9 @@ const AdminComponents = () => {
           <option value="all">All Types</option>
           <option value="pro">Pro Only</option>
           <option value="free">Free Only</option>
-          <option value="featured">Featured Only</option>
+          <option value="featured">Featured</option>
+          <option value="trending">Trending</option>
+          <option value="newest">Newest</option>
         </select>
         <span className="text-xs text-muted-foreground">{filteredComponents.length} of {components.length}</span>
       </div>
@@ -210,7 +240,7 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Categories</label>
               <div
                 onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm cursor-pointer focus:outline-none focus:border-primary/50 min-h-[42px] flex flex-wrap gap-1.5 items-center"
+                className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm cursor-pointer min-h-[42px] flex flex-wrap gap-1.5 items-center"
               >
                 {selectedCategoryIds.length === 0 && <span className="text-muted-foreground">Select categories...</span>}
                 {selectedCategoryIds.map(id => {
@@ -283,28 +313,15 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Tags (comma separated)</label>
               <input value={tagsStr} onChange={e => setTagsStr(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" placeholder="hero, landing, dark" />
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Pro Only</label>
-                <button
-                  type="button"
-                  onClick={() => setIsPro(!isPro)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isPro ? 'bg-primary' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isPro ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Featured</label>
-                <button
-                  type="button"
-                  onClick={() => setIsFeatured(!isFeatured)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isFeatured ? 'bg-[hsl(var(--yellow))]' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
+
+            {/* Toggles row */}
+            <div className="flex items-center gap-6 flex-wrap">
+              <Toggle label="Pro" active={isPro} onToggle={() => setIsPro(!isPro)} />
+              <Toggle label="Featured" active={isFeatured} onToggle={() => setIsFeatured(!isFeatured)} color="bg-[hsl(var(--yellow))]" />
+              <Toggle label="Trending" active={isTrending} onToggle={() => setIsTrending(!isTrending)} color="bg-[hsl(var(--pink))]" />
+              <Toggle label="Newest" active={isNewest} onToggle={() => setIsNewest(!isNewest)} color="bg-[hsl(var(--cyan))]" />
             </div>
+
             <div className="md:col-span-2">
               <label className="text-xs text-muted-foreground mb-1 block">Secret Prompt *</label>
               <textarea value={secretPrompt} onChange={e => setSecretPrompt(e.target.value)} rows={4} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50 resize-none" />
@@ -331,7 +348,7 @@ const AdminComponents = () => {
                   <Image className="w-4 h-4 text-muted-foreground/40" />
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-medium text-foreground text-sm">{comp.title}</span>
                 {comp.is_pro && <span className="badge-pro text-[10px]">PRO</span>}
                 {comp.is_featured && (
@@ -339,15 +356,39 @@ const AdminComponents = () => {
                     ★ FEATURED
                   </span>
                 )}
+                {comp.is_trending && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--pink))]/15 text-[hsl(var(--pink))] border border-[hsl(var(--pink))]/20">
+                    🔥 TRENDING
+                  </span>
+                )}
+                {comp.is_newest && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--cyan))]/15 text-[hsl(var(--cyan))] border border-[hsl(var(--cyan))]/20">
+                    🆕 NEWEST
+                  </span>
+                )}
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <button
-                onClick={() => toggleFeatured(comp)}
+                onClick={() => quickToggle(comp, 'is_featured')}
                 className={`p-2 rounded-lg transition-colors ${comp.is_featured ? 'bg-[hsl(var(--yellow))]/10 text-[hsl(var(--yellow))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
-                title={comp.is_featured ? 'Remove from featured' : 'Add to featured'}
+                title="Toggle Featured"
               >
                 <Star className={`w-4 h-4 ${comp.is_featured ? 'fill-current' : ''}`} />
+              </button>
+              <button
+                onClick={() => quickToggle(comp, 'is_trending')}
+                className={`p-2 rounded-lg transition-colors ${comp.is_trending ? 'bg-[hsl(var(--pink))]/10 text-[hsl(var(--pink))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
+                title="Toggle Trending"
+              >
+                <TrendingUp className={`w-4 h-4`} />
+              </button>
+              <button
+                onClick={() => quickToggle(comp, 'is_newest')}
+                className={`p-2 rounded-lg transition-colors ${comp.is_newest ? 'bg-[hsl(var(--cyan))]/10 text-[hsl(var(--cyan))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
+                title="Toggle Newest"
+              >
+                <Clock className={`w-4 h-4`} />
               </button>
               <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
                 <Pencil className="w-4 h-4 text-muted-foreground" />

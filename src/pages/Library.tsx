@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
 
-interface Category {id: string;name: string;slug: string;is_pro: boolean;}
+interface Category { id: string; name: string; slug: string; is_pro: boolean; }
 interface ComponentData {
   id: string;
   title: string;
@@ -18,6 +18,8 @@ interface ComponentData {
   secret_prompt: string;
   is_pro: boolean;
   is_featured: boolean;
+  is_trending: boolean;
+  is_newest: boolean;
   created_at: string;
   categorySlugs: string[];
   categoryNames: string[];
@@ -72,19 +74,19 @@ const Library = () => {
       arr.push(cc.category_id);
       compCatMap.set(cc.component_id, arr);
     });
-
-    // Count bookmarks per component
     const bookmarkCounts = new Map<string, number>();
     (bookmarkCountsRes.data || []).forEach((b: any) => {
       bookmarkCounts.set(b.component_id, (bookmarkCounts.get(b.component_id) || 0) + 1);
     });
-
     if (compsRes.data) {
       setComponents(compsRes.data.map((c: any) => {
         const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
-        const cats = catIds.map(id => catMap.get(id)).filter(Boolean) as Category[];
+        const cats = catIds.map((id: string) => catMap.get(id)).filter(Boolean) as Category[];
         return {
           ...c,
+          is_featured: c.is_featured ?? false,
+          is_trending: c.is_trending ?? false,
+          is_newest: c.is_newest ?? false,
           categorySlugs: cats.map(cat => cat.slug),
           categoryNames: cats.map(cat => cat.name),
           categoryIsPro: cats.some(cat => cat.is_pro),
@@ -131,14 +133,12 @@ const Library = () => {
       return;
     }
     setSelectedCategory(cat.slug);
-    setDiscoverTab('featured'); // reset discover tab when selecting category
   };
 
   const handleDiscoverTab = (tab: DiscoverTab) => {
     setDiscoverTab(tab);
     setSelectedCategory(null);
     if (tab === 'newest') setSortMode('newest');
-    if (tab === 'trending') setSortMode('newest');
   };
 
   const filtered = components
@@ -149,17 +149,17 @@ const Library = () => {
       const matchFilter = filterMode === 'all' ? true :
         filterMode === 'pro' ? isEffectivelyPro(c) :
         !isEffectivelyPro(c);
-      const matchDiscover = 
+      // Discover tab filtering based on admin toggles
+      const matchDiscover =
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
-        discoverTab === 'featured' ? true :
-        discoverTab === 'trending' ? true :
+        discoverTab === 'featured' ? c.is_featured :
+        discoverTab === 'trending' ? c.is_trending :
+        discoverTab === 'newest' ? c.is_newest :
         true;
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })
     .sort((a, b) => {
-      if (discoverTab === 'trending') {
-        return b.bookmarkCount - a.bookmarkCount;
-      }
+      if (discoverTab === 'trending') return b.bookmarkCount - a.bookmarkCount;
       switch (sortMode) {
         case 'newest': return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'oldest': return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
@@ -169,14 +169,14 @@ const Library = () => {
       }
     });
 
-  const sortOptions: {value: SortMode; label: string; icon: typeof Clock;}[] = [
+  const sortOptions: { value: SortMode; label: string; icon: typeof Clock }[] = [
     { value: 'newest', label: 'Newest', icon: Clock },
     { value: 'oldest', label: 'Oldest', icon: Clock },
     { value: 'a-z', label: 'A → Z', icon: Star },
     { value: 'z-a', label: 'Z → A', icon: Star },
   ];
 
-  const filterOptions: {value: FilterMode; label: string;}[] = [
+  const filterOptions: { value: FilterMode; label: string }[] = [
     { value: 'all', label: 'All' },
     { value: 'free', label: 'Free' },
     { value: 'pro', label: 'Pro' },
@@ -198,14 +198,14 @@ const Library = () => {
           {/* Header */}
           <div className="px-5 pt-6 pb-4 border-b border-border/20">
             <div className="flex items-center gap-2 mb-5">
-              {selectedCategory &&
+              {selectedCategory && (
                 <button onClick={() => setSelectedCategory(null)} className="p-1.5 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
                   <ArrowLeft className="w-4 h-4" />
                 </button>
-              }
-              <h3 className="text-sm font-semibold text-foreground">Categories</h3>
+              )}
+              <h3 className="text-sm font-semibold text-foreground">Library</h3>
             </div>
-            {/* Sidebar search + filter */}
+            {/* Search + filter */}
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
@@ -221,9 +221,7 @@ const Library = () => {
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`p-2 rounded-lg border transition-all flex-shrink-0 ${
-                    showFilters
-                      ? 'bg-primary/10 border-primary/40 text-primary'
-                      : 'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'
+                    showFilters ? 'bg-primary/10 border-primary/40 text-primary' : 'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'
                   }`}
                   title="Filters"
                 >
@@ -263,9 +261,7 @@ const Library = () => {
                               key={opt.value}
                               onClick={() => setFilterMode(opt.value)}
                               className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                                filterMode === opt.value
-                                  ? 'bg-primary text-primary-foreground'
-                                  : 'bg-muted/30 text-muted-foreground hover:text-foreground'
+                                filterMode === opt.value ? 'bg-primary text-primary-foreground' : 'bg-muted/30 text-muted-foreground hover:text-foreground'
                               }`}
                             >
                               {opt.label}
@@ -281,33 +277,38 @@ const Library = () => {
           </div>
 
           {/* Discover section */}
-          <div className="px-3 pt-4 pb-2 space-y-0.5">
+          <div className="px-3 pt-4 pb-3">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
               Discover
             </div>
-            {discoverItems.map((item) => (
-              <button
-                key={item.tab}
-                onClick={() => handleDiscoverTab(item.tab)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                  !selectedCategory && discoverTab === item.tab
-                    ? 'bg-muted/50 text-foreground font-medium'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
-                }`}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.label}
-                {item.tab === 'bookmarks' && bookmarkedIds.size > 0 && (
-                  <span className="ml-auto text-[10px] tabular-nums bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
-                    {bookmarkedIds.size}
-                  </span>
-                )}
-              </button>
-            ))}
+            <div className="space-y-0.5">
+              {discoverItems.map((item) => (
+                <button
+                  key={item.tab}
+                  onClick={() => handleDiscoverTab(item.tab)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
+                    !selectedCategory && discoverTab === item.tab
+                      ? 'bg-primary/10 text-primary font-medium border border-primary/20'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
+                  {item.tab === 'bookmarks' && bookmarkedIds.size > 0 && (
+                    <span className="ml-auto text-[10px] tabular-nums bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
+                      {bookmarkedIds.size}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
+          {/* Divider between Discover and Categories */}
+          <div className="mx-5 border-t border-border/30" />
+
           {/* Categories List */}
-          <div className="px-3 pt-2 pb-6 flex-1">
+          <div className="px-3 pt-3 pb-6 flex-1">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
               Categories
             </div>
@@ -356,7 +357,7 @@ const Library = () => {
             </p>
           </motion.div>
 
-          {/* Mobile search + category chips */}
+          {/* Mobile search + tabs */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8 lg:hidden">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
