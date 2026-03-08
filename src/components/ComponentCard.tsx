@@ -121,11 +121,11 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
                  <motion.div
                    initial={{ scale: 0.9 }}
                    animate={{ scale: 1 }}
-                   className="flex flex-col items-center gap-2"
+                   className="flex flex-col items-center gap-1.5"
                  >
-                   <Lock className="w-6 h-6 text-primary" />
-                   <span className="text-sm text-foreground font-medium">Pro Content Locked</span>
-                   <span className="text-xs text-muted-foreground">This is a premium prompt</span>
+                   <Lock className="w-5 h-5 text-primary" />
+                   <span className="text-xs text-foreground font-medium">Pro Locked</span>
+                 </motion.div>
                  </motion.div>
                )}
             </motion.div>
