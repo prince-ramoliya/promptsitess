@@ -24,40 +24,20 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
+    <>
     <nav
+
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? 'bg-background/60 backdrop-blur-xl border-b border-border/20'
           : 'bg-transparent'
       }`}
     >
-      {/* Mobile layout: logo left, toggle right */}
-      <div className="flex md:hidden items-center justify-center px-4 h-14">
+      {/* Mobile layout: logo centered with top margin */}
+      <div className="flex md:hidden items-center justify-center px-4 h-12 mt-2">
         <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
           <img src={logo} alt="PromptSites" className="h-6 object-contain" />
         </Link>
-      </div>
-
-      {/* Mobile bottom nav */}
-      <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex justify-center">
-        <div className="flex items-center gap-1 bg-card/60 backdrop-blur-2xl border border-border/30 rounded-full px-2 py-2 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6)]">
-          {navItems.map(({ path, label, icon }) => (
-            <Link
-              key={path}
-              to={path}
-              className={`relative px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
-                isActive(path)
-                  ? 'bg-primary/15 text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <span className="flex items-center gap-1.5">
-                {icon}
-                {label}
-              </span>
-            </Link>
-          ))}
-        </div>
       </div>
 
       {/* Desktop layout */}
@@ -130,6 +110,29 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+
+    {/* Mobile bottom nav — independent fixed position */}
+    <div className="md:hidden fixed bottom-4 left-4 right-4 z-[60] flex justify-center">
+      <div className="flex items-center gap-1 bg-card/60 backdrop-blur-2xl border border-border/30 rounded-full px-2 py-2 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6)]">
+        {navItems.map(({ path, label, icon }) => (
+          <Link
+            key={path}
+            to={path}
+            className={`relative px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
+              isActive(path)
+                ? 'bg-primary/15 text-primary'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <span className="flex items-center gap-1.5">
+              {icon}
+              {label}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+    </>
   );
 };
 
