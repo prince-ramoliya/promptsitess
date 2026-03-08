@@ -35,9 +35,7 @@ const Navbar = () => {
         
       {/* Mobile layout: logo centered with top margin */}
       <div className="flex md:hidden items-center justify-center px-4 h-12 my-[18px] py-[36px]">
-        <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
-          <img src={logo} alt="PromptSites" className="h-6 object-contain" />
-        </Link>
+        <Logo size="md" />
       </div>
 
       {/* Desktop layout */}
