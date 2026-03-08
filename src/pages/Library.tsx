@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown, TrendingUp, Flame, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
