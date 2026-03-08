@@ -16,7 +16,7 @@ interface ComponentData {
 }
 
 const ComponentGallery = () => {
-  const [components, setComponents] = useState<ComponentWithCategory[]>([]);
+  const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
