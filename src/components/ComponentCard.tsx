@@ -17,6 +17,7 @@ interface ComponentCardProps {
 const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretPrompt, isPro }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
@@ -26,12 +27,11 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
 
   const handleCopy = async () => {
     if (!user) {
-      toast.error('Please log in or sign up to copy prompts', {
-        action: {
-          label: 'Sign In',
-          onClick: () => window.location.href = '/auth',
-        },
-      });
+      setShowAuthModal(true);
+      return;
+    }
+    if (!canCopy) {
+      toast.error('Upgrade to Pro to access this prompt');
       return;
     }
     if (!canCopy) {
