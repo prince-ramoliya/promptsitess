@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Zap, Menu, X, Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
+import { Layers, Menu, X, Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -46,10 +46,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
-            <Zap className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[hsl(var(--ig-pink))] via-[hsl(var(--ig-purple))] to-[hsl(var(--ig-orange))] flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
+            <Layers className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-foreground tracking-tight">PromptLab</span>
+          <span className="text-lg font-bold text-foreground tracking-tight font-display">PromptLab</span>
         </Link>
 
         {/* Desktop nav links */}
