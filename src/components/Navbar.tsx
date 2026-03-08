@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 
 const navItems = [
 { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
@@ -35,16 +35,12 @@ const Navbar = () => {
         
       {/* Mobile layout: logo centered with top margin */}
       <div className="flex md:hidden items-center justify-center px-4 h-12 my-[18px] py-[36px]">
-        <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
-          <img src={logo} alt="PromptSites" className="h-6 object-contain" />
-        </Link>
+        <Logo size="md" />
       </div>
 
       {/* Desktop layout */}
       <div className="hidden md:flex max-w-7xl mx-auto px-6 h-20 items-center justify-between">
-        <Link to="/" className="group transition-transform duration-300 hover:scale-105 active:scale-95">
-          <img src={logo} alt="PromptSites" className="h-7 object-contain" />
-        </Link>
+        <Logo size="lg" />
 
         <div className="flex items-center gap-1.5 bg-card/50 backdrop-blur-2xl border border-border/40 rounded-full px-2 py-2 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)_inset]">
           {navItems.map(({ path, label, icon }) =>

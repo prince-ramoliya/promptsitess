@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 
 const Admin = () => {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -36,9 +36,7 @@ const Admin = () => {
       {/* Sidebar */}
       <aside className="w-64 border-r border-border/50 bg-card/30 flex flex-col">
         <div className="p-6 border-b border-border/50">
-          <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
-            <img src={logo} alt="PromptSites" className="h-7 object-contain" />
-          </Link>
+          <Logo size="md" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(item => {

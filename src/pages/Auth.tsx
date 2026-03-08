@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 import { z } from 'zod';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 import { lovable } from '@/integrations/lovable/index';
 
 const emailSchema = z.string().trim().email('Invalid email').max(255);
@@ -58,7 +58,7 @@ const Auth = () => {
           className="w-full max-w-md glass-card p-8"
         >
           <div className="mb-6">
-            <img src={logo} alt="PromptSites" className="h-7 object-contain" />
+            <Logo size="lg" linkTo="" />
           </div>
           
           <h2 className="text-2xl font-bold text-foreground mb-1 font-display">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>

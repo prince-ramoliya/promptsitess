@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 import { lovable } from '@/integrations/lovable/index';
 
 const emailSchema = z.string().trim().email('Invalid email').max(255);
@@ -68,7 +68,7 @@ const AuthModal = ({ open, onClose }: AuthModalProps) => {
             </button>
 
             <div className="mb-5">
-              <img src={logo} alt="PromptSites" className="h-7 object-contain" />
+              <Logo size="lg" linkTo="" />
             </div>
 
             <h2 className="text-xl font-bold text-foreground mb-1 font-display">
