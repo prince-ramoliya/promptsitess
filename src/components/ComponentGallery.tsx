@@ -153,7 +153,7 @@ const ComponentGallery = () => {
                 <ComponentCard
                   title={comp.title}
                   previewUrl={comp.preview_url}
-                  categoryName={comp.categories?.name}
+                  categoryNames={comp.categoryNames}
                   
                   secretPrompt={comp.secret_prompt}
                   isPro={comp.is_pro}
