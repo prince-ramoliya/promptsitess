@@ -95,8 +95,20 @@
   .glow-button {
     @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:scale-[1.02] active:scale-[0.98];
   }
+  .glow-button::after,
+  .glow-button-outline::after {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background-size: 200% 100%;
+    animation: btn-shimmer 1.2s ease-in-out infinite;
+  }
+  .glow-button:hover::after,
+  .glow-button-outline:hover::after {
+    @apply opacity-100;
+  }
   .glow-button-outline {
-    @apply relative border border-primary/30 text-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:border-primary/60 hover:shadow-[0_0_30px_-8px_hsl(var(--primary)/0.25)] hover:bg-primary/5 active:scale-[0.98];
+    @apply relative overflow-hidden border border-primary/30 text-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:border-primary/60 hover:shadow-[0_0_30px_-8px_hsl(var(--primary)/0.25)] hover:bg-primary/5 active:scale-[0.98];
   }
   .section-padding {
     @apply px-6 py-24 md:px-12 lg:px-24;
