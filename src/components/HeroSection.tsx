@@ -145,7 +145,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 text-[11px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground">
+          className="inline-flex items-center gap-2 text-[11px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground"
+          style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           Premium UI Prompts for AI Tools
