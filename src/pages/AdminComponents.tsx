@@ -97,6 +97,8 @@ const AdminComponents = () => {
       secret_prompt: secretPrompt,
       is_pro: isPro,
       is_featured: isFeatured,
+      is_trending: isTrending,
+      is_newest: isNewest,
     };
 
     let componentId: string;
