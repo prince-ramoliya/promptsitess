@@ -49,7 +49,12 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-1.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-2 py-2">
+        <div className="hidden md:flex items-center gap-1.5 relative rounded-full px-2 py-2 overflow-hidden">
+          {/* Animated border */}
+          <div className="absolute inset-0 rounded-full p-[1.5px] overflow-hidden">
+            <div className="absolute inset-[-200%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,hsl(var(--primary)),hsl(var(--accent)),hsl(var(--primary)))]" />
+          </div>
+          <div className="absolute inset-[1.5px] rounded-full bg-card/40 backdrop-blur-xl" />
           {[
             { path: '/', label: 'Home', icon: <Home className="w-4 h-4" /> },
             { path: '/library', label: 'Library', icon: <BookOpen className="w-4 h-4" /> },
