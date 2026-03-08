@@ -1,28 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-
-const features = [
-  {
-    title: 'Create Your Free Account',
-    description: 'Sign up in seconds using your email address or mobile number.',
-  },
-  {
-    title: 'Connect Your Bank Accounts',
-    description: 'Securely link your bank accounts, cards, or digital wallets.',
-  },
-  {
-    title: 'Set Your Financial Goals',
-    description: 'Customize your savings, spending, or investment goals with ease.',
-  },
-  {
-    title: 'Track, Grow, and Optimize',
-    description: 'Watch your money work for you in real time and receive insights.',
-  },
-];
+import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Background Video */}
       <video
         autoPlay
@@ -38,18 +20,19 @@ const HeroSection = () => {
       </video>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-background/80" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-8 mt-24">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-8">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-white text-sm px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md"
+          className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground"
         >
-          Real-Time Budget Tracking
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          Premium UI Prompts for AI Tools
         </motion.div>
 
         {/* Headline */}
@@ -57,9 +40,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-white font-semibold leading-tight tracking-[-0.02em] max-w-[900px] text-[44px] sm:text-[72px] lg:text-[100px] font-display"
+          className="text-foreground font-extrabold leading-[1.1] tracking-tight max-w-[900px] text-[44px] sm:text-[72px] lg:text-[100px] font-display"
         >
-          Build Wealth That Lasts Generations
+          Steal the Prompts Behind{' '}
+          <span className="gradient-text-animated">Beautiful</span>{' '}
+          <span className="gradient-text">Websites</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -67,9 +52,10 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-white/80 text-[18px] max-w-[640px] leading-relaxed"
+          className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed"
         >
-          Transform today's earnings into tomorrow's family fortune with proven wealth-building strategies
+          Browse premium UI components and copy the exact AI prompts used to build them.
+          Paste into Lovable, Cursor, or Bolt to generate instantly.
         </motion.p>
 
         {/* CTA */}
@@ -77,34 +63,16 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
         >
-          <Link
-            to="/auth?mode=signup"
-            className="inline-block bg-white text-black px-8 py-4 rounded-full font-medium text-lg hover:scale-105 transition-transform"
-          >
-            Start Building Wealth
+          <a href="#gallery" className="glow-button flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
+            Browse Components <ArrowRight className="w-4 h-4" />
+          </a>
+          <Link to="/pricing" className="glow-button-outline flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
+            Get Pro Access
           </Link>
         </motion.div>
       </div>
-
-      {/* Bottom Feature Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[1100px] px-6 z-10"
-      >
-        <div className="bg-black/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature) => (
-              <div key={feature.title} className="flex flex-col gap-2">
-                <h3 className="text-white font-medium">{feature.title}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 };
