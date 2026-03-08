@@ -46,13 +46,13 @@ const Admin = () => {
   if (!user || !isAdmin) return null;
 
   const navItems = [
-    { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { path: '/admin/components', label: 'Components', icon: LayoutGrid },
-    { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
-    { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus, badge: unreadSuggestions },
-    { path: '/admin/subscriptions', label: 'Subscriptions', icon: Users },
-    { path: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-    { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
+    { path: '/admin', label: 'Dashboard', icon: Gauge, exact: true },
+    { path: '/admin/components', label: 'Components', icon: Blocks },
+    { path: '/admin/categories', label: 'Categories', icon: Layers },
+    { path: '/admin/suggestions', label: 'Suggestions', icon: Lightbulb, badge: unreadSuggestions },
+    { path: '/admin/subscriptions', label: 'Subscriptions', icon: CreditCard },
+    { path: '/admin/analytics', label: 'Analytics', icon: ChartPie },
+    { path: '/admin/pricing', label: 'Pricing', icon: BadgeDollarSign },
   ];
 
   return (
