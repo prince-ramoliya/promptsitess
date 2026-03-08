@@ -100,21 +100,32 @@ const AdminComponents = () => {
     const payload = {
       title,
       preview_url: previewUrl || null,
-      category_id: categoryId || null,
+      category_id: selectedCategoryIds[0] || null,
       tags,
       secret_prompt: secretPrompt,
       is_pro: isPro,
     };
 
+    let componentId: string;
     if (editing) {
       const { error } = await supabase.from('components').update(payload).eq('id', editing.id);
       if (error) { toast.error(error.message); return; }
-      toast.success('Component updated');
+      componentId = editing.id;
+      // Clear old category associations
+      await supabase.from('component_categories').delete().eq('component_id', editing.id);
     } else {
-      const { error } = await supabase.from('components').insert(payload);
-      if (error) { toast.error(error.message); return; }
-      toast.success('Component created');
+      const { data, error } = await supabase.from('components').insert(payload).select('id').single();
+      if (error || !data) { toast.error(error?.message || 'Failed'); return; }
+      componentId = data.id;
     }
+
+    // Insert new category associations
+    if (selectedCategoryIds.length > 0) {
+      const rows = selectedCategoryIds.map(catId => ({ component_id: componentId, category_id: catId }));
+      await supabase.from('component_categories').insert(rows);
+    }
+
+    toast.success(editing ? 'Component updated' : 'Component created');
     resetForm();
     fetchData();
   };
