@@ -254,6 +254,45 @@ export type Database = {
           },
         ]
       }
+      purchases: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          purchased_at: string
+          status: string
+          user_email: string
+          user_id: string
+          user_name: string
+          user_phone: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          purchased_at?: string
+          status?: string
+          user_email?: string
+          user_id: string
+          user_name?: string
+          user_phone?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          purchased_at?: string
+          status?: string
+          user_email?: string
+          user_id?: string
+          user_name?: string
+          user_phone?: string | null
+        }
+        Relationships: []
+      }
       suggestions: {
         Row: {
           created_at: string
