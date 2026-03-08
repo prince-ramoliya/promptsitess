@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "system-ui", "sans-serif"],
-        display: ["Clash Display", "system-ui", "sans-serif"],
-        accent: ["DM Sans", "system-ui", "sans-serif"],
+        sans: ["Tropiline", "system-ui", "sans-serif"],
+        display: ["Tropiline", "system-ui", "sans-serif"],
+        accent: ["Tropiline", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
