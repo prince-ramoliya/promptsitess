@@ -130,16 +130,29 @@ const Library = () => {
               )}
               <h3 className="text-sm font-semibold text-foreground">Categories</h3>
             </div>
-            {/* Sidebar search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-muted/30 border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-xs"
-              />
+            {/* Sidebar search + filter */}
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 rounded-lg bg-muted/30 border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-xs"
+                />
+              </div>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`p-2 rounded-lg border transition-all flex-shrink-0 ${
+                  showFilters
+                    ? 'bg-primary/10 border-primary/40 text-primary'
+                    : 'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'
+                }`}
+                title="Filters"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
 

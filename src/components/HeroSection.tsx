@@ -63,7 +63,7 @@ const HeroSection = () => {
   );
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background" style={{ fontFamily: "'Syne', sans-serif" }}>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
       {/* Background Video */}
       <video
         autoPlay
@@ -148,8 +148,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold leading-[1.05] tracking-tight max-w-[900px] text-4xl sm:text-6xl lg:text-8xl"
-          style={{ fontFamily: "'Syne', sans-serif" }}
+          className="text-foreground font-extrabold leading-[1.08] tracking-tight max-w-[900px] text-3xl sm:text-5xl lg:text-6xl"
         >
           Steal the Prompts Behind{' '}
           <span className="gradient-text-animated">Beautiful</span>{' '}
@@ -203,7 +202,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-sm" style={{ fontFamily: "'Syne', sans-serif" }}>{feature.title}</h3>
+                <h3 className="text-foreground font-semibold text-sm">{feature.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
