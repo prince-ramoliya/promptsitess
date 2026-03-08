@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookmarks: {
+        Row: {
+          component_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          component_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          component_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "components"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -76,6 +105,7 @@ export type Database = {
           category_id: string | null
           created_at: string
           id: string
+          is_featured: boolean
           is_pro: boolean
           preview_url: string | null
           secret_prompt: string
@@ -86,6 +116,7 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           id?: string
+          is_featured?: boolean
           is_pro?: boolean
           preview_url?: string | null
           secret_prompt: string
@@ -96,6 +127,7 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           id?: string
+          is_featured?: boolean
           is_pro?: boolean
           preview_url?: string | null
           secret_prompt?: string
