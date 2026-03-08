@@ -303,6 +303,78 @@ const Pricing = () => {
 
       <div className="absolute inset-0 noise-bg opacity-30" />
 
+      {/* Left side animated gradient elements */}
+      <div className="fixed left-0 top-0 w-1/3 h-full pointer-events-none -z-[5] overflow-hidden">
+        <motion.div
+          className="absolute w-[300px] h-[500px] -left-20 top-[15%] rounded-full blur-[100px]"
+          animate={{
+            background: [
+              'radial-gradient(circle, hsl(var(--cyan) / 0.25) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--pink) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--emerald) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--cyan) / 0.25) 0%, transparent 70%)',
+            ],
+            y: [0, 80, -40, 0],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-[200px] h-[400px] left-10 top-[50%] rounded-full blur-[80px]"
+          animate={{
+            background: [
+              'radial-gradient(circle, hsl(var(--yellow) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--cyan) / 0.18) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--pink) / 0.18) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--yellow) / 0.2) 0%, transparent 70%)',
+            ],
+            y: [0, -60, 30, 0],
+          }}
+          transition={{ duration: 12, delay: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        {/* Vertical animated line - left */}
+        <motion.div
+          className="absolute w-[2px] h-[200px] left-[40%] bg-gradient-to-b from-transparent via-[hsl(var(--cyan)/0.4)] to-transparent"
+          animate={{ y: ['-100%', '500%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+        />
+      </div>
+
+      {/* Right side animated gradient elements */}
+      <div className="fixed right-0 top-0 w-1/3 h-full pointer-events-none -z-[5] overflow-hidden">
+        <motion.div
+          className="absolute w-[300px] h-[500px] -right-20 top-[20%] rounded-full blur-[100px]"
+          animate={{
+            background: [
+              'radial-gradient(circle, hsl(var(--pink) / 0.25) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--yellow) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--cyan) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--pink) / 0.25) 0%, transparent 70%)',
+            ],
+            y: [0, -60, 50, 0],
+          }}
+          transition={{ duration: 11, delay: 1, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-[200px] h-[400px] right-10 top-[55%] rounded-full blur-[80px]"
+          animate={{
+            background: [
+              'radial-gradient(circle, hsl(var(--emerald) / 0.2) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--yellow) / 0.18) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--pink) / 0.18) 0%, transparent 70%)',
+              'radial-gradient(circle, hsl(var(--emerald) / 0.2) 0%, transparent 70%)',
+            ],
+            y: [0, 50, -40, 0],
+          }}
+          transition={{ duration: 13, delay: 3, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        {/* Vertical animated line - right */}
+        <motion.div
+          className="absolute w-[2px] h-[200px] right-[35%] bg-gradient-to-b from-transparent via-[hsl(var(--pink)/0.4)] to-transparent"
+          animate={{ y: ['500%', '-100%'] }}
+          transition={{ duration: 7, delay: 2, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
+        />
+      </div>
+
       <section className="section-padding pt-32 pb-24 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -324,10 +396,8 @@ const Pricing = () => {
                 <Crown className="w-3.5 h-3.5" /> Lifetime Access
               </div>
 
-              {/* Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center mb-6 mx-auto border border-primary/20">
-                <Sparkles className="w-7 h-7 text-primary" />
-              </div>
+
+
 
               {/* Price */}
               <div className="text-center mb-3">
