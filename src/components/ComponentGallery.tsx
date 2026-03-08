@@ -23,12 +23,31 @@ const ComponentGallery = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const [compsRes, catsRes] = await Promise.all([
-      supabase.from('components').select('*, categories(name, slug)'),
+    const [compsRes, catsRes, compCatsRes] = await Promise.all([
+      supabase.from('components').select('*'),
       supabase.from('categories').select('*'),
+      supabase.from('component_categories').select('component_id, category_id'),
     ]);
-    if (compsRes.data) setComponents(compsRes.data as any);
-    if (catsRes.data) setCategories(catsRes.data);
+    const catsData = catsRes.data || [];
+    const catMap = new Map(catsData.map((c: any) => [c.id, c]));
+    const compCatMap = new Map<string, string[]>();
+    (compCatsRes.data || []).forEach((cc: any) => {
+      const arr = compCatMap.get(cc.component_id) || [];
+      arr.push(cc.category_id);
+      compCatMap.set(cc.component_id, arr);
+    });
+    if (compsRes.data) {
+      setComponents(compsRes.data.map((c: any) => {
+        const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
+        const cats = catIds.map((id: string) => catMap.get(id)).filter(Boolean);
+        return {
+          ...c,
+          categorySlugs: cats.map((cat: any) => cat.slug),
+          categoryNames: cats.map((cat: any) => cat.name),
+        };
+      }));
+    }
+    if (catsData) setCategories(catsData as any);
     setLoading(false);
   };
 
