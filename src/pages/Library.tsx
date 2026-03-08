@@ -458,7 +458,7 @@ const Library = () => {
           </motion.div>
 
           {/* Result count + active filters */}
-          <div className="mb-6 flex items-center gap-3 flex-wrap">
+          <div className="mb-4 flex items-center gap-3 flex-wrap">
             <span className="text-sm text-muted-foreground">
               {filtered.length} component{filtered.length !== 1 ? 's' : ''}
             </span>
