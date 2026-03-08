@@ -195,7 +195,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.5 }}
-        className="relative z-10 w-full max-w-[1100px] mx-auto px-6 mt-16 sm:mt-20 pb-10"
+        className="relative z-10 w-full max-w-[1100px] mx-auto px-4 sm:px-6 mt-12 sm:mt-20 pb-8 sm:pb-10"
       >
         <div className="bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
