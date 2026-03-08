@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Lock, Crown, Sparkles, Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
 
 interface ComponentCardProps {
@@ -39,6 +40,14 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       setCopied(true);
       toast.success('Prompt copied!');
       setTimeout(() => setCopied(false), 2000);
+
+      // Track the copy event
+      if (id) {
+        await supabase.from('prompt_copies').insert({
+          component_id: id,
+          user_id: user.id,
+        });
+      }
     } catch {
       toast.error('Failed to copy');
     }
@@ -77,7 +86,6 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
             <Sparkles className="w-8 h-8 text-muted-foreground/30" />
           </div>
         )}
-
 
         {/* Hover overlay */}
         <AnimatePresence>
