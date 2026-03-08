@@ -25,6 +25,15 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
   const canCopy = !isPro || isPremiumUser;
 
   const handleCopy = async () => {
+    if (!user) {
+      toast.error('Please log in or sign up to copy prompts', {
+        action: {
+          label: 'Sign In',
+          onClick: () => window.location.href = '/auth',
+        },
+      });
+      return;
+    }
     if (!canCopy) {
       toast.error('Upgrade to Pro to access this prompt');
       return;
@@ -71,7 +80,17 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
               transition={{ duration: 0.2 }}
               className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center"
             >
-              {canCopy ? (
+              {!user ? (
+                <motion.button
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  onClick={handleCopy}
+                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                >
+                  <Lock className="w-4 h-4" />
+                  Sign in to Copy
+                </motion.button>
+              ) : canCopy ? (
                 <motion.button
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
