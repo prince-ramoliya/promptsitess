@@ -39,7 +39,7 @@ const Library = () => {
   const [sortMode, setSortMode] = useState<SortMode>('newest');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [showFilters, setShowFilters] = useState(false);
-  const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('featured');
+  const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null);
 
