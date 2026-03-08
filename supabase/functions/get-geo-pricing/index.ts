@@ -68,7 +68,7 @@ const COUNTRY_CURRENCY: Record<string, { code: string; symbol: string; rate: num
   UA: { code: 'UAH', symbol: '₴', rate: 37.5 },
 };
 
-const BASE_PRICE_USD = 19;
+const DEFAULT_BASE_PRICE = 19;
 
 function formatPrice(amount: number, rate: number): string {
   const converted = Math.round(amount * rate);
