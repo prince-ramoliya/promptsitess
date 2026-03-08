@@ -9,97 +9,101 @@ const platformBadges = [
   { name: 'Tailwind', logo: '/logos/tailwind.svg' },
 ];
 
-const featuredCards = [
+const allFeatures = [
   {
     icon: <BookOpen className="w-6 h-6" />,
     title: 'Smart Prompt Library',
     description: 'Access hundreds of premium UI prompts ready to generate sections instantly.',
     badge: 'Included',
+    gradient: 'from-[hsl(var(--primary)/0.15)] via-transparent to-[hsl(var(--accent)/0.1)]',
+    borderGlow: 'from-[hsl(var(--primary)/0.4)] via-[hsl(var(--primary)/0.08)] to-[hsl(var(--accent)/0.35)]',
+    iconColor: 'text-[hsl(var(--primary))]',
+    iconBg: 'from-[hsl(var(--primary)/0.2)] to-[hsl(var(--primary)/0.08)]',
   },
   {
     icon: <Cpu className="w-6 h-6" />,
     title: 'Component Generator',
     description: 'Paste prompts into Lovable, Cursor, or Bolt and instantly generate production ready UI.',
     badge: 'Included',
+    gradient: 'from-[hsl(var(--primary)/0.12)] via-transparent to-[hsl(var(--pink)/0.12)]',
+    borderGlow: 'from-[hsl(var(--primary)/0.35)] via-[hsl(var(--primary)/0.06)] to-[hsl(var(--pink)/0.4)]',
+    iconColor: 'text-[hsl(var(--primary))]',
+    iconBg: 'from-[hsl(var(--primary)/0.2)] to-[hsl(var(--primary)/0.08)]',
   },
-];
-
-const otherFeatures = [
   {
-    icon: <Search className="w-[18px] h-[18px]" />,
+    icon: <Search className="w-6 h-6" />,
     title: 'Prompt Search',
     description: 'Quickly find prompts using tags, categories, and filters.',
-    color: 'hsl(var(--primary))',
-    borderColor: 'border-l-[hsl(var(--primary))]',
-    bgHover: 'group-hover:bg-[hsl(var(--primary)/0.06)]',
-    iconBg: 'bg-[hsl(var(--primary)/0.1)]',
+    gradient: 'from-[hsl(var(--cyan)/0.1)] via-transparent to-[hsl(var(--primary)/0.08)]',
+    borderGlow: 'from-[hsl(var(--cyan)/0.3)] via-[hsl(var(--cyan)/0.05)] to-[hsl(var(--primary)/0.25)]',
+    iconColor: 'text-[hsl(var(--cyan))]',
+    iconBg: 'from-[hsl(var(--cyan)/0.18)] to-[hsl(var(--cyan)/0.06)]',
   },
   {
-    icon: <LayoutGrid className="w-[18px] h-[18px]" />,
+    icon: <LayoutGrid className="w-6 h-6" />,
     title: 'Prompt Categories',
-    description: 'Browse prompts for hero sections, pricing tables, navbars, and more.',
-    color: 'hsl(var(--accent))',
-    borderColor: 'border-l-[hsl(var(--accent))]',
-    bgHover: 'group-hover:bg-[hsl(var(--accent)/0.06)]',
-    iconBg: 'bg-[hsl(var(--accent)/0.1)]',
+    description: 'Browse prompts for hero sections, pricing tables, navbars, bento grids, and more.',
+    gradient: 'from-[hsl(var(--accent)/0.1)] via-transparent to-[hsl(var(--pink)/0.08)]',
+    borderGlow: 'from-[hsl(var(--accent)/0.3)] via-[hsl(var(--accent)/0.05)] to-[hsl(var(--pink)/0.3)]',
+    iconColor: 'text-[hsl(var(--accent))]',
+    iconBg: 'from-[hsl(var(--accent)/0.18)] to-[hsl(var(--accent)/0.06)]',
   },
   {
-    icon: <Eye className="w-[18px] h-[18px]" />,
+    icon: <Eye className="w-6 h-6" />,
     title: 'Prompt Preview',
     description: 'Preview UI sections before copying the prompt.',
-    color: 'hsl(var(--emerald))',
-    borderColor: 'border-l-[hsl(var(--emerald))]',
-    bgHover: 'group-hover:bg-[hsl(var(--emerald)/0.06)]',
-    iconBg: 'bg-[hsl(var(--emerald)/0.1)]',
+    gradient: 'from-[hsl(var(--emerald)/0.1)] via-transparent to-[hsl(var(--cyan)/0.08)]',
+    borderGlow: 'from-[hsl(var(--emerald)/0.3)] via-[hsl(var(--emerald)/0.05)] to-[hsl(var(--cyan)/0.25)]',
+    iconColor: 'text-[hsl(var(--emerald))]',
+    iconBg: 'from-[hsl(var(--emerald)/0.18)] to-[hsl(var(--emerald)/0.06)]',
   },
   {
-    icon: <ClipboardCopy className="w-[18px] h-[18px]" />,
+    icon: <ClipboardCopy className="w-6 h-6" />,
     title: 'Prompt Copy',
     description: 'Copy the secret prompt with one click.',
-    color: 'hsl(var(--yellow))',
-    borderColor: 'border-l-[hsl(var(--yellow))]',
-    bgHover: 'group-hover:bg-[hsl(var(--yellow)/0.06)]',
-    iconBg: 'bg-[hsl(var(--yellow)/0.1)]',
+    gradient: 'from-[hsl(var(--yellow)/0.1)] via-transparent to-[hsl(var(--yellow)/0.06)]',
+    borderGlow: 'from-[hsl(var(--yellow)/0.3)] via-[hsl(var(--yellow)/0.05)] to-[hsl(var(--yellow)/0.2)]',
+    iconColor: 'text-[hsl(var(--yellow))]',
+    iconBg: 'from-[hsl(var(--yellow)/0.18)] to-[hsl(var(--yellow)/0.06)]',
   },
   {
-    icon: <Heart className="w-[18px] h-[18px]" />,
+    icon: <Heart className="w-6 h-6" />,
     title: 'Favorites',
     description: 'Save your favorite prompts and build your personal prompt library.',
-    color: 'hsl(var(--pink))',
-    borderColor: 'border-l-[hsl(var(--pink))]',
-    bgHover: 'group-hover:bg-[hsl(var(--pink)/0.06)]',
-    iconBg: 'bg-[hsl(var(--pink)/0.1)]',
+    gradient: 'from-[hsl(var(--pink)/0.12)] via-transparent to-[hsl(var(--accent)/0.08)]',
+    borderGlow: 'from-[hsl(var(--pink)/0.35)] via-[hsl(var(--pink)/0.05)] to-[hsl(var(--accent)/0.3)]',
+    iconColor: 'text-[hsl(var(--pink))]',
+    iconBg: 'from-[hsl(var(--pink)/0.18)] to-[hsl(var(--pink)/0.06)]',
   },
   {
-    icon: <RefreshCw className="w-[18px] h-[18px]" />,
+    icon: <RefreshCw className="w-6 h-6" />,
     title: 'Prompt Updates',
     description: 'New premium prompts added weekly.',
-    color: 'hsl(var(--cyan))',
-    borderColor: 'border-l-[hsl(var(--cyan))]',
-    bgHover: 'group-hover:bg-[hsl(var(--cyan)/0.06)]',
-    iconBg: 'bg-[hsl(var(--cyan)/0.1)]',
+    gradient: 'from-[hsl(var(--primary)/0.1)] via-transparent to-[hsl(var(--cyan)/0.08)]',
+    borderGlow: 'from-[hsl(var(--primary)/0.3)] via-[hsl(var(--primary)/0.05)] to-[hsl(var(--cyan)/0.25)]',
+    iconColor: 'text-[hsl(var(--primary))]',
+    iconBg: 'from-[hsl(var(--primary)/0.18)] to-[hsl(var(--primary)/0.06)]',
   },
   {
-    icon: <Users className="w-[18px] h-[18px]" />,
+    icon: <Users className="w-6 h-6" />,
     title: 'Community Prompts',
     description: 'Submit prompts and share with the community.',
-    color: 'hsl(var(--emerald))',
-    borderColor: 'border-l-[hsl(var(--emerald))]',
-    bgHover: 'group-hover:bg-[hsl(var(--emerald)/0.06)]',
-    iconBg: 'bg-[hsl(var(--emerald)/0.1)]',
+    gradient: 'from-[hsl(var(--emerald)/0.1)] via-transparent to-[hsl(var(--primary)/0.08)]',
+    borderGlow: 'from-[hsl(var(--emerald)/0.3)] via-[hsl(var(--emerald)/0.05)] to-[hsl(var(--primary)/0.25)]',
+    iconColor: 'text-[hsl(var(--emerald))]',
+    iconBg: 'from-[hsl(var(--emerald)/0.18)] to-[hsl(var(--emerald)/0.06)]',
   },
 ];
 
 const FeatureGridSection = () => {
   return (
     <section className="relative py-20 sm:py-28 lg:py-36 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[800px] h-[400px] sm:h-[600px] rounded-full bg-[hsl(var(--primary)/0.06)] blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6">
-        {/* Section Header */}
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -120,7 +124,6 @@ const FeatureGridSection = () => {
             AI powered tools to build and generate modern UI components instantly
           </motion.p>
 
-          {/* Platform Badges */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -141,89 +144,65 @@ const FeatureGridSection = () => {
           </motion.div>
         </div>
 
-        {/* Featured Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 mb-8 sm:mb-10">
-          {featuredCards.map((feature, i) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              className="group relative"
-            >
-              <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.4)] via-[hsl(var(--primary)/0.1)] to-[hsl(var(--accent)/0.3)] opacity-60 group-hover:opacity-100 transition-opacity duration-500 blur-[1px]" />
-              <div className="relative rounded-2xl p-6 sm:p-7 lg:p-8 h-full bg-gradient-to-br from-[hsl(var(--primary)/0.12)] via-card to-[hsl(var(--primary)/0.05)] border border-[hsl(var(--primary)/0.2)] shadow-[0_0_60px_-20px_hsl(var(--primary)/0.2)] group-hover:shadow-[0_0_80px_-16px_hsl(var(--primary)/0.3)] transition-all duration-500">
-                <div className="flex items-start justify-between mb-4 sm:mb-5">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary)/0.25)] to-[hsl(var(--primary)/0.1)] text-[hsl(var(--primary))]">
-                    {feature.icon}
-                  </div>
-                  <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[hsl(var(--yellow)/0.15)] text-[hsl(var(--yellow))] border border-[hsl(var(--yellow)/0.25)]">
-                    {feature.badge}
-                  </span>
-                </div>
-                <h3 className="text-foreground font-semibold text-lg sm:text-xl mb-2 font-display">{feature.title}</h3>
-                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{feature.description}</p>
-              </div>
-            </motion.div>
+        {/* First 2 featured — full width row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
+          {allFeatures.slice(0, 2).map((feature, i) => (
+            <FeatureCard key={feature.title} feature={feature} index={i} large />
           ))}
         </div>
 
-        {/* Other Features — Clean list with colored left borders */}
-        <div className="rounded-2xl border border-border/30 bg-background/80 backdrop-blur-sm overflow-hidden divide-y divide-border/15">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/15">
-            {otherFeatures.slice(0, 3).map((feature, i) => (
-              <FeatureItem key={feature.title} feature={feature} index={i} />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/15">
-            {otherFeatures.slice(3, 6).map((feature, i) => (
-              <FeatureItem key={feature.title} feature={feature} index={i + 3} />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/15">
-            {otherFeatures.slice(6).map((feature, i) => (
-              <FeatureItem key={feature.title} feature={feature} index={i + 6} />
-            ))}
-          </div>
+        {/* Remaining 7 — 3-column grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {allFeatures.slice(2).map((feature, i) => (
+            <FeatureCard key={feature.title} feature={feature} index={i + 2} />
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-interface FeatureItemProps {
-  feature: typeof otherFeatures[number];
+interface FeatureCardProps {
+  feature: typeof allFeatures[number];
   index: number;
+  large?: boolean;
 }
 
-const FeatureItem = ({ feature, index }: FeatureItemProps) => (
+const FeatureCard = ({ feature, index, large }: FeatureCardProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 16 }}
+    initial={{ opacity: 0, y: 28 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-40px' }}
-    transition={{ duration: 0.4, delay: index * 0.05 }}
-    className={`group relative px-5 sm:px-6 py-5 sm:py-6 ${feature.bgHover} transition-all duration-300 cursor-default`}
+    viewport={{ once: true, margin: '-60px' }}
+    transition={{ duration: 0.5, delay: index * 0.06 }}
+    whileHover={{ y: -4 }}
+    className="group relative"
   >
-    {/* Colored left border indicator */}
-    <div
-      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-0 group-hover:h-8 rounded-r-full transition-all duration-300"
-      style={{ backgroundColor: feature.color }}
-    />
+    {/* Gradient border glow */}
+    <div className={`absolute -inset-[1px] rounded-2xl bg-gradient-to-br ${feature.borderGlow} opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-[0.5px]`} />
 
-    <div className="flex items-start gap-3.5">
-      <div
-        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${feature.iconBg}`}
-        style={{ color: feature.color }}
-      >
-        {feature.icon}
-      </div>
-      <div className="min-w-0 flex-1">
-        <h3 className="text-foreground font-semibold text-[13px] sm:text-sm font-display mb-1 group-hover:text-foreground/90 transition-colors">
+    {/* Card */}
+    <div className={`relative rounded-2xl ${large ? 'p-6 sm:p-7 lg:p-8' : 'p-5 sm:p-6'} h-full bg-card/80 backdrop-blur-sm border border-border/10 overflow-hidden transition-all duration-500`}>
+      {/* Bottom gradient wash */}
+      <div className={`absolute inset-0 bg-gradient-to-b ${feature.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+      
+      {/* Bottom edge colored line */}
+      <div className={`absolute bottom-0 left-[15%] right-[15%] h-[1px] bg-gradient-to-r ${feature.borderGlow} opacity-40 group-hover:opacity-80 group-hover:left-[5%] group-hover:right-[5%] transition-all duration-500`} />
+
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-4 sm:mb-5">
+          <div className={`${large ? 'w-11 h-11 sm:w-12 sm:h-12' : 'w-10 h-10'} rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.iconBg} ${feature.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+            {feature.icon}
+          </div>
+          {feature.badge && (
+            <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[hsl(var(--yellow)/0.15)] text-[hsl(var(--yellow))] border border-[hsl(var(--yellow)/0.25)]">
+              {feature.badge}
+            </span>
+          )}
+        </div>
+        <h3 className={`text-foreground font-semibold ${large ? 'text-lg sm:text-xl' : 'text-[15px] sm:text-base'} mb-1.5 sm:mb-2 font-display`}>
           {feature.title}
         </h3>
-        <p className="text-muted-foreground text-[11px] sm:text-xs leading-relaxed">
+        <p className={`text-muted-foreground ${large ? 'text-xs sm:text-sm' : 'text-[11px] sm:text-xs'} leading-relaxed`}>
           {feature.description}
         </p>
       </div>
