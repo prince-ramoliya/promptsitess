@@ -83,6 +83,29 @@ const HeroSection = () => {
             Get Pro Access
           </Link>
         </motion.div>
+
+        {/* Centered Video */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="w-full max-w-[900px] mt-10 sm:mt-14"
+        >
+          <div className="relative rounded-2xl overflow-hidden border border-border/30 shadow-[0_0_60px_-15px_hsl(var(--primary)/0.2)]">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full aspect-video object-cover"
+            >
+              <source
+                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260207_050933_33e2620d-09cd-43a2-80ef-4cdbb42f4194.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+        </motion.div>
       </div>
 
       {/* Platform Features Grid */}
