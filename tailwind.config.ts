@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Tropiline", "system-ui", "sans-serif"],
-        display: ["Tropiline", "system-ui", "sans-serif"],
-        accent: ["Tropiline", "system-ui", "sans-serif"],
+        sans: ["Bricolage Grotesque", "system-ui", "sans-serif"],
+        display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
+        accent: ["Bricolage Grotesque", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
