@@ -119,11 +119,13 @@
   .gradient-text-animated {
     background: linear-gradient(
       135deg,
-      hsl(var(--cyan)),
-      hsl(var(--pink)),
-      hsl(var(--yellow)),
-      hsl(var(--emerald)),
-      hsl(var(--cyan))
+      hsl(var(--ig-yellow)),
+      hsl(var(--ig-orange)),
+      hsl(var(--ig-pink)),
+      hsl(var(--ig-purple)),
+      hsl(var(--ig-pink)),
+      hsl(var(--ig-orange)),
+      hsl(var(--ig-yellow))
     );
     background-size: 300% 300%;
     -webkit-background-clip: text;
