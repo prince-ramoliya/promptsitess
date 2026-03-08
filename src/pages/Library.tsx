@@ -365,64 +365,130 @@ const Library = () => {
             </p>
           </motion.div>
 
-          {/* Mobile search + category chips */}
+          {/* Mobile search + filter + categories */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8 lg:hidden">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search components, tags..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-sm"
-              />
-            </div>
-
-            {/* Mobile discover tabs */}
-            <div className="flex gap-2 flex-wrap lg:hidden mt-4 mb-2">
-              {discoverItems.map((item) => (
+            {/* Search + Filter row */}
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search components..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-sm"
+                />
+              </div>
+              <div className="relative">
                 <button
-                  key={item.tab}
-                  onClick={() => handleDiscoverTab(item.tab)}
-                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                    discoverTab === item.tab
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-card/60 border border-border/40 text-muted-foreground'
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`p-3 rounded-xl border transition-all flex-shrink-0 ${
+                    showFilters
+                      ? 'bg-primary/10 border-primary/40 text-primary'
+                      : 'bg-card/60 border-border/40 text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  <item.icon className="w-3.5 h-3.5" />
-                  {item.label}
+                  <SlidersHorizontal className="w-4 h-4" />
                 </button>
-              ))}
+                <AnimatePresence>
+                  {showFilters && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-52 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-[100] p-3 space-y-3"
+                    >
+                      <div>
+                        <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Sort by</div>
+                        <div className="space-y-0.5">
+                          {sortOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              onClick={() => setSortMode(opt.value)}
+                              className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-colors ${
+                                sortMode === opt.value ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                              }`}
+                            >
+                              <opt.icon className="w-3.5 h-3.5" />
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="border-t border-border/30 pt-3">
+                        <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Show</div>
+                        <div className="flex gap-1.5">
+                          {filterOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              onClick={() => setFilterMode(opt.value)}
+                              className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                filterMode === opt.value
+                                  ? 'bg-primary text-primary-foreground'
+                                  : 'bg-muted/30 text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
-            {/* Mobile category chips */}
-            <div className="flex gap-2 flex-wrap lg:hidden mt-2">
-              {categories.map((cat) => {
-                const isLocked = cat.is_pro && !isPremiumUser;
-                return (
+            {/* Mobile discover tabs - horizontal scroll */}
+            <div className="mt-4 -mx-6 px-6 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2 w-max">
+                {discoverItems.map((item) => (
                   <button
-                    key={cat.id}
-                    onClick={() => !isLocked && setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
-                    disabled={isLocked}
-                    className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                      selectedCategory === cat.slug
+                    key={item.tab}
+                    onClick={() => handleDiscoverTab(item.tab)}
+                    className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                      discoverTab === item.tab
                         ? 'bg-primary text-primary-foreground'
-                        : isLocked
-                        ? 'bg-card/40 border border-border/20 text-muted-foreground/40 cursor-not-allowed'
                         : 'bg-card/60 border border-border/40 text-muted-foreground'
                     }`}
                   >
-                    {cat.name}
-                    {cat.is_pro && (
-                      <span className="flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]">
-                        <Crown className="w-2.5 h-2.5" />PRO
-                      </span>
-                    )}
-                    {isLocked && <Lock className="w-2.5 h-2.5" />}
+                    <item.icon className="w-3.5 h-3.5" />
+                    {item.label}
                   </button>
-                );
-              })}
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile category chips - horizontal scroll */}
+            <div className="mt-3 -mx-6 px-6 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2 w-max">
+                {categories.map((cat) => {
+                  const isLocked = cat.is_pro && !isPremiumUser;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => !isLocked && setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
+                      disabled={isLocked}
+                      className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                        selectedCategory === cat.slug
+                          ? 'bg-primary text-primary-foreground'
+                          : isLocked
+                          ? 'bg-card/40 border border-border/20 text-muted-foreground/40 cursor-not-allowed'
+                          : 'bg-card/60 border border-border/40 text-muted-foreground'
+                      }`}
+                    >
+                      {cat.name}
+                      {cat.is_pro && (
+                        <span className="flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]">
+                          <Crown className="w-2.5 h-2.5" />PRO
+                        </span>
+                      )}
+                      {isLocked && <Lock className="w-2.5 h-2.5" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
 
