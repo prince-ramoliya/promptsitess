@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -69,9 +70,12 @@ const Library = () => {
   const getCategoryCount = (slug: string) =>
     components.filter(c => c.categories?.slug === slug).length;
 
+  // TODO: Replace with real premium check when subscription is added
+  const isPremiumUser = false;
+
   const handleCategoryClick = (cat: Category) => {
-    if (cat.is_pro && !user) {
-      // Don't allow non-logged-in users to browse pro categories
+    if (cat.is_pro && !isPremiumUser) {
+      toast.error('Upgrade to Pro to access this category');
       return;
     }
     setSelectedCategory(cat.slug);
@@ -169,7 +173,7 @@ const Library = () => {
             <div className="space-y-0.5">
               {categories.map(cat => {
                 const count = getCategoryCount(cat.slug);
-                const isLocked = cat.is_pro && !user;
+                const isLocked = cat.is_pro && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}
@@ -290,7 +294,7 @@ const Library = () => {
             {/* Mobile category chips */}
             <div className="flex gap-2 flex-wrap lg:hidden mt-4">
               {categories.map(cat => {
-                const isLocked = cat.is_pro && !user;
+                const isLocked = cat.is_pro && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}

@@ -19,11 +19,13 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  const canCopy = !isPro;
+  // TODO: Replace with real premium check when subscription is added
+  const isPremiumUser = false;
+  const canCopy = !isPro || isPremiumUser;
 
   const handleCopy = async () => {
     if (!canCopy) {
-      toast.error('Sign in to access Pro prompts');
+      toast.error('Upgrade to Pro to access this prompt');
       return;
     }
     try {
