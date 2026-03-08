@@ -51,6 +51,7 @@ const Admin = () => {
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
     { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus, badge: unreadSuggestions },
     { path: '/admin/subscriptions', label: 'Subscriptions', icon: Users },
+    { path: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
     { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   ];
 
