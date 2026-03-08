@@ -102,10 +102,10 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                   onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                  className="glow-button flex items-center gap-1.5 text-xs !px-4 !py-2.5"
                 >
-                  <Lock className="w-4 h-4" />
-                  Sign in to Copy
+                  <Lock className="w-3.5 h-3.5" />
+                  Sign in
                 </motion.button>
               ) : canCopy ? (
                 <motion.button
