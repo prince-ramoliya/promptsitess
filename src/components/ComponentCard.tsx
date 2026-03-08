@@ -107,7 +107,7 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
       <div className="p-5">
         <h3 className="font-semibold text-foreground text-sm mb-2 font-display">{title}</h3>
         {categoryName && (
-          <span className="badge-tag text-[10px] mb-3 inline-block">{categoryName}</span>
+          <span className="badge-tag text-xs mb-3 inline-block">{categoryName}</span>
         )}
         <div className="flex flex-wrap gap-1.5 mt-2">
           {tags?.slice(0, 3).map(tag => (
