@@ -197,7 +197,7 @@ const Library = () => {
       <Navbar />
       <div className="pt-16 flex min-h-screen">
         {/* Sidebar */}
-        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] overflow-visible hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)]">
+        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)]">
           {/* Header */}
           <div className="px-5 pt-6 pb-4 border-b border-border/20">
             <div className="flex items-center gap-2 mb-5">
