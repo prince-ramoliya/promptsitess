@@ -289,12 +289,14 @@ const Library = () => {
           <div className="relative flex-1 min-h-0">
             <div
               ref={sidebarScrollRef}
+              data-lenis-prevent
+              onWheelCapture={(e) => e.stopPropagation()}
               onScroll={() => {
                 if (sidebarScrollRef.current) {
                   setSidebarScrolled(sidebarScrollRef.current.scrollTop > 100);
                 }
               }}
-              className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
+              className="sidebar-scroll-area h-full overflow-y-auto"
             >
           {/* Discover section */}
           <div className="px-3 pt-4 pb-2 space-y-0.5">
