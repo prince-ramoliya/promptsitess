@@ -16,7 +16,7 @@ const Logo = ({ className = '', linkTo = '/', size = 'md' }: LogoProps) => {
   const content = (
     <span className={`font-extrabold font-display tracking-tight ${sizeClasses[size]} ${className}`}>
       <span className="text-foreground">Prompt</span>
-      <span className="text-primary">Sites</span>
+      <span className="text-primary font-accent">Sites</span>
     </span>
   );
 
