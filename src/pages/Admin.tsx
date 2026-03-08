@@ -38,7 +38,7 @@ const Admin = () => {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
               <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground">PromptLab</span>
+            <span className="font-bold text-foreground">PromptSites</span>
           </Link>
         </div>
         <nav className="flex-1 p-4 space-y-1">

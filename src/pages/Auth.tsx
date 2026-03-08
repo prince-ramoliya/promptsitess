@@ -64,7 +64,7 @@ const Auth = () => {
           </div>
           
           <h2 className="text-2xl font-bold text-foreground mb-1 font-display">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
-          <p className="text-muted-foreground text-sm mb-8">{isSignUp ? 'Sign up to access PromptLab' : 'Log in to your account'}</p>
+          <p className="text-muted-foreground text-sm mb-8">{isSignUp ? 'Sign up to access PromptSites' : 'Log in to your account'}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

@@ -15,7 +15,7 @@ const Footer = () => (
         <Link to="/library" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Library</Link>
         <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Pricing</Link>
       </div>
-      <p className="text-xs text-muted-foreground">© 2026 PromptLab. All rights reserved.</p>
+      <p className="text-xs text-muted-foreground">© 2026 PromptSites. All rights reserved.</p>
     </div>
   </footer>
 );
