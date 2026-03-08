@@ -80,31 +80,25 @@ const Pricing = () => {
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(ellipse 80% 60% at 20% 30%, hsl(var(--cyan) / 0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 80% at 80% 20%, hsl(var(--pink) / 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 70% 50% at 50% 80%, hsl(var(--emerald) / 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 50% 70% at 10% 70%, hsl(var(--yellow) / 0.05) 0%, transparent 70%)
+                radial-gradient(ellipse 80% 60% at 20% 30%, hsl(var(--cyan) / 0.15) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 80% 20%, hsl(var(--pink) / 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 70% 50% at 50% 80%, hsl(var(--emerald) / 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 70% at 10% 70%, hsl(var(--yellow) / 0.1) 0%, transparent 70%)
               `,
             }}
-            animate={{
-              opacity: [0.6, 1, 0.6],
-            }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           />
-          {/* Second layer — offset mesh for movement feel */}
           <motion.div
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(ellipse 60% 50% at 70% 60%, hsl(var(--cyan) / 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 60% at 30% 50%, hsl(var(--accent) / 0.05) 0%, transparent 60%),
-                radial-gradient(ellipse 80% 40% at 60% 20%, hsl(var(--yellow) / 0.04) 0%, transparent 60%)
+                radial-gradient(ellipse 60% 50% at 70% 60%, hsl(var(--cyan) / 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 30% 50%, hsl(var(--accent) / 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 40% at 60% 20%, hsl(var(--yellow) / 0.08) 0%, transparent 60%)
               `,
             }}
-            animate={{
-              opacity: [0.4, 0.8, 0.4],
-              scale: [1, 1.05, 1],
-            }}
+            animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.08, 1] }}
             transition={{ duration: 8, delay: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
