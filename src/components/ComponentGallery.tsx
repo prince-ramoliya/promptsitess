@@ -135,7 +135,7 @@ const ComponentGallery = () => {
                   title={comp.title}
                   previewUrl={comp.preview_url}
                   categoryName={comp.categories?.name}
-                  tags={comp.tags || []}
+                  
                   secretPrompt={comp.secret_prompt}
                   isPro={comp.is_pro}
                 />
