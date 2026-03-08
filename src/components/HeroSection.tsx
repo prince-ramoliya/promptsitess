@@ -139,7 +139,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 noise-bg pointer-events-none" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-6 flex flex-col items-center text-center gap-5 sm:gap-8 pt-24 sm:pt-32">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-6 flex flex-col items-center text-center gap-5 sm:gap-8 pt-20 sm:pt-32">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
