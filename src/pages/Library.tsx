@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
 
 interface Category {id: string;name: string;slug: string;is_pro: boolean;}
-interface ComponentWithCategory {
+interface ComponentData {
   id: string;
   title: string;
   preview_url: string | null;
@@ -18,7 +18,9 @@ interface ComponentWithCategory {
   secret_prompt: string;
   is_pro: boolean;
   created_at: string;
-  categories: {name: string;slug: string;is_pro: boolean;} | null;
+  categorySlugs: string[];
+  categoryNames: string[];
+  categoryIsPro: boolean;
 }
 
 type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
@@ -26,7 +28,7 @@ type FilterMode = 'all' | 'pro' | 'free';
 
 const Library = () => {
   const { user } = useAuth();
-  const [components, setComponents] = useState<ComponentWithCategory[]>([]);
+  const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -45,12 +47,32 @@ const Library = () => {
   }, []);
 
   const fetchData = async () => {
-    const [compsRes, catsRes] = await Promise.all([
-    supabase.from('components').select('*, categories(name, slug, is_pro)'),
-    supabase.from('categories').select('*')]
-    );
-    if (compsRes.data) setComponents(compsRes.data as any);
-    if (catsRes.data) setCategories(catsRes.data as any);
+    const [compsRes, catsRes, compCatsRes] = await Promise.all([
+      supabase.from('components').select('*'),
+      supabase.from('categories').select('*'),
+      supabase.from('component_categories').select('component_id, category_id'),
+    ]);
+    const catsData = (catsRes.data || []) as Category[];
+    const catMap = new Map(catsData.map(c => [c.id, c]));
+    const compCatMap = new Map<string, string[]>();
+    (compCatsRes.data || []).forEach((cc: any) => {
+      const arr = compCatMap.get(cc.component_id) || [];
+      arr.push(cc.category_id);
+      compCatMap.set(cc.component_id, arr);
+    });
+    if (compsRes.data) {
+      setComponents(compsRes.data.map((c: any) => {
+        const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
+        const cats = catIds.map(id => catMap.get(id)).filter(Boolean) as Category[];
+        return {
+          ...c,
+          categorySlugs: cats.map(cat => cat.slug),
+          categoryNames: cats.map(cat => cat.name),
+          categoryIsPro: cats.some(cat => cat.is_pro),
+        };
+      }));
+    }
+    setCategories(catsData);
     setLoading(false);
   };
 
@@ -64,11 +86,11 @@ const Library = () => {
     return () => {supabase.removeChannel(channel);};
   }, []);
 
-  const isEffectivelyPro = (comp: ComponentWithCategory) =>
-  comp.is_pro || (comp.categories?.is_pro ?? false);
+  const isEffectivelyPro = (comp: ComponentData) =>
+  comp.is_pro || comp.categoryIsPro;
 
   const getCategoryCount = (slug: string) =>
-  components.filter((c) => c.categories?.slug === slug).length;
+  components.filter((c) => c.categorySlugs.includes(slug)).length;
 
   // TODO: Replace with real premium check when subscription is added
   const isPremiumUser = false;
@@ -85,7 +107,7 @@ const Library = () => {
   filter((c) => {
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase()) ||
     c.tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()));
-    const matchCat = !selectedCategory || c.categories?.slug === selectedCategory;
+    const matchCat = !selectedCategory || c.categorySlugs.includes(selectedCategory);
     const matchFilter = filterMode === 'all' ? true :
     filterMode === 'pro' ? isEffectivelyPro(c) :
     !isEffectivelyPro(c);
@@ -354,7 +376,7 @@ const Library = () => {
                   <ComponentCard
                 title={comp.title}
                 previewUrl={comp.preview_url}
-                categoryName={comp.categories?.name}
+                categoryNames={comp.categoryNames}
                 
                 secretPrompt={comp.secret_prompt}
                 isPro={isEffectivelyPro(comp)} />

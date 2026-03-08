@@ -4,31 +4,50 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import ComponentCard from './ComponentCard';
 
-interface ComponentWithCategory {
+interface ComponentData {
   id: string;
   title: string;
   preview_url: string | null;
-  category_id: string | null;
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
-  categories: { name: string; slug: string } | null;
+  categorySlugs: string[];
+  categoryNames: string[];
 }
 
 const ComponentGallery = () => {
-  const [components, setComponents] = useState<ComponentWithCategory[]>([]);
+  const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const [compsRes, catsRes] = await Promise.all([
-      supabase.from('components').select('*, categories(name, slug)'),
+    const [compsRes, catsRes, compCatsRes] = await Promise.all([
+      supabase.from('components').select('*'),
       supabase.from('categories').select('*'),
+      supabase.from('component_categories').select('component_id, category_id'),
     ]);
-    if (compsRes.data) setComponents(compsRes.data as any);
-    if (catsRes.data) setCategories(catsRes.data);
+    const catsData = catsRes.data || [];
+    const catMap = new Map(catsData.map((c: any) => [c.id, c]));
+    const compCatMap = new Map<string, string[]>();
+    (compCatsRes.data || []).forEach((cc: any) => {
+      const arr = compCatMap.get(cc.component_id) || [];
+      arr.push(cc.category_id);
+      compCatMap.set(cc.component_id, arr);
+    });
+    if (compsRes.data) {
+      setComponents(compsRes.data.map((c: any) => {
+        const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
+        const cats = catIds.map((id: string) => catMap.get(id)).filter(Boolean);
+        return {
+          ...c,
+          categorySlugs: cats.map((cat: any) => cat.slug),
+          categoryNames: cats.map((cat: any) => cat.name),
+        };
+      }));
+    }
+    if (catsData) setCategories(catsData as any);
     setLoading(false);
   };
 
@@ -48,7 +67,7 @@ const ComponentGallery = () => {
   const filtered = components.filter(c => {
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase()) ||
       c.tags?.some(t => t.toLowerCase().includes(search.toLowerCase()));
-    const matchCat = selectedCategory === 'all' || c.categories?.slug === selectedCategory;
+    const matchCat = selectedCategory === 'all' || c.categorySlugs.includes(selectedCategory);
     return matchSearch && matchCat;
   });
 
@@ -134,7 +153,7 @@ const ComponentGallery = () => {
                 <ComponentCard
                   title={comp.title}
                   previewUrl={comp.preview_url}
-                  categoryName={comp.categories?.name}
+                  categoryNames={comp.categoryNames}
                   
                   secretPrompt={comp.secret_prompt}
                   isPro={comp.is_pro}
