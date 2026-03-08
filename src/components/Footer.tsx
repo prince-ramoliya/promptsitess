@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 const Footer = () => (
   <footer className="border-t border-border/30 bg-card/20 section-padding !py-12 relative">
