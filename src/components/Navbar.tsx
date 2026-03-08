@@ -128,59 +128,83 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden border-t border-border/30 bg-background/95 backdrop-blur-2xl overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden fixed inset-0 top-0 z-[60] bg-background flex flex-col"
           >
-            <div className="p-6 space-y-2">
+            {/* Mobile menu header */}
+            <div className="flex items-center justify-between px-6 h-20 border-b border-border/30">
+              <Link to="/" onClick={() => setMobileOpen(false)} className="transition-transform duration-300 hover:scale-105 active:scale-95">
+                <img src={logo} alt="PromptSites" className="h-6 object-contain" />
+              </Link>
+              <button
+                className="text-foreground p-2 rounded-xl hover:bg-muted/30 transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Mobile menu content */}
+            <div className="flex-1 flex flex-col justify-center px-8 space-y-2">
               {[
-                { path: '/', label: 'Home', icon: <Home className="w-4 h-4" /> },
-                { path: '/library', label: 'Library', icon: <BookOpen className="w-4 h-4" /> },
-                { path: '/pricing', label: 'Pricing', icon: <Tag className="w-4 h-4" /> },
+                { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
+                { path: '/library', label: 'Library', icon: <BookOpen className="w-5 h-5" /> },
+                { path: '/pricing', label: 'Pricing', icon: <Tag className="w-5 h-5" /> },
               ].map(({ path, label, icon }) => (
-                <Link
+                <motion.div
                   key={path}
-                  to={path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                    isActive(path)
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground hover:bg-muted/20'
-                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
                 >
-                  {icon}
-                  {label}
-                </Link>
+                  <Link
+                    to={path}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-lg font-semibold transition-all ${
+                      isActive(path)
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-muted/20 hover:text-foreground'
+                    }`}
+                  >
+                    {icon}
+                    {label}
+                  </Link>
+                </motion.div>
               ))}
               {isAdmin && (
-                <Link
-                  to="/admin"
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 rounded-xl text-sm font-medium text-accent"
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-4 px-5 py-4 rounded-2xl text-lg font-semibold text-accent hover:bg-accent/5"
+                  >
+                    Admin
+                  </Link>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Mobile menu footer */}
+            <div className="px-8 pb-10 pt-4 border-t border-border/30">
+              {user ? (
+                <button
+                  onClick={() => { signOut(); setMobileOpen(false); }}
+                  className="text-sm text-muted-foreground w-full text-left px-5 py-4"
                 >
-                  Admin
+                  Log Out
+                </button>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setMobileOpen(false)}
+                  className="glow-button text-base block text-center !px-6 !py-4 w-full"
+                >
+                  Get Started
                 </Link>
               )}
-              <div className="pt-4 border-t border-border/30">
-                {user ? (
-                  <button
-                    onClick={() => { signOut(); setMobileOpen(false); }}
-                    className="text-sm text-muted-foreground w-full text-left px-4 py-3"
-                  >
-                    Log Out
-                  </button>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={() => setMobileOpen(false)}
-                    className="glow-button text-sm block text-center !px-5 !py-3"
-                  >
-                    Get Started
-                  </Link>
-                )}
-              </div>
             </div>
           </motion.div>
         )}
