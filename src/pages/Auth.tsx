@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 import { z } from 'zod';
-import { Zap } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const emailSchema = z.string().trim().email('Invalid email').max(255);
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(128);
@@ -57,9 +57,7 @@ const Auth = () => {
           className="w-full max-w-md glass-card p-8"
         >
           <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
-              <Zap className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <img src={logo} alt="PromptSites" className="w-8 h-8 object-contain" />
             <span className="font-bold text-foreground font-display tracking-tight">PromptSites</span>
           </div>
           
