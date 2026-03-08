@@ -1,28 +1,69 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { LayoutGrid, FolderOpen } from 'lucide-react';
+import { LayoutDashboard, FolderOpen, Copy, TrendingUp } from 'lucide-react';
+
+interface CopyStats {
+  component_id: string;
+  title: string;
+  copy_count: number;
+}
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({ components: 0, categories: 0 });
+  const [stats, setStats] = useState({ components: 0, categories: 0, totalCopies: 0 });
+  const [topCopied, setTopCopied] = useState<CopyStats[]>([]);
+
+  const fetchStats = async () => {
+    const [comps, cats, copies, components] = await Promise.all([
+      supabase.from('components').select('id', { count: 'exact', head: true }),
+      supabase.from('categories').select('id', { count: 'exact', head: true }),
+      supabase.from('prompt_copies').select('component_id'),
+      supabase.from('components').select('id, title'),
+    ]);
+
+    const copyData = copies.data || [];
+    const compMap = new Map((components.data || []).map((c: any) => [c.id, c.title]));
+
+    // Count copies per component
+    const countMap = new Map<string, number>();
+    copyData.forEach((c: any) => {
+      countMap.set(c.component_id, (countMap.get(c.component_id) || 0) + 1);
+    });
+
+    const topList: CopyStats[] = Array.from(countMap.entries())
+      .map(([id, count]) => ({ component_id: id, title: compMap.get(id) || 'Unknown', copy_count: count }))
+      .sort((a, b) => b.copy_count - a.copy_count)
+      .slice(0, 10);
+
+    setStats({
+      components: comps.count || 0,
+      categories: cats.count || 0,
+      totalCopies: copyData.length,
+    });
+    setTopCopied(topList);
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const [comps, cats] = await Promise.all([
-        supabase.from('components').select('id', { count: 'exact', head: true }),
-        supabase.from('categories').select('id', { count: 'exact', head: true }),
-      ]);
-      setStats({ components: comps.count || 0, categories: cats.count || 0 });
-    };
     fetchStats();
+
+    const channel = supabase
+      .channel('dashboard-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'prompt_copies' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'components' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, () => fetchStats())
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-foreground mb-8">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div className="glass-card p-6 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <LayoutGrid className="w-6 h-6 text-primary" />
+            <LayoutDashboard className="w-6 h-6 text-primary" />
           </div>
           <div>
             <p className="text-3xl font-bold text-foreground">{stats.components}</p>
@@ -38,6 +79,41 @@ const AdminDashboard = () => {
             <p className="text-sm text-muted-foreground">Categories</p>
           </div>
         </div>
+        <div className="glass-card p-6 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Copy className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <p className="text-3xl font-bold text-foreground">{stats.totalCopies}</p>
+            <p className="text-sm text-muted-foreground">Total Prompt Copies</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Top Copied Components */}
+      <div className="glass-card p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <TrendingUp className="w-5 h-5 text-primary" />
+          <h2 className="text-lg font-bold text-foreground">Most Copied Components</h2>
+        </div>
+        {topCopied.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No copy data yet. Copies will appear here in real time.</p>
+        ) : (
+          <div className="space-y-2">
+            {topCopied.map((item, i) => (
+              <div key={item.component_id} className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-muted/20 transition-colors">
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-bold text-muted-foreground w-6 text-center">{i + 1}</span>
+                  <span className="text-sm font-medium text-foreground">{item.title}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="text-sm font-semibold text-foreground tabular-nums">{item.copy_count}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

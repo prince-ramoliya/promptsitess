@@ -225,10 +225,40 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_copies: {
+        Row: {
+          component_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          component_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          component_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_copies_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "components"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suggestions: {
         Row: {
           created_at: string
           id: string
+          is_read: boolean
           message: string
           user_email: string | null
           user_id: string
@@ -236,6 +266,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          is_read?: boolean
           message: string
           user_email?: string | null
           user_id: string
@@ -243,6 +274,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          is_read?: boolean
           message?: string
           user_email?: string | null
           user_id?: string
