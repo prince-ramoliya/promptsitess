@@ -9,8 +9,6 @@ interface ComponentCardProps {
   id?: string;
   title: string;
   previewUrl: string | null;
-  categoryName?: string;
-  categoryNames?: string[];
   secretPrompt: string;
   isPro: boolean;
   isBookmarked?: boolean;
