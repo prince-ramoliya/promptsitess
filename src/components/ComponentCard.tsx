@@ -112,10 +112,10 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                   onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                  className="glow-button flex items-center gap-1.5 text-xs !px-4 !py-2.5"
                 >
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Copied!' : 'Copy Prompt'}
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? 'Copied!' : 'Copy'}
                 </motion.button>
                ) : (
                  <motion.div
