@@ -70,8 +70,8 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       className="glass-card-hover group relative overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25 }}
     >
       {/* Preview */}
       <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl bg-muted/20">
@@ -102,30 +102,29 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                   onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                  className="glow-button flex items-center gap-1.5 text-xs !px-4 !py-2.5"
                 >
-                  <Lock className="w-4 h-4" />
-                  Sign in to Copy
+                  <Lock className="w-3.5 h-3.5" />
+                  Sign in
                 </motion.button>
               ) : canCopy ? (
                 <motion.button
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                   onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                  className="glow-button flex items-center gap-1.5 text-xs !px-4 !py-2.5"
                 >
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Copied!' : 'Copy Prompt'}
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? 'Copied!' : 'Copy'}
                 </motion.button>
                ) : (
                  <motion.div
                    initial={{ scale: 0.9 }}
                    animate={{ scale: 1 }}
-                   className="flex flex-col items-center gap-2"
+                   className="flex flex-col items-center gap-1.5"
                  >
-                   <Lock className="w-6 h-6 text-primary" />
-                   <span className="text-sm text-foreground font-medium">Pro Content Locked</span>
-                   <span className="text-xs text-muted-foreground">This is a premium prompt</span>
+                   <Lock className="w-5 h-5 text-primary" />
+                   <span className="text-xs text-foreground font-medium">Pro Locked</span>
                  </motion.div>
                )}
             </motion.div>
@@ -134,23 +133,23 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       </div>
 
       {/* Card content */}
-      <div className="p-3 flex items-center justify-between gap-2">
-        <h3 className="font-semibold text-foreground text-xs font-display truncate flex-1 min-w-0">{title}</h3>
-        <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="px-2.5 py-2 flex items-center justify-between gap-1.5">
+        <h3 className="font-semibold text-foreground text-[11px] font-display truncate flex-1 min-w-0">{title}</h3>
+        <div className="flex items-center gap-1 flex-shrink-0">
           {isPro && (
-            <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)]">
-              <Crown className="w-3 h-3" /> PRO
+            <span className="flex items-center gap-0.5 text-[8px] font-extrabold tracking-widest px-1.5 py-0.5 rounded-full bg-[hsl(var(--yellow))] text-background">
+              <Crown className="w-2.5 h-2.5" />PRO
             </span>
           )}
           <button
             onClick={handleBookmark}
-            className={`p-1.5 rounded-lg transition-all duration-200 ${
+            className={`p-1 rounded transition-all duration-200 ${
               isBookmarked
                 ? 'text-primary hover:text-primary/80'
                 : 'text-muted-foreground/40 hover:text-primary'
             }`}
           >
-            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-primary' : ''}`} />
+            <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-primary' : ''}`} />
           </button>
         </div>
       </div>
