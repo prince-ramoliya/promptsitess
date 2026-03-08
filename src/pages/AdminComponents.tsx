@@ -146,6 +146,8 @@ const AdminComponents = () => {
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
     setIsFeatured(comp.is_featured);
+    setIsTrending(comp.is_trending);
+    setIsNewest(comp.is_newest);
     setShowForm(true);
   };
 
