@@ -99,17 +99,10 @@ const FeatureGridSection = () => {
           </motion.div>
         </div>
 
-        {/* First 2 featured — full width row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
-          {allFeatures.slice(0, 2).map((feature, i) => (
+        {/* Features — 2x2 grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          {allFeatures.map((feature, i) => (
             <FeatureCard key={feature.title} feature={feature} index={i} large />
-          ))}
-        </div>
-
-        {/* Remaining 7 — 3-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {allFeatures.slice(2).map((feature, i) => (
-            <FeatureCard key={feature.title} feature={feature} index={i + 2} />
           ))}
         </div>
       </div>
