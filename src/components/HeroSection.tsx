@@ -202,7 +202,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-sm" style={{ fontFamily: "'Syne', sans-serif" }}>{feature.title}</h3>
+                <h3 className="text-foreground font-semibold text-sm">{feature.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
