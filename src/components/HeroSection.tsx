@@ -28,22 +28,10 @@ const platformFeatures = [
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
-      {/* Background Video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover scale-150 object-left-top origin-top-left"
-      >
-        <source
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260207_050933_33e2620d-09cd-43a2-80ef-4cdbb42f4194.mp4"
-          type="video/mp4"
-        />
-      </video>
-
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-background/80" />
+      {/* Background subtle glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[800px] h-[400px] sm:h-[500px] rounded-full bg-[hsl(var(--primary)/0.06)] blur-[140px]" />
+      </div>
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-6 sm:gap-8 pt-28 sm:pt-32">
