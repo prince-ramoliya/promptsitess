@@ -4,15 +4,15 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import ComponentCard from './ComponentCard';
 
-interface ComponentWithCategory {
+interface ComponentData {
   id: string;
   title: string;
   preview_url: string | null;
-  category_id: string | null;
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
-  categories: { name: string; slug: string } | null;
+  categorySlugs: string[];
+  categoryNames: string[];
 }
 
 const ComponentGallery = () => {
