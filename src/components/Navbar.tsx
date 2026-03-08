@@ -32,22 +32,26 @@ const Navbar = () => {
       }`}
     >
       {/* Mobile layout: logo left, toggle right */}
-      <div className="flex md:hidden items-center justify-between px-4 h-14">
+      <div className="flex md:hidden items-center justify-center px-4 h-14">
         <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
           <img src={logo} alt="PromptSites" className="h-6 object-contain" />
         </Link>
-        <div className="flex items-center gap-0.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-1 py-1">
+      </div>
+
+      {/* Mobile bottom nav */}
+      <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 flex justify-center">
+        <div className="flex items-center gap-1 bg-card/60 backdrop-blur-2xl border border-border/30 rounded-full px-2 py-2 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6)]">
           {navItems.map(({ path, label, icon }) => (
             <Link
               key={path}
               to={path}
-              className={`relative px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all duration-300 ${
+              className={`relative px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
                 isActive(path)
-                  ? 'bg-primary/10 text-primary'
+                  ? 'bg-primary/15 text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5">
                 {icon}
                 {label}
               </span>
