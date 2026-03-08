@@ -151,8 +151,9 @@ const Library = () => {
         !isEffectivelyPro(c);
       const matchDiscover = 
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
-        discoverTab === 'featured' ? true :
-        discoverTab === 'trending' ? true :
+        discoverTab === 'featured' ? (c as any).is_featured === true :
+        discoverTab === 'trending' ? (c as any).is_trending === true :
+        discoverTab === 'newest' ? (c as any).is_newest === true :
         true;
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })
@@ -306,8 +307,11 @@ const Library = () => {
             ))}
           </div>
 
+          {/* Divider */}
+          <div className="mx-5 border-t border-border/20" />
+
           {/* Categories List */}
-          <div className="px-3 pt-2 pb-6 flex-1">
+          <div className="px-3 pt-4 pb-6 flex-1">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
               Categories
             </div>
