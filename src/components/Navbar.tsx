@@ -53,22 +53,22 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-1 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-1.5 py-1.5">
+        <div className="hidden md:flex items-center gap-1.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-2 py-2">
           {[
-            { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5" /> },
-            { path: '/library', label: 'Library', icon: <BookOpen className="w-3.5 h-3.5" /> },
-            { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5" /> },
+            { path: '/', label: 'Home', icon: <Home className="w-4 h-4" /> },
+            { path: '/library', label: 'Library', icon: <BookOpen className="w-4 h-4" /> },
+            { path: '/pricing', label: 'Pricing', icon: <Tag className="w-4 h-4" /> },
           ].map(({ path, label, icon }) => (
             <Link
               key={path}
               to={path}
-              className={`relative px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 isActive(path)
                   ? 'bg-primary/10 text-primary'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
               }`}
             >
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-2">
                 {icon}
                 {label}
               </span>
