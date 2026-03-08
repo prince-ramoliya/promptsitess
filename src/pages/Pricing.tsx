@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Sparkles, Crown } from 'lucide-react';
+import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
@@ -38,10 +38,26 @@ const GridLine = ({ orientation, position, delay }: { orientation: 'h' | 'v'; po
   />
 );
 
+/* Floating icon elements for pricing context */
+const FloatingIcon = ({ icon: Icon, x, y, delay, size = 20 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
+  <motion.div
+    className="absolute flex items-center justify-center w-10 h-10 rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 text-muted-foreground/30"
+    style={{ left: x, top: y }}
+    animate={{
+      y: [0, -15, 0, 15, 0],
+      rotate: [0, 5, 0, -5, 0],
+      opacity: [0.2, 0.5, 0.2],
+    }}
+    transition={{ duration: 8 + delay, delay, repeat: Infinity, ease: 'easeInOut' }}
+  >
+    <Icon size={size} />
+  </motion.div>
+);
+
 const Pricing = () => {
   const particles = useMemo(
     () =>
-      Array.from({ length: 15 }, (_, i) => ({
+      Array.from({ length: 20 }, (_, i) => ({
         id: i,
         x: `${Math.random() * 100}%`,
         y: `${Math.random() * 100}%`,
@@ -56,14 +72,68 @@ const Pricing = () => {
     <div className="min-h-screen bg-background smooth-scroll">
       <Navbar />
 
-      {/* Animated Background — same as homepage */}
+      {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <FloatingOrb delay={0} duration={8} x="10%" y="20%" size="w-72 h-72" color="bg-primary" />
-        <FloatingOrb delay={2} duration={10} x="70%" y="10%" size="w-96 h-96" color="bg-accent" />
-        <FloatingOrb delay={4} duration={12} x="50%" y="60%" size="w-64 h-64" color="bg-emerald" />
-        <FloatingOrb delay={1} duration={9} x="85%" y="70%" size="w-56 h-56" color="bg-yellow" />
-        <FloatingOrb delay={3} duration={7} x="20%" y="75%" size="w-48 h-48" color="bg-pink" />
+        {/* Gradient mesh background */}
+        <div className="absolute inset-0">
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: `
+                radial-gradient(ellipse 80% 60% at 20% 30%, hsl(var(--cyan) / 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 80% 20%, hsl(var(--pink) / 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 70% 50% at 50% 80%, hsl(var(--emerald) / 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 70% at 10% 70%, hsl(var(--yellow) / 0.05) 0%, transparent 70%)
+              `,
+            }}
+            animate={{
+              opacity: [0.6, 1, 0.6],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          {/* Second layer — offset mesh for movement feel */}
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: `
+                radial-gradient(ellipse 60% 50% at 70% 60%, hsl(var(--cyan) / 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 30% 50%, hsl(var(--accent) / 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 40% at 60% 20%, hsl(var(--yellow) / 0.04) 0%, transparent 60%)
+              `,
+            }}
+            animate={{
+              opacity: [0.4, 0.8, 0.4],
+              scale: [1, 1.05, 1],
+            }}
+            transition={{ duration: 8, delay: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
 
+        {/* Animated gradient streaks */}
+        <motion.div
+          className="absolute w-[600px] h-[2px] top-[35%] -left-20 bg-gradient-to-r from-transparent via-[hsl(var(--cyan)/0.3)] to-transparent blur-sm"
+          animate={{ x: ['-100%', '200%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+        />
+        <motion.div
+          className="absolute w-[500px] h-[2px] top-[65%] -right-20 bg-gradient-to-r from-transparent via-[hsl(var(--pink)/0.25)] to-transparent blur-sm"
+          animate={{ x: ['200%', '-100%'] }}
+          transition={{ duration: 7, delay: 2, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
+        />
+        <motion.div
+          className="absolute w-[400px] h-[2px] top-[50%] -left-10 bg-gradient-to-r from-transparent via-[hsl(var(--yellow)/0.2)] to-transparent blur-sm"
+          animate={{ x: ['-100%', '250%'] }}
+          transition={{ duration: 8, delay: 4, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
+        />
+
+        {/* Floating orbs */}
+        <FloatingOrb delay={0} duration={8} x="10%" y="20%" size="w-72 h-72" color="bg-[hsl(var(--cyan))]" />
+        <FloatingOrb delay={2} duration={10} x="70%" y="10%" size="w-96 h-96" color="bg-[hsl(var(--accent))]" />
+        <FloatingOrb delay={4} duration={12} x="50%" y="60%" size="w-64 h-64" color="bg-[hsl(var(--emerald))]" />
+        <FloatingOrb delay={1} duration={9} x="85%" y="70%" size="w-56 h-56" color="bg-[hsl(var(--yellow))]" />
+        <FloatingOrb delay={3} duration={7} x="20%" y="75%" size="w-48 h-48" color="bg-[hsl(var(--pink))]" />
+
+        {/* Grid lines */}
         <GridLine orientation="h" position="25%" delay={0} />
         <GridLine orientation="h" position="50%" delay={1.5} />
         <GridLine orientation="h" position="75%" delay={3} />
@@ -71,6 +141,17 @@ const Pricing = () => {
         <GridLine orientation="v" position="50%" delay={2} />
         <GridLine orientation="v" position="75%" delay={3.5} />
 
+        {/* Floating pricing/web concept icons */}
+        <FloatingIcon icon={Code} x="8%" y="25%" delay={0} />
+        <FloatingIcon icon={Layers} x="88%" y="30%" delay={1.5} />
+        <FloatingIcon icon={Layout} x="15%" y="65%" delay={3} />
+        <FloatingIcon icon={Palette} x="82%" y="68%" delay={2} />
+        <FloatingIcon icon={Zap} x="45%" y="15%" delay={4} />
+        <FloatingIcon icon={MousePointerClick} x="75%" y="85%" delay={1} />
+        <FloatingIcon icon={Crown} x="25%" y="85%" delay={2.5} />
+        <FloatingIcon icon={Sparkles} x="60%" y="80%" delay={3.5} />
+
+        {/* Particles */}
         {particles.map((p) => (
           <motion.div
             key={p.id}
