@@ -210,37 +210,14 @@ const Library = () => {
               'bg-muted/50 text-foreground font-medium' :
               'text-muted-foreground hover:text-foreground hover:bg-muted/20'}`
               }>
-              
               <Sparkles className="w-4 h-4" />
               Featured
             </button>
             <button
               onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-muted-foreground hover:text-foreground">
               <Clock className="w-4 h-4" />
               Newest
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <TrendingUp className="w-4 h-4" />
-              Trending
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <Flame className="w-4 h-4" />
-              Most Popular
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <Eye className="w-4 h-4" />
-              Most Viewed
             </button>
           </div>
 
