@@ -38,6 +38,39 @@ export type Database = {
         }
         Relationships: []
       }
+      component_categories: {
+        Row: {
+          category_id: string
+          component_id: string
+          id: string
+        }
+        Insert: {
+          category_id: string
+          component_id: string
+          id?: string
+        }
+        Update: {
+          category_id?: string
+          component_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "component_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "component_categories_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "components"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       components: {
         Row: {
           category_id: string | null

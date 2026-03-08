@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -12,6 +12,7 @@ interface Component {
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
+  categoryIds?: string[];
 }
 
 const AdminComponents = () => {
@@ -23,25 +24,35 @@ const AdminComponents = () => {
 
   const [title, setTitle] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
-  const [categoryId, setCategoryId] = useState('');
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [tagsStr, setTagsStr] = useState('');
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async () => {
-    const [comps, cats] = await Promise.all([
+    const [comps, cats, compCats] = await Promise.all([
       supabase.from('components').select('*').order('created_at', { ascending: false }),
       supabase.from('categories').select('id, name'),
+      supabase.from('component_categories').select('component_id, category_id'),
     ]);
-    if (comps.data) setComponents(comps.data);
+    if (comps.data) {
+      const catMap = new Map<string, string[]>();
+      (compCats.data || []).forEach((cc: any) => {
+        const arr = catMap.get(cc.component_id) || [];
+        arr.push(cc.category_id);
+        catMap.set(cc.component_id, arr);
+      });
+      setComponents(comps.data.map(c => ({ ...c, categoryIds: catMap.get(c.id) || [] })));
+    }
     if (cats.data) setCategories(cats.data);
   };
 
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setCategoryId(''); setTagsStr(''); setSecretPrompt(''); setIsPro(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false);
     setEditing(null); setShowForm(false);
   };
 
@@ -89,21 +100,32 @@ const AdminComponents = () => {
     const payload = {
       title,
       preview_url: previewUrl || null,
-      category_id: categoryId || null,
+      category_id: selectedCategoryIds[0] || null,
       tags,
       secret_prompt: secretPrompt,
       is_pro: isPro,
     };
 
+    let componentId: string;
     if (editing) {
       const { error } = await supabase.from('components').update(payload).eq('id', editing.id);
       if (error) { toast.error(error.message); return; }
-      toast.success('Component updated');
+      componentId = editing.id;
+      // Clear old category associations
+      await supabase.from('component_categories').delete().eq('component_id', editing.id);
     } else {
-      const { error } = await supabase.from('components').insert(payload);
-      if (error) { toast.error(error.message); return; }
-      toast.success('Component created');
+      const { data, error } = await supabase.from('components').insert(payload).select('id').single();
+      if (error || !data) { toast.error(error?.message || 'Failed'); return; }
+      componentId = data.id;
     }
+
+    // Insert new category associations
+    if (selectedCategoryIds.length > 0) {
+      const rows = selectedCategoryIds.map(catId => ({ component_id: componentId, category_id: catId }));
+      await supabase.from('component_categories').insert(rows);
+    }
+
+    toast.success(editing ? 'Component updated' : 'Component created');
     resetForm();
     fetchData();
   };
@@ -119,7 +141,7 @@ const AdminComponents = () => {
     setEditing(comp);
     setTitle(comp.title);
     setPreviewUrl(comp.preview_url || '');
-    setCategoryId(comp.category_id || '');
+    setSelectedCategoryIds(comp.categoryIds || (comp.category_id ? [comp.category_id] : []));
     setTagsStr(comp.tags?.join(', ') || '');
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
@@ -148,12 +170,43 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Title *</label>
               <input value={title} onChange={e => setTitle(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" />
             </div>
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Category</label>
-              <select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50">
-                <option value="">None</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+            <div className="relative">
+              <label className="text-xs text-muted-foreground mb-1 block">Categories</label>
+              <div
+                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm cursor-pointer focus:outline-none focus:border-primary/50 min-h-[42px] flex flex-wrap gap-1.5 items-center"
+              >
+                {selectedCategoryIds.length === 0 && <span className="text-muted-foreground">Select categories...</span>}
+                {selectedCategoryIds.map(id => {
+                  const cat = categories.find(c => c.id === id);
+                  return cat ? (
+                    <span key={id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/20 text-primary text-xs">
+                      {cat.name}
+                      <X className="w-3 h-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); setSelectedCategoryIds(prev => prev.filter(cid => cid !== id)); }} />
+                    </span>
+                  ) : null;
+                })}
+              </div>
+              {showCategoryDropdown && (
+                <div className="absolute z-10 mt-1 w-full rounded-xl bg-background border border-border/50 shadow-lg max-h-48 overflow-y-auto">
+                  {categories.map(c => (
+                    <div
+                      key={c.id}
+                      onClick={() => {
+                        setSelectedCategoryIds(prev =>
+                          prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id]
+                        );
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-muted/50 cursor-pointer text-sm text-foreground"
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedCategoryIds.includes(c.id) ? 'bg-primary border-primary' : 'border-border'}`}>
+                        {selectedCategoryIds.includes(c.id) && <Check className="w-3 h-3 text-primary-foreground" />}
+                      </div>
+                      {c.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Preview Upload */}
