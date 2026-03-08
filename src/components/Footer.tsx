@@ -9,13 +9,13 @@ const Footer = () => (
         <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
           <Zap className="w-3.5 h-3.5 text-primary-foreground" />
         </div>
-        <span className="font-bold text-foreground font-display tracking-tight">PromptLab</span>
+        <span className="font-bold text-foreground font-display tracking-tight">PromptSites</span>
       </Link>
       <div className="flex items-center gap-8">
         <Link to="/library" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Library</Link>
         <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">Pricing</Link>
       </div>
-      <p className="text-xs text-muted-foreground">© 2026 PromptLab. All rights reserved.</p>
+      <p className="text-xs text-muted-foreground">© 2026 PromptSites. All rights reserved.</p>
     </div>
   </footer>
 );

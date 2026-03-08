@@ -38,7 +38,7 @@ const Pricing = () => (
             Simple <span className="gradient-text">Pricing</span>
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto">
-            Start free. Upgrade when you need the full power of PromptLab.
+            Start free. Upgrade when you need the full power of PromptSites.
           </p>
         </motion.div>
 

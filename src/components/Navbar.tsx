@@ -45,7 +45,7 @@ const Navbar = () => {
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-foreground tracking-tight">PromptLab</span>
+          <span className="text-lg font-bold text-foreground tracking-tight">PromptSites</span>
         </Link>
 
         {/* Desktop nav links */}
