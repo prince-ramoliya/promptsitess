@@ -56,9 +56,8 @@ const Auth = () => {
           transition={{ duration: 0.4 }}
           className="w-full max-w-md glass-card p-8"
         >
-          <div className="flex items-center gap-2.5 mb-6">
-            <img src={logo} alt="PromptSites" className="w-8 h-8 object-contain" />
-            <span className="font-bold text-foreground font-display tracking-tight">PromptSites</span>
+          <div className="mb-6">
+            <img src={logo} alt="PromptSites" className="h-9 object-contain" />
           </div>
           
           <h2 className="text-2xl font-bold text-foreground mb-1 font-display">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
