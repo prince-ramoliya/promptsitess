@@ -97,8 +97,8 @@ const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }:
 
         {/* Pro badge */}
         {isPro && (
-          <div className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-bold tracking-wide px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))]/15 border border-[hsl(var(--yellow))]/30 text-[hsl(var(--yellow))]">
-            <Crown className="w-3 h-3" /> PRO
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 text-[10px] font-bold tracking-wider px-3 py-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_20px_-4px_hsl(var(--yellow)/0.6)] animate-glow-pulse">
+            <Crown className="w-3.5 h-3.5" /> PRO
           </div>
         )}
       </div>
