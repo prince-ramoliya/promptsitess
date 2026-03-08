@@ -80,17 +80,6 @@ const ComponentCard = ({ id, title, previewUrl, categoryName, categoryNames, sec
           </div>
         )}
 
-        {/* Bookmark button - always visible on hover */}
-        <button
-          onClick={handleBookmark}
-          className={`absolute top-3 right-3 z-20 p-2 rounded-xl backdrop-blur-md transition-all duration-300 ${
-            isBookmarked
-              ? 'bg-primary/20 border border-primary/40 text-primary'
-              : 'bg-background/60 border border-border/30 text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-primary hover:border-primary/40'
-          }`}
-        >
-          <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-primary' : ''}`} />
-        </button>
 
         {/* Hover overlay */}
         <AnimatePresence>

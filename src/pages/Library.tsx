@@ -307,8 +307,11 @@ const Library = () => {
             ))}
           </div>
 
+          {/* Divider */}
+          <div className="mx-5 border-t border-border/20" />
+
           {/* Categories List */}
-          <div className="px-3 pt-2 pb-6 flex-1">
+          <div className="px-3 pt-4 pb-6 flex-1">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
               Categories
             </div>
