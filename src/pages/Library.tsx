@@ -483,19 +483,19 @@ const Library = () => {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {[...Array(8)].map((_, i) => (
                 <div key={i} className="glass-card animate-pulse">
-                  <div className="aspect-[16/10] bg-muted/20 rounded-t-2xl" />
-                  <div className="p-5 space-y-3">
-                    <div className="h-4 bg-muted/30 rounded-full w-2/3" />
-                    <div className="h-3 bg-muted/20 rounded-full w-1/3" />
+                  <div className="aspect-[16/10] bg-muted/20 rounded-t-xl" />
+                  <div className="p-3 space-y-2">
+                    <div className="h-3.5 bg-muted/30 rounded-full w-2/3" />
+                    <div className="h-2.5 bg-muted/20 rounded-full w-1/3" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filtered.map((comp, i) => (
                 <motion.div
                   key={comp.id}
