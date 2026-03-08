@@ -104,10 +104,17 @@ const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }:
       </div>
 
       {/* Card content */}
-      <div className="p-5">
-        <h3 className="font-semibold text-foreground text-sm mb-2 font-display">{title}</h3>
-        {categoryName && (
-          <span className="badge-tag text-xs mb-3 inline-block">{categoryName}</span>
+      <div className="p-5 flex items-center justify-between gap-2">
+        <div>
+          <h3 className="font-semibold text-foreground text-sm mb-1 font-display">{title}</h3>
+          {categoryName && (
+            <span className="badge-tag text-xs inline-block">{categoryName}</span>
+          )}
+        </div>
+        {isPro && (
+          <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)] flex-shrink-0">
+            <Crown className="w-3 h-3" /> PRO
+          </span>
         )}
       </div>
     </motion.div>
