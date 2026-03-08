@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Cpu, Search, LayoutGrid, Eye, ClipboardCopy, Heart, RefreshCw, Users } from 'lucide-react';
+import { BookOpen, Cpu, Search, LayoutGrid } from 'lucide-react';
 
 const platformBadges = [
   { name: 'Lovable', logo: '/logos/lovable.svg' },
@@ -47,51 +47,6 @@ const allFeatures = [
     borderGlow: 'from-[hsl(var(--accent)/0.3)] via-[hsl(var(--accent)/0.05)] to-[hsl(var(--pink)/0.3)]',
     iconColor: 'text-[hsl(var(--accent))]',
     iconBg: 'from-[hsl(var(--accent)/0.18)] to-[hsl(var(--accent)/0.06)]',
-  },
-  {
-    icon: <Eye className="w-6 h-6" />,
-    title: 'Prompt Preview',
-    description: 'Preview UI sections before copying the prompt.',
-    gradient: 'from-[hsl(var(--emerald)/0.1)] via-transparent to-[hsl(var(--cyan)/0.08)]',
-    borderGlow: 'from-[hsl(var(--emerald)/0.3)] via-[hsl(var(--emerald)/0.05)] to-[hsl(var(--cyan)/0.25)]',
-    iconColor: 'text-[hsl(var(--emerald))]',
-    iconBg: 'from-[hsl(var(--emerald)/0.18)] to-[hsl(var(--emerald)/0.06)]',
-  },
-  {
-    icon: <ClipboardCopy className="w-6 h-6" />,
-    title: 'Prompt Copy',
-    description: 'Copy the secret prompt with one click.',
-    gradient: 'from-[hsl(var(--yellow)/0.1)] via-transparent to-[hsl(var(--yellow)/0.06)]',
-    borderGlow: 'from-[hsl(var(--yellow)/0.3)] via-[hsl(var(--yellow)/0.05)] to-[hsl(var(--yellow)/0.2)]',
-    iconColor: 'text-[hsl(var(--yellow))]',
-    iconBg: 'from-[hsl(var(--yellow)/0.18)] to-[hsl(var(--yellow)/0.06)]',
-  },
-  {
-    icon: <Heart className="w-6 h-6" />,
-    title: 'Favorites',
-    description: 'Save your favorite prompts and build your personal prompt library.',
-    gradient: 'from-[hsl(var(--pink)/0.12)] via-transparent to-[hsl(var(--accent)/0.08)]',
-    borderGlow: 'from-[hsl(var(--pink)/0.35)] via-[hsl(var(--pink)/0.05)] to-[hsl(var(--accent)/0.3)]',
-    iconColor: 'text-[hsl(var(--pink))]',
-    iconBg: 'from-[hsl(var(--pink)/0.18)] to-[hsl(var(--pink)/0.06)]',
-  },
-  {
-    icon: <RefreshCw className="w-6 h-6" />,
-    title: 'Prompt Updates',
-    description: 'New premium prompts added weekly.',
-    gradient: 'from-[hsl(var(--primary)/0.1)] via-transparent to-[hsl(var(--cyan)/0.08)]',
-    borderGlow: 'from-[hsl(var(--primary)/0.3)] via-[hsl(var(--primary)/0.05)] to-[hsl(var(--cyan)/0.25)]',
-    iconColor: 'text-[hsl(var(--primary))]',
-    iconBg: 'from-[hsl(var(--primary)/0.18)] to-[hsl(var(--primary)/0.06)]',
-  },
-  {
-    icon: <Users className="w-6 h-6" />,
-    title: 'Community Prompts',
-    description: 'Submit prompts and share with the community.',
-    gradient: 'from-[hsl(var(--emerald)/0.1)] via-transparent to-[hsl(var(--primary)/0.08)]',
-    borderGlow: 'from-[hsl(var(--emerald)/0.3)] via-[hsl(var(--emerald)/0.05)] to-[hsl(var(--primary)/0.25)]',
-    iconColor: 'text-[hsl(var(--emerald))]',
-    iconBg: 'from-[hsl(var(--emerald)/0.18)] to-[hsl(var(--emerald)/0.06)]',
   },
 ];
 
@@ -144,17 +99,10 @@ const FeatureGridSection = () => {
           </motion.div>
         </div>
 
-        {/* First 2 featured — full width row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
-          {allFeatures.slice(0, 2).map((feature, i) => (
+        {/* Features — 2x2 grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          {allFeatures.map((feature, i) => (
             <FeatureCard key={feature.title} feature={feature} index={i} large />
-          ))}
-        </div>
-
-        {/* Remaining 7 — 3-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {allFeatures.slice(2).map((feature, i) => (
-            <FeatureCard key={feature.title} feature={feature} index={i + 2} />
           ))}
         </div>
       </div>
