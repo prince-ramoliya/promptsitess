@@ -69,9 +69,12 @@ const Library = () => {
   const getCategoryCount = (slug: string) =>
     components.filter(c => c.categories?.slug === slug).length;
 
+  // TODO: Replace with real premium check when subscription is added
+  const isPremiumUser = false;
+
   const handleCategoryClick = (cat: Category) => {
-    if (cat.is_pro && !user) {
-      // Don't allow non-logged-in users to browse pro categories
+    if (cat.is_pro && !isPremiumUser) {
+      toast.error('Upgrade to Pro to access this category');
       return;
     }
     setSelectedCategory(cat.slug);
