@@ -8,12 +8,11 @@ interface ComponentCardProps {
   title: string;
   previewUrl: string | null;
   categoryName?: string;
-  tags: string[];
   secretPrompt: string;
   isPro: boolean;
 }
 
-const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, isPro }: ComponentCardProps) => {
+const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const { user } = useAuth();
@@ -109,11 +108,6 @@ const ComponentCard = ({ title, previewUrl, categoryName, tags, secretPrompt, is
         {categoryName && (
           <span className="badge-tag text-xs mb-3 inline-block">{categoryName}</span>
         )}
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {tags?.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] px-2.5 py-0.5 rounded-full bg-muted/60 text-muted-foreground border border-border/30">{tag}</span>
-          ))}
-        </div>
       </div>
     </motion.div>
   );
