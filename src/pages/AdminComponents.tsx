@@ -31,6 +31,11 @@ const AdminComponents = () => {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Search & filter state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterCategoryId, setFilterCategoryId] = useState<string>('all');
+  const [filterProStatus, setFilterProStatus] = useState<string>('all');
+
   const fetchData = async () => {
     const [comps, cats, compCats] = await Promise.all([
       supabase.from('components').select('*').order('created_at', { ascending: false }),
