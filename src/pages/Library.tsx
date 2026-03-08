@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown, ArrowUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
@@ -42,6 +42,8 @@ const Library = () => {
   const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null);
+  const sidebarScrollRef = useRef<HTMLDivElement>(null);
+  const [sidebarScrolled, setSidebarScrolled] = useState(false);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -284,7 +286,16 @@ const Library = () => {
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+          <div className="relative flex-1 min-h-0">
+            <div
+              ref={sidebarScrollRef}
+              onScroll={() => {
+                if (sidebarScrollRef.current) {
+                  setSidebarScrolled(sidebarScrollRef.current.scrollTop > 100);
+                }
+              }}
+              className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
+            >
           {/* Discover section */}
           <div className="px-3 pt-4 pb-2 space-y-0.5">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
@@ -315,7 +326,7 @@ const Library = () => {
           <div className="mx-5 border-t border-border/20" />
 
           {/* Categories List */}
-          <div className="px-3 pt-4 pb-6 flex-1">
+          <div className="px-3 pt-4 pb-6">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
               Categories
             </div>
@@ -351,7 +362,25 @@ const Library = () => {
               })}
             </div>
           </div>
-          </div>{/* end scrollable content */}
+            </div>{/* end scrollable content */}
+
+            {/* Scroll to top button */}
+            <AnimatePresence>
+              {sidebarScrolled && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => sidebarScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="absolute bottom-4 right-4 p-2 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors z-10"
+                  title="Scroll to top"
+                >
+                  <ArrowUp className="w-4 h-4" />
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
         </aside>
 
         {/* Main Content */}
