@@ -197,7 +197,7 @@ const Library = () => {
       <Navbar />
       <div className="pt-16 flex min-h-screen">
         {/* Sidebar */}
-        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] overflow-auto hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)]">
+        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)]">
           {/* Header */}
           <div className="px-5 pt-6 pb-4 border-b border-border/20">
             <div className="flex items-center gap-2 mb-5">
@@ -283,6 +283,8 @@ const Library = () => {
             </div>
           </div>
 
+          {/* Scrollable content */}
+          <div className="flex-1 overflow-y-auto">
           {/* Discover section */}
           <div className="px-3 pt-4 pb-2 space-y-0.5">
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
@@ -349,6 +351,7 @@ const Library = () => {
               })}
             </div>
           </div>
+          </div>{/* end scrollable content */}
         </aside>
 
         {/* Main Content */}
