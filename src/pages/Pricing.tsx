@@ -155,6 +155,19 @@ const PricingFAQ = () => {
 };
 
 const Pricing = () => {
+  const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(null);
+
+  useEffect(() => {
+    supabase.functions.invoke('get-geo-pricing').then(({ data }) => {
+      if (data) setGeoPricing(data);
+    }).catch(() => {});
+  }, []);
+
+  const displayPrice = geoPricing && geoPricing.currency !== 'USD'
+    ? `${geoPricing.symbol}${geoPricing.localPrice}`
+    : '$19';
+  const isLocalCurrency = geoPricing && geoPricing.currency !== 'USD';
+
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, (_, i) => ({
