@@ -141,7 +141,7 @@ const AdminComponents = () => {
     setEditing(comp);
     setTitle(comp.title);
     setPreviewUrl(comp.preview_url || '');
-    setCategoryId(comp.category_id || '');
+    setSelectedCategoryIds(comp.categoryIds || (comp.category_id ? [comp.category_id] : []));
     setTagsStr(comp.tags?.join(', ') || '');
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
