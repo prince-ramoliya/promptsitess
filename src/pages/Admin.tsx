@@ -28,6 +28,7 @@ const Admin = () => {
     { path: '/admin/components', label: 'Components', icon: LayoutGrid },
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
     { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus },
+    { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   ];
 
   return (
