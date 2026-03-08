@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutGrid, FolderOpen, LogOut, MessageSquarePlus } from 'lucide-react';
+import { LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const Admin = () => {
@@ -28,6 +28,7 @@ const Admin = () => {
     { path: '/admin/components', label: 'Components', icon: LayoutGrid },
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
     { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus },
+    { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   ];
 
   return (

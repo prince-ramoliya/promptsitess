@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -67,7 +68,7 @@ const COUNTRY_CURRENCY: Record<string, { code: string; symbol: string; rate: num
   UA: { code: 'UAH', symbol: '₴', rate: 37.5 },
 };
 
-const BASE_PRICE_USD = 19;
+const DEFAULT_BASE_PRICE = 19;
 
 function formatPrice(amount: number, rate: number): string {
   const converted = Math.round(amount * rate);
@@ -85,7 +86,17 @@ serve(async (req) => {
   }
 
   try {
-    // Get country from Cloudflare/Deno headers
+    // Fetch base price from DB
+    let basePriceUsd = DEFAULT_BASE_PRICE;
+    try {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
+      if (data) basePriceUsd = Number(data.base_price_usd);
+    } catch {}
+
+    // Get country from headers
     const country = req.headers.get('cf-ipcountry') 
       || req.headers.get('x-vercel-ip-country')
       || req.headers.get('x-country-code')
@@ -94,14 +105,14 @@ serve(async (req) => {
     const countryCode = country?.toUpperCase() || 'US';
     const currencyInfo = COUNTRY_CURRENCY[countryCode] || COUNTRY_CURRENCY['US'];
     
-    const convertedPrice = formatPrice(BASE_PRICE_USD, currencyInfo.rate);
+    const convertedPrice = formatPrice(basePriceUsd, currencyInfo.rate);
 
     return new Response(JSON.stringify({
       country: countryCode,
       currency: currencyInfo.code,
       symbol: currencyInfo.symbol,
       localPrice: convertedPrice,
-      usdPrice: BASE_PRICE_USD,
+      usdPrice: basePriceUsd,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -111,8 +122,8 @@ serve(async (req) => {
       country: 'US',
       currency: 'USD',
       symbol: '$',
-      localPrice: '19',
-      usdPrice: 19,
+      localPrice: String(DEFAULT_BASE_PRICE),
+      usdPrice: DEFAULT_BASE_PRICE,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

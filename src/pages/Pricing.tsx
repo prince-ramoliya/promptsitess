@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus } from 'lucide-react';
+import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus, Tag, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
@@ -156,17 +156,89 @@ const PricingFAQ = () => {
 
 const Pricing = () => {
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(null);
+  const [basePriceUsd, setBasePriceUsd] = useState(19);
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; amount: number } | null>(null);
+  const [discountError, setDiscountError] = useState('');
+  const [checkingCode, setCheckingCode] = useState(false);
 
+  // Fetch base price from DB
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
+      if (data) setBasePriceUsd(Number((data as any).base_price_usd));
+    };
+    fetchPrice();
+
+    // Realtime price updates
+    const channel = supabase
+      .channel('pricing-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pricing_config' }, (payload: any) => {
+        if (payload.new?.base_price_usd) setBasePriceUsd(Number(payload.new.base_price_usd));
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  // Fetch geo pricing
   useEffect(() => {
     supabase.functions.invoke('get-geo-pricing').then(({ data }) => {
       if (data) setGeoPricing(data);
     }).catch(() => {});
   }, []);
 
+  // Calculate final price
+  const finalPriceUsd = appliedDiscount
+    ? appliedDiscount.percent > 0
+      ? basePriceUsd * (1 - appliedDiscount.percent / 100)
+      : Math.max(0, basePriceUsd - appliedDiscount.amount)
+    : basePriceUsd;
+
+  const geoRate = geoPricing && geoPricing.currency !== 'USD' ? Number(geoPricing.localPrice) / geoPricing.usdPrice : 1;
   const displayPrice = geoPricing && geoPricing.currency !== 'USD'
-    ? `${geoPricing.symbol}${geoPricing.localPrice}`
-    : '$19';
+    ? `${geoPricing.symbol}${Math.round(finalPriceUsd * geoRate)}`
+    : `$${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)}`;
   const isLocalCurrency = geoPricing && geoPricing.currency !== 'USD';
+
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) return;
+    setCheckingCode(true);
+    setDiscountError('');
+    const { data, error } = await supabase
+      .from('discount_codes')
+      .select('*')
+      .eq('code', discountCode.trim().toUpperCase())
+      .eq('is_active', true)
+      .limit(1)
+      .single();
+
+    setCheckingCode(false);
+    if (error || !data) {
+      setDiscountError('Invalid or expired code');
+      setAppliedDiscount(null);
+      return;
+    }
+    const d = data as any;
+    if (d.expires_at && new Date(d.expires_at) < new Date()) {
+      setDiscountError('This code has expired');
+      setAppliedDiscount(null);
+      return;
+    }
+    if (d.max_uses !== null && d.current_uses >= d.max_uses) {
+      setDiscountError('This code has reached its max uses');
+      setAppliedDiscount(null);
+      return;
+    }
+    setAppliedDiscount({ code: d.code, percent: d.discount_percent, amount: Number(d.discount_amount) });
+    setDiscountError('');
+  };
+
+  const removeDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    setDiscountError('');
+  };
 
   const particles = useMemo(
     () =>
@@ -423,11 +495,31 @@ const Pricing = () => {
 
               {/* Price */}
               <div className="text-center mb-3">
-                <div className="flex items-baseline justify-center gap-1.5">
+                <div className="flex items-baseline justify-center gap-2">
+                  {appliedDiscount && (
+                    <span className="text-2xl font-bold text-muted-foreground line-through font-display">
+                      {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
+                    </span>
+                  )}
                   <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
                 </div>
                 {isLocalCurrency && (
-                  <p className="text-xs text-muted-foreground mt-1">≈ $19 USD</p>
+                  <p className="text-xs text-muted-foreground mt-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
+                )}
+                {appliedDiscount && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[hsl(var(--emerald)/0.15)] border border-[hsl(var(--emerald)/0.3)]"
+                  >
+                    <Tag className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                    <span className="text-xs font-semibold text-[hsl(var(--emerald))]">
+                      {appliedDiscount.percent > 0 ? `${appliedDiscount.percent}% off` : `$${appliedDiscount.amount} off`} — {appliedDiscount.code}
+                    </span>
+                    <button onClick={removeDiscount} className="ml-1 hover:text-foreground transition-colors">
+                      <X className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                    </button>
+                  </motion.div>
                 )}
                 {/* Lifetime highlight */}
                 <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
@@ -436,9 +528,33 @@ const Pricing = () => {
                 </div>
               </div>
 
-              <p className="text-muted-foreground text-sm mt-4 mb-8 text-center">
+              <p className="text-muted-foreground text-sm mt-4 mb-6 text-center">
                 Pay once and unlock the entire component library & premium prompts forever. No subscriptions.
               </p>
+
+              {/* Discount Code Input */}
+              {!appliedDiscount && (
+                <div className="mb-8">
+                  <div className="flex gap-2">
+                    <input
+                      value={discountCode}
+                      onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountError(''); }}
+                      placeholder="Discount code"
+                      className="flex-1 px-4 py-2.5 rounded-xl bg-muted/30 border border-border/40 text-foreground text-sm focus:outline-none focus:border-primary/40 transition-all uppercase placeholder:normal-case"
+                    />
+                    <button
+                      onClick={handleApplyDiscount}
+                      disabled={checkingCode || !discountCode.trim()}
+                      className="px-5 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm font-medium hover:bg-muted/70 transition-all disabled:opacity-50"
+                    >
+                      {checkingCode ? '...' : 'Apply'}
+                    </button>
+                  </div>
+                  {discountError && (
+                    <p className="text-xs text-destructive mt-1.5">{discountError}</p>
+                  )}
+                </div>
+              )}
 
               {/* Features */}
               <ul className="space-y-4 mb-10">
