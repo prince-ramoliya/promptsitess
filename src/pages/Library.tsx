@@ -239,7 +239,7 @@ const Library = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute left-0 top-full mt-2 w-52 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-50 p-3 space-y-3"
+                      className="absolute left-0 top-full mt-2 w-52 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-[100] p-3 space-y-3"
                     >
                       <div>
                         <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Sort by</div>
