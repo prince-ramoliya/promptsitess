@@ -424,8 +424,11 @@ const Pricing = () => {
               {/* Price */}
               <div className="text-center mb-3">
                 <div className="flex items-baseline justify-center gap-1.5">
-                  <span className="text-6xl font-extrabold text-foreground font-display">$19</span>
+                  <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
                 </div>
+                {isLocalCurrency && (
+                  <p className="text-xs text-muted-foreground mt-1">≈ $19 USD</p>
+                )}
                 {/* Lifetime highlight */}
                 <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
                   <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
