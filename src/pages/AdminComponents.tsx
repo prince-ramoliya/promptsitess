@@ -55,7 +55,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
