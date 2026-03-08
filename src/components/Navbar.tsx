@@ -39,11 +39,11 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-background/80 backdrop-blur-2xl border-b border-border/30 shadow-[0_1px_20px_-6px_hsl(var(--primary)/0.08)]'
-          : 'bg-transparent border-b border-transparent'
+          ? 'bg-background border-b border-border/30 shadow-[0_1px_20px_-6px_hsl(var(--primary)/0.08)]'
+          : 'bg-background border-b border-border/10'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
