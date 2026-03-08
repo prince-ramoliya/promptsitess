@@ -46,7 +46,7 @@ const Navbar = () => {
           <img src={logo} alt="PromptSites" className="h-7 object-contain" />
         </Link>
 
-        <div className="flex items-center gap-1.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-2 py-2">
+        <div className="flex items-center gap-1.5 bg-card/50 backdrop-blur-2xl border border-border/40 rounded-full px-2 py-2 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)_inset]">
           {navItems.map(({ path, label, icon }) => (
             <Link
               key={path}
