@@ -500,102 +500,119 @@ const Pricing = () => {
 
           {/* Horizontal Plan Card */}
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-            <div className="relative rounded-3xl p-8 md:p-10 bg-gradient-to-br from-[hsl(var(--primary)/0.08)] via-card/60 to-card/40 border-2 border-primary/25 shadow-[0_0_80px_-20px_hsl(var(--primary)/0.25)] backdrop-blur-xl">
+            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[hsl(var(--primary)/0.08)] via-card/60 to-card/40 border-2 border-primary/25 shadow-[0_0_80px_-20px_hsl(var(--primary)/0.25)] backdrop-blur-xl">
               {/* Badge */}
-              <div className="absolute -top-3.5 left-8 md:left-10 badge-pro flex items-center gap-1.5 px-4 py-1.5">
+              <div className="absolute -top-0.5 left-8 md:left-10 badge-pro flex items-center gap-1.5 px-4 py-1.5 rounded-t-none rounded-b-xl z-10">
                 <Crown className="w-3.5 h-3.5" /> Lifetime Access
               </div>
 
-              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-                {/* Left: Price + Discount */}
-                <div className="flex-shrink-0 lg:w-[320px]">
-                  {/* Price */}
-                  <div className="mb-4">
-                    <div className="flex items-baseline gap-2">
-                      {appliedDiscount && (
-                        <span className="text-2xl font-bold text-muted-foreground line-through font-display">
-                          {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
-                        </span>
+              <div className="flex flex-col lg:flex-row">
+                {/* Left: Price + CTA */}
+                <div className="lg:w-[400px] p-8 md:p-10 flex flex-col justify-between">
+                  <div>
+                    {/* Price */}
+                    <div className="mt-6 mb-2">
+                      <div className="flex items-baseline gap-2">
+                        {appliedDiscount && (
+                          <span className="text-2xl font-bold text-muted-foreground line-through font-display">
+                            {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
+                          </span>
+                        )}
+                        <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
+                      </div>
+                      {isLocalCurrency && (
+                        <p className="text-xs text-muted-foreground mt-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
                       )}
-                      <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
+                      {appliedDiscount && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[hsl(var(--emerald)/0.15)] border border-[hsl(var(--emerald)/0.3)]"
+                        >
+                          <Tag className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                          <span className="text-xs font-semibold text-[hsl(var(--emerald))]">
+                            {appliedDiscount.percent > 0 ? `${appliedDiscount.percent}% off` : `$${appliedDiscount.amount} off`} — {appliedDiscount.code}
+                          </span>
+                          <button onClick={removeDiscount} className="ml-1 hover:text-foreground transition-colors">
+                            <X className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                          </button>
+                        </motion.div>
+                      )}
                     </div>
-                    {isLocalCurrency && (
-                      <p className="text-xs text-muted-foreground mt-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
-                    )}
-                    {appliedDiscount && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[hsl(var(--emerald)/0.15)] border border-[hsl(var(--emerald)/0.3)]"
-                      >
-                        <Tag className="w-3 h-3 text-[hsl(var(--emerald))]" />
-                        <span className="text-xs font-semibold text-[hsl(var(--emerald))]">
-                          {appliedDiscount.percent > 0 ? `${appliedDiscount.percent}% off` : `$${appliedDiscount.amount} off`} — {appliedDiscount.code}
-                        </span>
-                        <button onClick={removeDiscount} className="ml-1 hover:text-foreground transition-colors">
-                          <X className="w-3 h-3 text-[hsl(var(--emerald))]" />
-                        </button>
-                      </motion.div>
-                    )}
+
                     {/* Lifetime highlight */}
-                    <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
+                    <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
                       <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
                       <span className="text-sm font-semibold text-[hsl(var(--emerald))]">One-time payment · Lifetime</span>
                     </div>
+
+                    <p className="text-muted-foreground text-sm mb-6">
+                      Pay once and unlock the entire component library & premium prompts forever. No subscriptions.
+                    </p>
                   </div>
 
-                  <p className="text-muted-foreground text-sm mb-5">
-                    Pay once and unlock the entire component library & premium prompts forever.
-                  </p>
-
-                  {/* Discount Code Input */}
-                  {!appliedDiscount && (
-                    <div className="mb-5">
-                      <div className="flex gap-2">
-                        <input
-                          value={discountCode}
-                          onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountError(''); }}
-                          placeholder="Discount code"
-                          className="flex-1 px-4 py-2.5 rounded-xl bg-muted/30 border border-border/40 text-foreground text-sm focus:outline-none focus:border-primary/40 transition-all uppercase placeholder:normal-case"
-                        />
-                        <button
-                          onClick={handleApplyDiscount}
-                          disabled={checkingCode || !discountCode.trim()}
-                          className="px-5 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm font-medium hover:bg-muted/70 transition-all disabled:opacity-50"
-                        >
-                          {checkingCode ? '...' : 'Apply'}
-                        </button>
+                  <div>
+                    {/* Discount Code Input */}
+                    {!appliedDiscount && (
+                      <div className="mb-4">
+                        <div className="flex gap-2">
+                          <input
+                            value={discountCode}
+                            onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountError(''); }}
+                            placeholder="Discount code"
+                            className="flex-1 px-4 py-2.5 rounded-xl bg-muted/30 border border-border/40 text-foreground text-sm focus:outline-none focus:border-primary/40 transition-all uppercase placeholder:normal-case"
+                          />
+                          <button
+                            onClick={handleApplyDiscount}
+                            disabled={checkingCode || !discountCode.trim()}
+                            className="px-5 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm font-medium hover:bg-muted/70 transition-all disabled:opacity-50"
+                          >
+                            {checkingCode ? '...' : 'Apply'}
+                          </button>
+                        </div>
+                        {discountError && (
+                          <p className="text-xs text-destructive mt-1.5">{discountError}</p>
+                        )}
                       </div>
-                      {discountError && (
-                        <p className="text-xs text-destructive mt-1.5">{discountError}</p>
-                      )}
-                    </div>
-                  )}
+                    )}
 
-                  {/* CTA */}
-                  <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-4 rounded-xl font-semibold text-sm">
-                    Get Lifetime Access — {displayPrice}
-                  </Link>
-                  <p className="text-muted-foreground/60 text-xs mt-3">No hidden fees. No recurring charges.</p>
+                    {/* CTA */}
+                    <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-4 rounded-xl font-semibold text-sm">
+                      Get Lifetime Access — {displayPrice}
+                    </Link>
+                    <p className="text-muted-foreground/60 text-xs mt-3 text-center">No hidden fees. No recurring charges.</p>
+                  </div>
                 </div>
 
-                {/* Divider */}
-                <div className="hidden lg:block w-px self-stretch bg-border/30" />
-                <div className="lg:hidden w-full h-px bg-border/30" />
-
-                {/* Right: Features */}
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-foreground mb-5 uppercase tracking-wider">Everything included</h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Right: Features grid filling full height */}
+                <div className="flex-1 bg-muted/10 border-t lg:border-t-0 lg:border-l border-border/20 p-8 md:p-10 flex flex-col justify-center">
+                  <h3 className="text-xs font-semibold text-muted-foreground mb-6 uppercase tracking-widest">Everything included</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {features.map((f) => (
-                      <li key={f} className="flex items-center gap-3 text-sm text-foreground">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 border border-primary/20">
-                          <Check className="w-3 h-3 text-primary" />
+                      <div key={f} className="flex items-start gap-3 p-3 rounded-xl bg-card/40 border border-border/20 hover:border-primary/20 transition-colors">
+                        <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 border border-primary/20 mt-0.5">
+                          <Check className="w-3.5 h-3.5 text-primary" />
                         </div>
-                        {f}
-                      </li>
+                        <span className="text-sm text-foreground font-medium">{f}</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
+
+                  {/* Trust indicators filling bottom space */}
+                  <div className="mt-8 flex flex-wrap items-center gap-4">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Zap className="w-3.5 h-3.5 text-[hsl(var(--yellow))]" />
+                      <span>Instant access</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      <span>Weekly updates</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Crown className="w-3.5 h-3.5 text-[hsl(var(--pink))]" />
+                      <span>7-day money-back guarantee</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
