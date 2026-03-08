@@ -245,7 +245,7 @@ const Library = () => {
                     
                     <span className="flex items-center gap-2.5 truncate text-primary-foreground">
                       {cat.name}
-                      {cat.is_pro && <Crown className="w-3.5 h-3.5 text-[hsl(var(--yellow))] flex-shrink-0" />}
+                      {cat.is_pro && <span className="flex-shrink-0 flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]"><Crown className="w-3 h-3" />PRO</span>}
                       {isLocked && <Lock className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />}
                     </span>
                     <span className="text-xs text-muted-foreground/60 tabular-nums">{count}</span>
@@ -297,7 +297,7 @@ const Library = () => {
                     }>
                     
                     {cat.name}
-                    {cat.is_pro && <Crown className="w-3 h-3 text-[hsl(var(--yellow))]" />}
+                    {cat.is_pro && <span className="flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]"><Crown className="w-2.5 h-2.5" />PRO</span>}
                     {isLocked && <Lock className="w-2.5 h-2.5" />}
                   </button>);
 
