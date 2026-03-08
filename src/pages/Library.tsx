@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
 
 interface Category {id: string;name: string;slug: string;is_pro: boolean;}
-interface ComponentWithCategory {
+interface ComponentData {
   id: string;
   title: string;
   preview_url: string | null;
@@ -18,7 +18,9 @@ interface ComponentWithCategory {
   secret_prompt: string;
   is_pro: boolean;
   created_at: string;
-  categories: {name: string;slug: string;is_pro: boolean;} | null;
+  categorySlugs: string[];
+  categoryNames: string[];
+  categoryIsPro: boolean;
 }
 
 type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
