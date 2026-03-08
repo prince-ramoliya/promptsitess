@@ -42,6 +42,8 @@ const Library = () => {
   const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null);
+  const sidebarScrollRef = useRef<HTMLDivElement>(null);
+  const [sidebarScrolled, setSidebarScrolled] = useState(false);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
