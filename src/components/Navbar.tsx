@@ -4,8 +4,6 @@ import { Menu, X, Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/assets/logo.png';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
