@@ -388,8 +388,8 @@ const Library = () => {
         {/* Main Content */}
         <main className="flex-1 p-6 lg:p-10 bg-background">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-foreground font-display tracking-tight mb-2">
-              Component <span className="gradient-text">Library</span>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-2">
+              <span style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Component</span> <span className="gradient-text" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Library</span>
             </h1>
             <p className="text-muted-foreground text-sm">
               Browse {components.length} premium UI components with ready-to-use AI prompts.
