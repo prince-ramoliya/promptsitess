@@ -27,7 +27,7 @@ interface ComponentData {
 
 type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
 type FilterMode = 'all' | 'pro' | 'free';
-type DiscoverTab = 'featured' | 'newest' | 'bookmarks' | 'trending';
+type DiscoverTab = 'all' | 'featured' | 'newest' | 'bookmarks' | 'trending';
 
 const Library = () => {
   const { user } = useAuth();
@@ -39,7 +39,7 @@ const Library = () => {
   const [sortMode, setSortMode] = useState<SortMode>('newest');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [showFilters, setShowFilters] = useState(false);
-  const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('featured');
+  const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -131,7 +131,7 @@ const Library = () => {
       return;
     }
     setSelectedCategory(cat.slug);
-    setDiscoverTab('featured'); // reset discover tab when selecting category
+    setDiscoverTab('all'); // reset discover tab when selecting category
   };
 
   const handleDiscoverTab = (tab: DiscoverTab) => {
@@ -150,6 +150,7 @@ const Library = () => {
         filterMode === 'pro' ? isEffectivelyPro(c) :
         !isEffectivelyPro(c);
       const matchDiscover = 
+        discoverTab === 'all' ? true :
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
         discoverTab === 'featured' ? (c as any).is_featured === true :
         discoverTab === 'trending' ? (c as any).is_trending === true :
@@ -184,7 +185,8 @@ const Library = () => {
   ];
 
   const discoverItems: { tab: DiscoverTab; label: string; icon: typeof Sparkles }[] = [
-    { tab: 'featured', label: 'Featured', icon: Sparkles },
+    { tab: 'all', label: 'All', icon: Sparkles },
+    { tab: 'featured', label: 'Featured', icon: Star },
     { tab: 'newest', label: 'Newest', icon: Clock },
     { tab: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
     { tab: 'trending', label: 'Trending', icon: TrendingUp },
@@ -471,7 +473,6 @@ const Library = () => {
                     id={comp.id}
                     title={comp.title}
                     previewUrl={comp.preview_url}
-                    categoryNames={comp.categoryNames}
                     secretPrompt={comp.secret_prompt}
                     isPro={isEffectivelyPro(comp)}
                     isBookmarked={bookmarkedIds.has(comp.id)}
