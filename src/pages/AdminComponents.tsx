@@ -332,7 +332,7 @@ const AdminComponents = () => {
       )}
 
       <div className="space-y-2">
-        {components.map(comp => (
+        {filteredComponents.map(comp => (
           <div key={comp.id} className="glass-card px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-8 rounded-lg bg-muted/50 overflow-hidden flex-shrink-0 flex items-center justify-center">
