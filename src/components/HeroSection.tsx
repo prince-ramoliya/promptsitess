@@ -139,7 +139,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 noise-bg pointer-events-none" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-6 flex flex-col items-center text-center gap-5 sm:gap-8 pt-20 sm:pt-32">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-6 flex flex-col items-center text-center gap-4 sm:gap-8 pt-16 sm:pt-32">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -156,7 +156,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold leading-[1.08] tracking-tight max-w-[900px] text-2xl sm:text-5xl lg:text-6xl"
+          className="text-foreground font-extrabold leading-[1.08] tracking-tight max-w-[900px] text-3xl sm:text-5xl lg:text-6xl"
         >
           Steal the Prompts Behind{' '}
           <span className="gradient-text">Beautiful</span>{' '}
@@ -168,7 +168,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-muted-foreground text-sm sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
+          className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
         >
           Browse premium UI components and copy the exact AI prompts used to build them.
           Paste into Lovable, Cursor, or Bolt to generate instantly.
