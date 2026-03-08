@@ -129,3 +129,9 @@ const ComponentGallery = () => {
             <p className="text-muted-foreground text-sm">No components found. Check back soon!</p>
           </motion.div>
         )}
+      </div>
+    </section>
+  );
+};
+
+export default ComponentGallery;
