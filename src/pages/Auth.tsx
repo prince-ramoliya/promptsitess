@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 import { z } from 'zod';
 import logo from '@/assets/logo.png';
+import { lovable } from '@/integrations/lovable/index';
 
 const emailSchema = z.string().trim().email('Invalid email').max(255);
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(128);
