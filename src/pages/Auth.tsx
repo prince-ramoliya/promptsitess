@@ -60,7 +60,7 @@ const Auth = () => {
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
               <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground font-display tracking-tight">PromptLab</span>
+            <span className="font-bold text-foreground font-display tracking-tight">PromptSites</span>
           </div>
           
           <h2 className="text-2xl font-bold text-foreground mb-1 font-display">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
