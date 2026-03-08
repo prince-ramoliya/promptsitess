@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown, TrendingUp, Flame, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
@@ -145,6 +145,9 @@ const Library = () => {
 
           {/* Quick Filters */}
           <div className="px-3 pt-4 pb-2 space-y-0.5">
+            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
+              Discover
+            </div>
             <button
               onClick={() => { setSortMode('newest'); setSelectedCategory(null); setFilterMode('all'); }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
@@ -158,10 +161,31 @@ const Library = () => {
             </button>
             <button
               onClick={() => { setSortMode('newest'); setSelectedCategory(null); setFilterMode('all'); }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all text-muted-foreground hover:text-foreground hover:bg-muted/20`}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all text-muted-foreground hover:text-foreground hover:bg-muted/20"
             >
               <Clock className="w-4 h-4" />
               Newest
+            </button>
+            <button
+              onClick={() => { setSortMode('newest'); setSelectedCategory(null); setFilterMode('all'); }}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all text-muted-foreground hover:text-foreground hover:bg-muted/20"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Trending
+            </button>
+            <button
+              onClick={() => { setSortMode('newest'); setSelectedCategory(null); setFilterMode('all'); }}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all text-muted-foreground hover:text-foreground hover:bg-muted/20"
+            >
+              <Flame className="w-4 h-4" />
+              Most Popular
+            </button>
+            <button
+              onClick={() => { setSortMode('newest'); setSelectedCategory(null); setFilterMode('all'); }}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all text-muted-foreground hover:text-foreground hover:bg-muted/20"
+            >
+              <Eye className="w-4 h-4" />
+              Most Viewed
             </button>
           </div>
 
