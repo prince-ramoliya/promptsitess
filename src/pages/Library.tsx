@@ -47,12 +47,32 @@ const Library = () => {
   }, []);
 
   const fetchData = async () => {
-    const [compsRes, catsRes] = await Promise.all([
-    supabase.from('components').select('*, categories(name, slug, is_pro)'),
-    supabase.from('categories').select('*')]
-    );
-    if (compsRes.data) setComponents(compsRes.data as any);
-    if (catsRes.data) setCategories(catsRes.data as any);
+    const [compsRes, catsRes, compCatsRes] = await Promise.all([
+      supabase.from('components').select('*'),
+      supabase.from('categories').select('*'),
+      supabase.from('component_categories').select('component_id, category_id'),
+    ]);
+    const catsData = (catsRes.data || []) as Category[];
+    const catMap = new Map(catsData.map(c => [c.id, c]));
+    const compCatMap = new Map<string, string[]>();
+    (compCatsRes.data || []).forEach((cc: any) => {
+      const arr = compCatMap.get(cc.component_id) || [];
+      arr.push(cc.category_id);
+      compCatMap.set(cc.component_id, arr);
+    });
+    if (compsRes.data) {
+      setComponents(compsRes.data.map((c: any) => {
+        const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
+        const cats = catIds.map(id => catMap.get(id)).filter(Boolean) as Category[];
+        return {
+          ...c,
+          categorySlugs: cats.map(cat => cat.slug),
+          categoryNames: cats.map(cat => cat.name),
+          categoryIsPro: cats.some(cat => cat.is_pro),
+        };
+      }));
+    }
+    setCategories(catsData);
     setLoading(false);
   };
 
