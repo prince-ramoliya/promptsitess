@@ -150,6 +150,7 @@ const Library = () => {
         filterMode === 'pro' ? isEffectivelyPro(c) :
         !isEffectivelyPro(c);
       const matchDiscover = 
+        discoverTab === 'all' ? true :
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
         discoverTab === 'featured' ? (c as any).is_featured === true :
         discoverTab === 'trending' ? (c as any).is_trending === true :
