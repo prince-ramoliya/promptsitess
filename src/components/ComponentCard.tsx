@@ -126,7 +126,6 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
                    <Lock className="w-5 h-5 text-primary" />
                    <span className="text-xs text-foreground font-medium">Pro Locked</span>
                  </motion.div>
-                 </motion.div>
                )}
             </motion.div>
           )}
