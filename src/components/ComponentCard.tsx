@@ -94,13 +94,6 @@ const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }:
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Pro badge */}
-        {isPro && (
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 text-[11px] font-extrabold tracking-widest px-3 py-1.5 rounded-full bg-[hsl(var(--yellow))] text-background ring-2 ring-[hsl(var(--yellow))]/40 shadow-[0_0_24px_-4px_hsl(var(--yellow)/0.75)] animate-glow-pulse">
-            <Crown className="w-3.5 h-3.5" /> PRO
-          </div>
-        )}
       </div>
 
       {/* Card content */}
