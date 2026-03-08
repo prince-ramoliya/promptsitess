@@ -39,14 +39,14 @@ const GridLine = ({ orientation, position, delay }: { orientation: 'h' | 'v'; po
 );
 
 /* Floating icon elements for pricing context */
-const FloatingIcon = ({ icon: Icon, x, y, delay, size = 20 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
+const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
   <motion.div
-    className="absolute flex items-center justify-center w-10 h-10 rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 text-muted-foreground/30"
+    className="absolute flex items-center justify-center w-14 h-14 rounded-2xl bg-card/50 backdrop-blur-md border border-border/30 text-muted-foreground/50 shadow-lg shadow-primary/5"
     style={{ left: x, top: y }}
     animate={{
-      y: [0, -15, 0, 15, 0],
-      rotate: [0, 5, 0, -5, 0],
-      opacity: [0.2, 0.5, 0.2],
+      y: [0, -20, 0, 20, 0],
+      rotate: [0, 8, 0, -8, 0],
+      opacity: [0.3, 0.7, 0.3],
     }}
     transition={{ duration: 8 + delay, delay, repeat: Infinity, ease: 'easeInOut' }}
   >
