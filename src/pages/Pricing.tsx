@@ -145,7 +145,7 @@ const PricingFAQ = () => {
   );
 };
 
-
+const Pricing = () => {
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, (_, i) => ({
