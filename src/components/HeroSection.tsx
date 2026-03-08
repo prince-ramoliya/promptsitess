@@ -145,19 +145,19 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-3 sm:gap-4 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-xl"
+          className="inline-flex items-center gap-3 sm:gap-4 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-xl my-0 mt-[51px]"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           {/* Avatar stack */}
           <div className="flex -space-x-2">
             {[
-              'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
-              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face',
-              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
-              'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
-            ].map((src, i) => (
-              <img key={i} src={src} alt="" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 object-cover" />
-            ))}
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face',
+            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
+            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face'].
+            map((src, i) =>
+            <img key={i} src={src} alt="" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 object-cover" />
+            )}
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-muted/60 flex items-center justify-center text-[10px] sm:text-xs font-bold text-foreground">
               3k+
             </div>
