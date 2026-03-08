@@ -93,7 +93,7 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--emerald))] to-[hsl(var(--cyan))];
   }
   .glow-button {
-    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:scale-[1.02] active:scale-[0.98];
+    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] text-primary-foreground font-semibold rounded-[200px] px-8 py-3 transition-all duration-500 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] active:scale-[0.98];
   }
   .glow-button::after,
   .glow-button-outline::after {

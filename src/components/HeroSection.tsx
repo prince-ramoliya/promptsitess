@@ -192,26 +192,45 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.5 }}
-        className="relative z-10 w-full max-w-[1100px] mx-auto px-4 sm:px-6 mt-12 sm:mt-20 pb-8 sm:pb-10"
+        className="relative z-10 w-full max-w-[1100px] mx-auto px-4 sm:px-6 mt-8 sm:mt-20 pb-8 sm:pb-10"
       >
-        <div className="bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-4 sm:p-8 shadow-2xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+        {/* Desktop: glass card grid */}
+        <div className="hidden sm:block bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-8 shadow-2xl">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {platformFeatures.map((feature, i) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                className="flex flex-col gap-2 sm:gap-3 text-left"
+                className="flex flex-col gap-3 text-left"
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-xs sm:text-sm">{feature.title}</h3>
-                <p className="text-muted-foreground text-[11px] sm:text-sm leading-relaxed hidden sm:block">{feature.description}</p>
+                <h3 className="text-foreground font-semibold text-sm">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile: compact inline chips */}
+        <div className="sm:hidden flex flex-wrap justify-center gap-3">
+          {platformFeatures.map((feature, i) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
+              className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-card/40 backdrop-blur-md border border-border/30"
+            >
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                {feature.icon}
+              </div>
+              <span className="text-foreground text-xs font-medium">{feature.title}</span>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </section>
