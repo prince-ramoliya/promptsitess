@@ -160,12 +160,40 @@ const Pricing = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background smooth-scroll">
+    <div className="min-h-screen bg-background smooth-scroll relative overflow-hidden">
       <Navbar />
 
-      {/* Animated Background */}
+      {/* === Animated linear gradient background === */}
+      <div className="fixed inset-0 pointer-events-none -z-20">
+        {/* Cycling linear gradient that shifts hue */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              'linear-gradient(135deg, hsl(var(--cyan) / 0.12) 0%, hsl(var(--pink) / 0.08) 50%, hsl(var(--yellow) / 0.06) 100%)',
+              'linear-gradient(135deg, hsl(var(--yellow) / 0.10) 0%, hsl(var(--emerald) / 0.10) 50%, hsl(var(--cyan) / 0.08) 100%)',
+              'linear-gradient(135deg, hsl(var(--pink) / 0.10) 0%, hsl(var(--cyan) / 0.08) 50%, hsl(var(--emerald) / 0.06) 100%)',
+              'linear-gradient(135deg, hsl(var(--emerald) / 0.08) 0%, hsl(var(--yellow) / 0.10) 50%, hsl(var(--pink) / 0.08) 100%)',
+              'linear-gradient(135deg, hsl(var(--cyan) / 0.12) 0%, hsl(var(--pink) / 0.08) 50%, hsl(var(--yellow) / 0.06) 100%)',
+            ],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* Diagonal animated gradient band */}
+        <motion.div
+          className="absolute -inset-[50%] opacity-30"
+          style={{
+            background: 'conic-gradient(from 0deg at 50% 50%, hsl(var(--cyan) / 0.2), hsl(var(--pink) / 0.15), hsl(var(--yellow) / 0.15), hsl(var(--emerald) / 0.15), hsl(var(--cyan) / 0.2))',
+          }}
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+        />
+      </div>
+
+      {/* === Foreground background elements === */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Gradient mesh background */}
+        {/* Gradient mesh */}
         <div className="absolute inset-0">
           <motion.div
             className="absolute inset-0"
@@ -196,19 +224,44 @@ const Pricing = () => {
 
         {/* Animated gradient streaks */}
         <motion.div
-          className="absolute w-[600px] h-[2px] top-[35%] -left-20 bg-gradient-to-r from-transparent via-[hsl(var(--cyan)/0.3)] to-transparent blur-sm"
-          animate={{ x: ['-100%', '200%'] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-        />
-        <motion.div
-          className="absolute w-[500px] h-[2px] top-[65%] -right-20 bg-gradient-to-r from-transparent via-[hsl(var(--pink)/0.25)] to-transparent blur-sm"
-          animate={{ x: ['200%', '-100%'] }}
-          transition={{ duration: 7, delay: 2, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
-        />
-        <motion.div
-          className="absolute w-[400px] h-[2px] top-[50%] -left-10 bg-gradient-to-r from-transparent via-[hsl(var(--yellow)/0.2)] to-transparent blur-sm"
+          className="absolute w-[800px] h-[3px] top-[30%] -left-20 bg-gradient-to-r from-transparent via-[hsl(var(--cyan)/0.4)] to-transparent blur-[2px]"
           animate={{ x: ['-100%', '250%'] }}
-          transition={{ duration: 8, delay: 4, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
+        />
+        <motion.div
+          className="absolute w-[600px] h-[3px] top-[55%] -right-20 bg-gradient-to-r from-transparent via-[hsl(var(--pink)/0.35)] to-transparent blur-[2px]"
+          animate={{ x: ['250%', '-100%'] }}
+          transition={{ duration: 6, delay: 2, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+        />
+        <motion.div
+          className="absolute w-[500px] h-[3px] top-[75%] -left-10 bg-gradient-to-r from-transparent via-[hsl(var(--yellow)/0.3)] to-transparent blur-[2px]"
+          animate={{ x: ['-100%', '300%'] }}
+          transition={{ duration: 7, delay: 4, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
+        />
+        <motion.div
+          className="absolute w-[700px] h-[3px] top-[42%] -right-10 bg-gradient-to-r from-transparent via-[hsl(var(--emerald)/0.3)] to-transparent blur-[2px]"
+          animate={{ x: ['200%', '-150%'] }}
+          transition={{ duration: 8, delay: 1, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+        />
+
+        {/* Glowing diamond shapes */}
+        <motion.div
+          className="absolute w-32 h-32 border border-primary/10 rotate-45 rounded-lg"
+          style={{ left: '5%', top: '40%' }}
+          animate={{ rotate: [45, 135, 45], opacity: [0.2, 0.5, 0.2], scale: [1, 1.1, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-24 h-24 border border-[hsl(var(--pink)/0.15)] rotate-45 rounded-lg"
+          style={{ right: '8%', top: '55%' }}
+          animate={{ rotate: [45, -45, 45], opacity: [0.15, 0.4, 0.15], scale: [1, 1.15, 1] }}
+          transition={{ duration: 12, delay: 3, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-20 h-20 border border-[hsl(var(--yellow)/0.12)] rotate-45 rounded-lg"
+          style={{ left: '50%', top: '20%' }}
+          animate={{ rotate: [45, 225, 45], opacity: [0.1, 0.35, 0.1] }}
+          transition={{ duration: 14, delay: 1, repeat: Infinity, ease: 'easeInOut' }}
         />
 
         {/* Floating orbs */}
