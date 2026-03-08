@@ -1,1 +1,4 @@
 project_id = "worqcihvtnumblqlaiez"
+
+[functions.get-geo-pricing]
+verify_jwt = false

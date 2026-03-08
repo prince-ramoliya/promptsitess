@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { supabase } from '@/integrations/supabase/client';
+
+interface GeoPricing {
+  country: string;
+  currency: string;
+  symbol: string;
+  localPrice: string;
+  usdPrice: number;
+}
 
 const features = [
   'Full library access',
@@ -146,6 +155,19 @@ const PricingFAQ = () => {
 };
 
 const Pricing = () => {
+  const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(null);
+
+  useEffect(() => {
+    supabase.functions.invoke('get-geo-pricing').then(({ data }) => {
+      if (data) setGeoPricing(data);
+    }).catch(() => {});
+  }, []);
+
+  const displayPrice = geoPricing && geoPricing.currency !== 'USD'
+    ? `${geoPricing.symbol}${geoPricing.localPrice}`
+    : '$19';
+  const isLocalCurrency = geoPricing && geoPricing.currency !== 'USD';
+
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, (_, i) => ({
@@ -402,8 +424,11 @@ const Pricing = () => {
               {/* Price */}
               <div className="text-center mb-3">
                 <div className="flex items-baseline justify-center gap-1.5">
-                  <span className="text-6xl font-extrabold text-foreground font-display">$19</span>
+                  <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
                 </div>
+                {isLocalCurrency && (
+                  <p className="text-xs text-muted-foreground mt-1">≈ $19 USD</p>
+                )}
                 {/* Lifetime highlight */}
                 <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
                   <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
@@ -429,7 +454,7 @@ const Pricing = () => {
 
               {/* CTA */}
               <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-4 rounded-xl font-semibold text-sm">
-                Get Lifetime Access — $19
+                Get Lifetime Access — {displayPrice}
               </Link>
 
               {/* Subtle note */}
