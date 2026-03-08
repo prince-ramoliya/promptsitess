@@ -28,7 +28,7 @@ type FilterMode = 'all' | 'pro' | 'free';
 
 const Library = () => {
   const { user } = useAuth();
-  const [components, setComponents] = useState<ComponentWithCategory[]>([]);
+  const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
