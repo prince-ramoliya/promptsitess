@@ -145,7 +145,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 text-[11px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground">
+          className="inline-flex items-center gap-2 text-[11px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground"
+          style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           Premium UI Prompts for AI Tools
@@ -156,7 +157,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[26px] sm:text-5xl font-display lg:text-6xl">
+          className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[26px] sm:text-5xl font-display lg:text-6xl"
+          style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           Steal the Prompts{' '}
           <br className="sm:hidden" />
@@ -169,7 +171,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0">
+          className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
+          style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           Browse premium UI components and copy the exact AI prompts used to build them.
           Paste into Lovable, Cursor, or Bolt to generate instantly.
@@ -182,8 +185,8 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           
-          <a href="#gallery" className="glow-button glow-button-animated flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
-            Browse Components <ArrowRight className="w-4 h-4" />
+           <a href="#gallery" className="glow-button glow-button-animated flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
+             Browse Components <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
       </div>
@@ -209,8 +212,8 @@ const HeroSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-sm">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-foreground font-semibold text-sm" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>{feature.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>{feature.description}</p>
               </motion.div>
             )}
           </div>
@@ -229,7 +232,7 @@ const HeroSection = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                 {feature.icon}
               </div>
-              <span className="text-foreground text-xs font-medium">{feature.title}</span>
+              <span className="text-foreground text-xs font-medium" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>{feature.title}</span>
             </motion.div>
           )}
         </div>
