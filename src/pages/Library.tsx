@@ -107,7 +107,7 @@ const Library = () => {
   filter((c) => {
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase()) ||
     c.tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()));
-    const matchCat = !selectedCategory || c.categories?.slug === selectedCategory;
+    const matchCat = !selectedCategory || c.categorySlugs.includes(selectedCategory);
     const matchFilter = filterMode === 'all' ? true :
     filterMode === 'pro' ? isEffectivelyPro(c) :
     !isEffectivelyPro(c);
