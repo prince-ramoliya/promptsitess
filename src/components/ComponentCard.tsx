@@ -1,37 +1,35 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Lock, Crown, Sparkles } from 'lucide-react';
+import { Copy, Check, Lock, Crown, Sparkles, Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from '@/components/AuthModal';
 
 interface ComponentCardProps {
+  id?: string;
   title: string;
   previewUrl: string | null;
   categoryName?: string;
   categoryNames?: string[];
   secretPrompt: string;
   isPro: boolean;
+  isBookmarked?: boolean;
+  onToggleBookmark?: (componentId: string) => void;
 }
 
-const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretPrompt, isPro }: ComponentCardProps) => {
+const ComponentCard = ({ id, title, previewUrl, categoryName, categoryNames, secretPrompt, isPro, isBookmarked, onToggleBookmark }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  // TODO: Replace with real premium check when subscription is added
   const isPremiumUser = false;
   const canCopy = !isPro || isPremiumUser;
 
   const handleCopy = async () => {
     if (!user) {
       setShowAuthModal(true);
-      return;
-    }
-    if (!canCopy) {
-      toast.error('Upgrade to Pro to access this prompt');
       return;
     }
     if (!canCopy) {
@@ -45,6 +43,17 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error('Failed to copy');
+    }
+  };
+
+  const handleBookmark = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    if (id && onToggleBookmark) {
+      onToggleBookmark(id);
     }
   };
 
@@ -70,6 +79,18 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
             <Sparkles className="w-8 h-8 text-muted-foreground/30" />
           </div>
         )}
+
+        {/* Bookmark button - always visible on hover */}
+        <button
+          onClick={handleBookmark}
+          className={`absolute top-3 right-3 z-20 p-2 rounded-xl backdrop-blur-md transition-all duration-300 ${
+            isBookmarked
+              ? 'bg-primary/20 border border-primary/40 text-primary'
+              : 'bg-background/60 border border-border/30 text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-primary hover:border-primary/40'
+          }`}
+        >
+          <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-primary' : ''}`} />
+        </button>
 
         {/* Hover overlay */}
         <AnimatePresence>

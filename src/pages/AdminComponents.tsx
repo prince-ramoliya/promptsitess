@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, Star } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -12,6 +12,7 @@ interface Component {
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
+  is_featured: boolean;
   categoryIds?: string[];
 }
 
@@ -28,6 +29,7 @@ const AdminComponents = () => {
   const [tagsStr, setTagsStr] = useState('');
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
+  const [isFeatured, setIsFeatured] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,7 +51,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
@@ -57,43 +59,24 @@ const AdminComponents = () => {
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsFeatured(false);
     setEditing(null); setShowForm(false);
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const isImage = file.type.startsWith('image/');
     const isVideo = file.type.startsWith('video/');
-    if (!isImage && !isVideo) {
-      toast.error('Please upload an image or video file');
-      return;
-    }
-    if (file.size > 20 * 1024 * 1024) {
-      toast.error('File must be under 20MB');
-      return;
-    }
+    if (!isImage && !isVideo) { toast.error('Please upload an image or video file'); return; }
+    if (file.size > 20 * 1024 * 1024) { toast.error('File must be under 20MB'); return; }
 
     setUploading(true);
     const ext = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-    const { error } = await supabase.storage
-      .from('component-previews')
-      .upload(fileName, file, { contentType: file.type });
-
-    if (error) {
-      toast.error('Upload failed: ' + error.message);
-      setUploading(false);
-      return;
-    }
-
-    const { data: urlData } = supabase.storage
-      .from('component-previews')
-      .getPublicUrl(fileName);
-
+    const { error } = await supabase.storage.from('component-previews').upload(fileName, file, { contentType: file.type });
+    if (error) { toast.error('Upload failed: ' + error.message); setUploading(false); return; }
+    const { data: urlData } = supabase.storage.from('component-previews').getPublicUrl(fileName);
     setPreviewUrl(urlData.publicUrl);
     setUploading(false);
     toast.success('File uploaded!');
@@ -109,6 +92,7 @@ const AdminComponents = () => {
       tags,
       secret_prompt: secretPrompt,
       is_pro: isPro,
+      is_featured: isFeatured,
     };
 
     let componentId: string;
@@ -116,7 +100,6 @@ const AdminComponents = () => {
       const { error } = await supabase.from('components').update(payload).eq('id', editing.id);
       if (error) { toast.error(error.message); return; }
       componentId = editing.id;
-      // Clear old category associations
       await supabase.from('component_categories').delete().eq('component_id', editing.id);
     } else {
       const { data, error } = await supabase.from('components').insert(payload).select('id').single();
@@ -124,7 +107,6 @@ const AdminComponents = () => {
       componentId = data.id;
     }
 
-    // Insert new category associations
     if (selectedCategoryIds.length > 0) {
       const rows = selectedCategoryIds.map(catId => ({ component_id: componentId, category_id: catId }));
       await supabase.from('component_categories').insert(rows);
@@ -142,6 +124,13 @@ const AdminComponents = () => {
     fetchData();
   };
 
+  const toggleFeatured = async (comp: Component) => {
+    const { error } = await supabase.from('components').update({ is_featured: !comp.is_featured }).eq('id', comp.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(comp.is_featured ? 'Removed from featured' : 'Added to featured');
+    fetchData();
+  };
+
   const startEdit = (comp: Component) => {
     setEditing(comp);
     setTitle(comp.title);
@@ -150,6 +139,7 @@ const AdminComponents = () => {
     setTagsStr(comp.tags?.join(', ') || '');
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
+    setIsFeatured(comp.is_featured);
     setShowForm(true);
   };
 
@@ -159,7 +149,7 @@ const AdminComponents = () => {
     return components.filter(comp => {
       const matchesSearch = !searchQuery || comp.title.toLowerCase().includes(searchQuery.toLowerCase()) || comp.secret_prompt.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
-      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
+      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : filterProStatus === 'featured' ? comp.is_featured : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
@@ -200,6 +190,7 @@ const AdminComponents = () => {
           <option value="all">All Types</option>
           <option value="pro">Pro Only</option>
           <option value="free">Free Only</option>
+          <option value="featured">Featured Only</option>
         </select>
         <span className="text-xs text-muted-foreground">{filteredComponents.length} of {components.length}</span>
       </div>
@@ -237,11 +228,7 @@ const AdminComponents = () => {
                   {categories.map(c => (
                     <div
                       key={c.id}
-                      onClick={() => {
-                        setSelectedCategoryIds(prev =>
-                          prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id]
-                        );
-                      }}
+                      onClick={() => setSelectedCategoryIds(prev => prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id])}
                       className="flex items-center gap-2 px-4 py-2 hover:bg-muted/50 cursor-pointer text-sm text-foreground"
                     >
                       <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedCategoryIds.includes(c.id) ? 'bg-primary border-primary' : 'border-border'}`}>
@@ -258,7 +245,6 @@ const AdminComponents = () => {
             <div className="md:col-span-2">
               <label className="text-xs text-muted-foreground mb-2 block">Preview Image / Video</label>
               <div className="flex items-start gap-4">
-                {/* Upload area */}
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   className="w-48 h-32 rounded-xl border-2 border-dashed border-border/60 hover:border-primary/50 bg-muted/20 flex flex-col items-center justify-center cursor-pointer transition-colors group"
@@ -272,16 +258,8 @@ const AdminComponents = () => {
                       <span className="text-[9px] text-muted-foreground/60 mt-0.5">Image or Video (max 20MB)</span>
                     </>
                   )}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*,video/*"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
+                  <input ref={fileInputRef} type="file" accept="image/*,video/*" onChange={handleFileUpload} className="hidden" />
                 </div>
-
-                {/* Preview */}
                 {previewUrl && (
                   <div className="relative w-48 h-32 rounded-xl overflow-hidden border border-border/40 bg-muted/20">
                     {isVideo(previewUrl) ? (
@@ -289,16 +267,11 @@ const AdminComponents = () => {
                     ) : (
                       <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
                     )}
-                    <button
-                      onClick={() => setPreviewUrl('')}
-                      className="absolute top-1 right-1 w-5 h-5 rounded-full bg-background/80 flex items-center justify-center"
-                    >
+                    <button onClick={() => setPreviewUrl('')} className="absolute top-1 right-1 w-5 h-5 rounded-full bg-background/80 flex items-center justify-center">
                       <X className="w-3 h-3 text-foreground" />
                     </button>
                   </div>
                 )}
-
-                {/* Or URL */}
                 <div className="flex-1">
                   <label className="text-[10px] text-muted-foreground mb-1 block">Or paste URL</label>
                   <input value={previewUrl} onChange={e => setPreviewUrl(e.target.value)} placeholder="https://..." className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" />
@@ -310,15 +283,27 @@ const AdminComponents = () => {
               <label className="text-xs text-muted-foreground mb-1 block">Tags (comma separated)</label>
               <input value={tagsStr} onChange={e => setTagsStr(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50" placeholder="hero, landing, dark" />
             </div>
-            <div className="flex items-center gap-3">
-              <label className="text-sm text-muted-foreground">Pro Only</label>
-              <button
-                type="button"
-                onClick={() => setIsPro(!isPro)}
-                className={`w-10 h-6 rounded-full transition-colors ${isPro ? 'bg-primary' : 'bg-muted'} relative`}
-              >
-                <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isPro ? 'left-[18px]' : 'left-0.5'}`} />
-              </button>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-muted-foreground">Pro Only</label>
+                <button
+                  type="button"
+                  onClick={() => setIsPro(!isPro)}
+                  className={`w-10 h-6 rounded-full transition-colors ${isPro ? 'bg-primary' : 'bg-muted'} relative`}
+                >
+                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isPro ? 'left-[18px]' : 'left-0.5'}`} />
+                </button>
+              </div>
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-muted-foreground">Featured</label>
+                <button
+                  type="button"
+                  onClick={() => setIsFeatured(!isFeatured)}
+                  className={`w-10 h-6 rounded-full transition-colors ${isFeatured ? 'bg-[hsl(var(--yellow))]' : 'bg-muted'} relative`}
+                >
+                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
+                </button>
+              </div>
             </div>
             <div className="md:col-span-2">
               <label className="text-xs text-muted-foreground mb-1 block">Secret Prompt *</label>
@@ -346,12 +331,24 @@ const AdminComponents = () => {
                   <Image className="w-4 h-4 text-muted-foreground/40" />
                 )}
               </div>
-              <div>
+              <div className="flex items-center gap-2">
                 <span className="font-medium text-foreground text-sm">{comp.title}</span>
-                {comp.is_pro && <span className="badge-pro text-[10px] ml-2">PRO</span>}
+                {comp.is_pro && <span className="badge-pro text-[10px]">PRO</span>}
+                {comp.is_featured && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--yellow))]/15 text-[hsl(var(--yellow))] border border-[hsl(var(--yellow))]/20">
+                    ★ FEATURED
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={() => toggleFeatured(comp)}
+                className={`p-2 rounded-lg transition-colors ${comp.is_featured ? 'bg-[hsl(var(--yellow))]/10 text-[hsl(var(--yellow))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
+                title={comp.is_featured ? 'Remove from featured' : 'Add to featured'}
+              >
+                <Star className={`w-4 h-4 ${comp.is_featured ? 'fill-current' : ''}`} />
+              </button>
               <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
                 <Pencil className="w-4 h-4 text-muted-foreground" />
               </button>
