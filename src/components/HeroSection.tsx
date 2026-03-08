@@ -63,7 +63,7 @@ const HeroSection = () => {
   );
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background" style={{ fontFamily: "'Syne', sans-serif" }}>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
       {/* Background Video */}
       <video
         autoPlay

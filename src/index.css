@@ -67,10 +67,10 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Syne', system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Syne', system-ui, sans-serif;
   }
   .smooth-scroll {
     scroll-behavior: smooth;
