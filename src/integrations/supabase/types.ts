@@ -106,7 +106,9 @@ export type Database = {
           created_at: string
           id: string
           is_featured: boolean
+          is_newest: boolean
           is_pro: boolean
+          is_trending: boolean
           preview_url: string | null
           secret_prompt: string
           tags: string[] | null
@@ -117,7 +119,9 @@ export type Database = {
           created_at?: string
           id?: string
           is_featured?: boolean
+          is_newest?: boolean
           is_pro?: boolean
+          is_trending?: boolean
           preview_url?: string | null
           secret_prompt: string
           tags?: string[] | null
@@ -128,7 +132,9 @@ export type Database = {
           created_at?: string
           id?: string
           is_featured?: boolean
+          is_newest?: boolean
           is_pro?: boolean
+          is_trending?: boolean
           preview_url?: string | null
           secret_prompt?: string
           tags?: string[] | null
