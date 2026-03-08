@@ -155,13 +155,53 @@ const AdminComponents = () => {
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
 
+  const filteredComponents = useMemo(() => {
+    return components.filter(comp => {
+      const matchesSearch = !searchQuery || comp.title.toLowerCase().includes(searchQuery.toLowerCase()) || comp.secret_prompt.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
+      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
+      return matchesSearch && matchesCategory && matchesPro;
+    });
+  }, [components, searchQuery, filterCategoryId, filterProStatus]);
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">Components</h1>
         <button onClick={() => { resetForm(); setShowForm(true); }} className="glow-button text-sm !px-5 !py-2 flex items-center gap-2">
           <Plus className="w-4 h-4" /> Add Component
         </button>
+      </div>
+
+      {/* Search & Filter Bar */}
+      <div className="glass-card px-4 py-3 mb-6 flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search components..."
+            className="w-full pl-9 pr-4 py-2 rounded-lg bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50"
+          />
+        </div>
+        <select
+          value={filterCategoryId}
+          onChange={e => setFilterCategoryId(e.target.value)}
+          className="px-3 py-2 rounded-lg bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50"
+        >
+          <option value="all">All Categories</option>
+          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <select
+          value={filterProStatus}
+          onChange={e => setFilterProStatus(e.target.value)}
+          className="px-3 py-2 rounded-lg bg-muted/50 border border-border/50 text-foreground text-sm focus:outline-none focus:border-primary/50"
+        >
+          <option value="all">All Types</option>
+          <option value="pro">Pro Only</option>
+          <option value="free">Free Only</option>
+        </select>
+        <span className="text-xs text-muted-foreground">{filteredComponents.length} of {components.length}</span>
       </div>
 
       {showForm && (
