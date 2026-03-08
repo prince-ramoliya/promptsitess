@@ -151,8 +151,9 @@ const Library = () => {
         !isEffectivelyPro(c);
       const matchDiscover = 
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
-        discoverTab === 'featured' ? true :
-        discoverTab === 'trending' ? true :
+        discoverTab === 'featured' ? (c as any).is_featured === true :
+        discoverTab === 'trending' ? (c as any).is_trending === true :
+        discoverTab === 'newest' ? (c as any).is_newest === true :
         true;
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })

@@ -140,8 +140,20 @@ const ComponentCard = ({ id, title, previewUrl, categoryName, categoryNames, sec
 
       {/* Card content */}
       <div className="p-5 flex items-center justify-between gap-2">
-        <div>
-          <h3 className="font-semibold text-foreground text-sm mb-1 font-display">{title}</h3>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-semibold text-foreground text-sm font-display truncate">{title}</h3>
+            <button
+              onClick={handleBookmark}
+              className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
+                isBookmarked
+                  ? 'text-primary hover:text-primary/80'
+                  : 'text-muted-foreground/40 hover:text-primary'
+              }`}
+            >
+              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-primary' : ''}`} />
+            </button>
+          </div>
           <div className="flex flex-wrap gap-1">
             {categoryNames && categoryNames.length > 0 ? (
               categoryNames.map((name) => (
