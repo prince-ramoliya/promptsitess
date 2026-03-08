@@ -197,21 +197,21 @@ const HeroSection = () => {
         transition={{ duration: 0.7, delay: 0.5 }}
         className="relative z-10 w-full max-w-[1100px] mx-auto px-4 sm:px-6 mt-12 sm:mt-20 pb-8 sm:pb-10"
       >
-        <div className="bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl p-4 sm:p-8 shadow-2xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {platformFeatures.map((feature, i) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                className="flex flex-col gap-3 text-left"
+                className="flex flex-col gap-2 sm:gap-3 text-left"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-sm">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-foreground font-semibold text-xs sm:text-sm">{feature.title}</h3>
+                <p className="text-muted-foreground text-[11px] sm:text-sm leading-relaxed hidden sm:block">{feature.description}</p>
               </motion.div>
             ))}
           </div>
