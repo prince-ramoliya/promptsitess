@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Lock, Crown, Sparkles } from 'lucide-react';
-
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import AuthModal from '@/components/AuthModal';
 
 interface ComponentCardProps {
   title: string;
@@ -17,6 +17,7 @@ interface ComponentCardProps {
 const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretPrompt, isPro }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
@@ -26,12 +27,11 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
 
   const handleCopy = async () => {
     if (!user) {
-      toast.error('Please log in or sign up to copy prompts', {
-        action: {
-          label: 'Sign In',
-          onClick: () => window.location.href = '/auth',
-        },
-      });
+      setShowAuthModal(true);
+      return;
+    }
+    if (!canCopy) {
+      toast.error('Upgrade to Pro to access this prompt');
       return;
     }
     if (!canCopy) {
@@ -49,6 +49,7 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
   };
 
   return (
+    <>
     <motion.div
       className="glass-card-hover group relative overflow-hidden"
       onMouseEnter={() => setHovered(true)}
@@ -137,6 +138,8 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
         )}
       </div>
     </motion.div>
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
+    </>
   );
 };
 
