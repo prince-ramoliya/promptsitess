@@ -150,12 +150,15 @@ const HeroSection = () => {
           
           {/* Avatar stack */}
           <div className="flex -space-x-2">
-            {['👨‍💻', '👩‍🎨', '🧑‍💼', '👩‍💻'].map((emoji, i) => (
-              <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-muted/80 flex items-center justify-center text-xs sm:text-sm">
-                {emoji}
-              </div>
+            {[
+              'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
+            ].map((src, i) => (
+              <img key={i} src={src} alt="" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 object-cover" />
             ))}
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-primary/20 flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-muted/60 flex items-center justify-center text-[10px] sm:text-xs font-bold text-foreground">
               3k+
             </div>
           </div>
