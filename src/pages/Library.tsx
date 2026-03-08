@@ -140,19 +140,61 @@ const Library = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 rounded-lg bg-muted/30 border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-xs" />
-                
               </div>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg border transition-all flex-shrink-0 ${
-                showFilters ?
-                'bg-primary/10 border-primary/40 text-primary' :
-                'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'}`
-                }
-                title="Filters">
-                
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-              </button>
+              <div ref={filterRef} className="relative">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`p-2 rounded-lg border transition-all flex-shrink-0 ${
+                  showFilters ?
+                  'bg-primary/10 border-primary/40 text-primary' :
+                  'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'}`
+                  }
+                  title="Filters">
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                </button>
+                <AnimatePresence>
+                  {showFilters &&
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-2 w-52 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-50 p-3 space-y-3">
+                    <div>
+                      <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Sort by</div>
+                      <div className="space-y-0.5">
+                        {sortOptions.map((opt) =>
+                          <button
+                            key={opt.value}
+                            onClick={() => setSortMode(opt.value)}
+                            className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-colors ${
+                            sortMode === opt.value ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'}`}>
+                            <opt.icon className="w-3.5 h-3.5" />
+                            {opt.label}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="border-t border-border/30 pt-3">
+                      <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Show</div>
+                      <div className="flex gap-1.5">
+                        {filterOptions.map((opt) =>
+                          <button
+                            key={opt.value}
+                            onClick={() => setFilterMode(opt.value)}
+                            className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            filterMode === opt.value ?
+                            'bg-primary text-primary-foreground' :
+                            'bg-muted/30 text-muted-foreground hover:text-foreground'}`}>
+                            {opt.label}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                  }
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 
