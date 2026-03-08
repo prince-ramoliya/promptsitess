@@ -67,7 +67,7 @@ const ComponentGallery = () => {
   const filtered = components.filter(c => {
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase()) ||
       c.tags?.some(t => t.toLowerCase().includes(search.toLowerCase()));
-    const matchCat = selectedCategory === 'all' || c.categories?.slug === selectedCategory;
+    const matchCat = selectedCategory === 'all' || c.categorySlugs.includes(selectedCategory);
     return matchSearch && matchCat;
   });
 
