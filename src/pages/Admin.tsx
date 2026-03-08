@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/Logo';
 
 const Admin = () => {
   const { user, isAdmin, loading, signOut } = useAuth();
