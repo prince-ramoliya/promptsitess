@@ -1,23 +1,32 @@
-import { useTheme } from "next-themes";
 import { Toaster as Sonner, toast } from "sonner";
+import { CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      position="bottom-center"
       className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "group toast group-[.toaster]:rounded-xl group-[.toaster]:px-5 group-[.toaster]:py-3.5 group-[.toaster]:font-semibold group-[.toaster]:text-sm group-[.toaster]:shadow-2xl group-[.toaster]:border-0 group-[.toaster]:min-w-[320px] group-[.toaster]:justify-center",
+          description: "group-[.toast]:text-sm group-[.toast]:opacity-90",
+          actionButton: "group-[.toast]:bg-white/20 group-[.toast]:text-white",
+          cancelButton: "group-[.toast]:bg-white/10 group-[.toast]:text-white/80",
+          success:
+            "group-[.toaster]:!bg-emerald-500 group-[.toaster]:!text-white",
+          error:
+            "group-[.toaster]:!bg-red-500 group-[.toaster]:!text-white",
+          warning:
+            "group-[.toaster]:!bg-orange-500 group-[.toaster]:!text-white",
         },
+      }}
+      icons={{
+        success: <CheckCircle className="w-5 h-5" />,
+        error: <XCircle className="w-5 h-5" />,
+        warning: <AlertTriangle className="w-5 h-5" />,
       }}
       {...props}
     />
