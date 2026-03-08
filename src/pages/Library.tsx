@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown, TrendingUp, Flame, Eye } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
@@ -118,8 +118,8 @@ const Library = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-16 flex min-h-screen">
-        {/* Sidebar — Reference style */}
-        <aside className="w-72 border-r border-border/30 bg-card/30 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] overflow-auto hidden lg:flex flex-col">
+        {/* Sidebar */}
+        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] overflow-auto hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)]">
           {/* Header */}
           <div className="px-5 pt-6 pb-4 border-b border-border/20">
             <div className="flex items-center gap-2 mb-5">
@@ -210,37 +210,14 @@ const Library = () => {
               'bg-muted/50 text-foreground font-medium' :
               'text-muted-foreground hover:text-foreground hover:bg-muted/20'}`
               }>
-              
               <Sparkles className="w-4 h-4" />
               Featured
             </button>
             <button
               onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-muted-foreground hover:text-foreground">
               <Clock className="w-4 h-4" />
               Newest
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <TrendingUp className="w-4 h-4" />
-              Trending
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <Flame className="w-4 h-4" />
-              Most Popular
-            </button>
-            <button
-              onClick={() => {setSortMode('newest');setSelectedCategory(null);setFilterMode('all');}}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-muted/20 text-primary-foreground">
-              
-              <Eye className="w-4 h-4" />
-              Most Viewed
             </button>
           </div>
 
@@ -268,7 +245,7 @@ const Library = () => {
                     
                     <span className="flex items-center gap-2.5 truncate text-primary-foreground">
                       {cat.name}
-                      {cat.is_pro && <Crown className="w-3 h-3 text-accent flex-shrink-0" />}
+                      {cat.is_pro && <Crown className="w-3.5 h-3.5 text-[hsl(var(--yellow))] flex-shrink-0" />}
                       {isLocked && <Lock className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />}
                     </span>
                     <span className="text-xs text-muted-foreground/60 tabular-nums">{count}</span>
@@ -280,7 +257,7 @@ const Library = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-10">
+        <main className="flex-1 p-6 lg:p-10 bg-background">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-foreground font-display tracking-tight mb-2">
               Component <span className="gradient-text">Library</span>
@@ -320,7 +297,7 @@ const Library = () => {
                     }>
                     
                     {cat.name}
-                    {cat.is_pro && <Crown className="w-3 h-3" />}
+                    {cat.is_pro && <Crown className="w-3 h-3 text-[hsl(var(--yellow))]" />}
                     {isLocked && <Lock className="w-2.5 h-2.5" />}
                   </button>);
 

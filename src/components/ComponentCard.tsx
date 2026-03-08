@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Lock, Sparkles } from 'lucide-react';
+import { Copy, Check, Lock, Crown, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -96,8 +96,8 @@ const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }:
 
         {/* Pro badge */}
         {isPro && (
-          <div className="absolute top-3 right-3 badge-pro flex items-center gap-1 text-[10px]">
-            <Lock className="w-3 h-3" /> PRO
+          <div className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-bold tracking-wide px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))]/15 border border-[hsl(var(--yellow))]/30 text-[hsl(var(--yellow))]">
+            <Crown className="w-3 h-3" /> PRO
           </div>
         )}
       </div>
