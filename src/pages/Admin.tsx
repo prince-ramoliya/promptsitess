@@ -84,8 +84,8 @@ const Admin = () => {
           })}
         </nav>
         <div className="p-4 border-t border-border/50">
-          <button onClick={signOut} className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground transition-colors w-full">
-            <LogOut className="w-4 h-4" /> Log Out
+          <button onClick={signOut} className="flex items-center gap-4 px-4 py-3 rounded-xl text-base font-medium text-muted-foreground hover:text-foreground transition-colors w-full">
+            <LogOut className="w-5 h-5" /> Log Out
           </button>
         </div>
       </aside>
