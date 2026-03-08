@@ -159,7 +159,7 @@ const HeroSection = () => {
           className="text-foreground font-extrabold leading-[1.08] tracking-tight max-w-[900px] text-2xl sm:text-5xl lg:text-6xl"
         >
           Steal the Prompts Behind{' '}
-          <span className="gradient-text-animated">Beautiful</span>{' '}
+          <span className="gradient-text">Beautiful</span>{' '}
           <span className="gradient-text">Websites</span>
         </motion.h1>
 
