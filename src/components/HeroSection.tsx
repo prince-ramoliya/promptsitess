@@ -145,11 +145,26 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 text-[11px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/40 backdrop-blur-md text-muted-foreground"
+          className="inline-flex items-center gap-3 sm:gap-4 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-xl"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          Premium UI Prompts for AI Tools
+          {/* Avatar stack */}
+          <div className="flex -space-x-2">
+            {['👨‍💻', '👩‍🎨', '🧑‍💼', '👩‍💻'].map((emoji, i) => (
+              <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-muted/80 flex items-center justify-center text-xs sm:text-sm">
+                {emoji}
+              </div>
+            ))}
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-card/80 bg-primary/20 flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary">
+              3k+
+            </div>
+          </div>
+          
+          <span className="text-[11px] sm:text-sm text-muted-foreground font-medium">Join 3k+ members</span>
+          
+          <Link to="/library" className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[hsl(var(--yellow))] text-background text-[11px] sm:text-xs font-bold hover:brightness-110 transition-all">
+            Join Now
+          </Link>
         </motion.div>
 
         {/* Headline */}
