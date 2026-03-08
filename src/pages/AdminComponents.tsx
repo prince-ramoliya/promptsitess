@@ -24,10 +24,11 @@ const AdminComponents = () => {
 
   const [title, setTitle] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
-  const [categoryId, setCategoryId] = useState('');
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [tagsStr, setTagsStr] = useState('');
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async () => {
