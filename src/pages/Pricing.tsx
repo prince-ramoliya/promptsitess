@@ -495,11 +495,31 @@ const Pricing = () => {
 
               {/* Price */}
               <div className="text-center mb-3">
-                <div className="flex items-baseline justify-center gap-1.5">
+                <div className="flex items-baseline justify-center gap-2">
+                  {appliedDiscount && (
+                    <span className="text-2xl font-bold text-muted-foreground line-through font-display">
+                      {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
+                    </span>
+                  )}
                   <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
                 </div>
                 {isLocalCurrency && (
-                  <p className="text-xs text-muted-foreground mt-1">≈ $19 USD</p>
+                  <p className="text-xs text-muted-foreground mt-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
+                )}
+                {appliedDiscount && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[hsl(var(--emerald)/0.15)] border border-[hsl(var(--emerald)/0.3)]"
+                  >
+                    <Tag className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                    <span className="text-xs font-semibold text-[hsl(var(--emerald))]">
+                      {appliedDiscount.percent > 0 ? `${appliedDiscount.percent}% off` : `$${appliedDiscount.amount} off`} — {appliedDiscount.code}
+                    </span>
+                    <button onClick={removeDiscount} className="ml-1 hover:text-foreground transition-colors">
+                      <X className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                    </button>
+                  </motion.div>
                 )}
                 {/* Lifetime highlight */}
                 <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
@@ -508,9 +528,33 @@ const Pricing = () => {
                 </div>
               </div>
 
-              <p className="text-muted-foreground text-sm mt-4 mb-8 text-center">
+              <p className="text-muted-foreground text-sm mt-4 mb-6 text-center">
                 Pay once and unlock the entire component library & premium prompts forever. No subscriptions.
               </p>
+
+              {/* Discount Code Input */}
+              {!appliedDiscount && (
+                <div className="mb-8">
+                  <div className="flex gap-2">
+                    <input
+                      value={discountCode}
+                      onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountError(''); }}
+                      placeholder="Discount code"
+                      className="flex-1 px-4 py-2.5 rounded-xl bg-muted/30 border border-border/40 text-foreground text-sm focus:outline-none focus:border-primary/40 transition-all uppercase placeholder:normal-case"
+                    />
+                    <button
+                      onClick={handleApplyDiscount}
+                      disabled={checkingCode || !discountCode.trim()}
+                      className="px-5 py-2.5 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm font-medium hover:bg-muted/70 transition-all disabled:opacity-50"
+                    >
+                      {checkingCode ? '...' : 'Apply'}
+                    </button>
+                  </div>
+                  {discountError && (
+                    <p className="text-xs text-destructive mt-1.5">{discountError}</p>
+                  )}
+                </div>
+              )}
 
               {/* Features */}
               <ul className="space-y-4 mb-10">
