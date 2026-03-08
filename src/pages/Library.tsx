@@ -18,6 +18,8 @@ interface ComponentData {
   secret_prompt: string;
   is_pro: boolean;
   is_featured: boolean;
+  is_trending: boolean;
+  is_newest: boolean;
   created_at: string;
   categorySlugs: string[];
   categoryNames: string[];
@@ -151,8 +153,9 @@ const Library = () => {
         !isEffectivelyPro(c);
       const matchDiscover = 
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
-        discoverTab === 'featured' ? true :
-        discoverTab === 'trending' ? true :
+        discoverTab === 'featured' ? c.is_featured :
+        discoverTab === 'trending' ? (c as any).is_trending :
+        discoverTab === 'newest' ? (c as any).is_newest :
         true;
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })
