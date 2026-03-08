@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, Star, TrendingUp, Clock } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
