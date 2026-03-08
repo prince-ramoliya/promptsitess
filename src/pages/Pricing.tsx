@@ -74,10 +74,6 @@ const pricingFaqs = [
     answer: 'Pro gives you access to all premium UI prompts, exclusive component categories, weekly new additions, priority support, and early access to new features.',
   },
   {
-    question: 'Can I get a refund?',
-    answer: 'We offer a 7-day money-back guarantee. If you\'re not satisfied with the library, contact us within 7 days of purchase for a full refund.',
-  },
-  {
     question: 'Will I get access to future components?',
     answer: 'Absolutely! Your lifetime access includes all future components and updates. We add new premium prompts every week.',
   },
