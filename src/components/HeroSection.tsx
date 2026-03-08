@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Copy, Sparkles, Layers, Zap } from 'lucide-react';
+import { useMemo } from 'react';
 
 const platformFeatures = [
   {
@@ -25,9 +26,44 @@ const platformFeatures = [
   },
 ];
 
+const FloatingOrb = ({ delay, duration, x, y, size, color }: { delay: number; duration: number; x: string; y: string; size: string; color: string }) => (
+  <motion.div
+    className={`absolute rounded-full blur-3xl opacity-20 ${size} ${color}`}
+    style={{ left: x, top: y }}
+    animate={{
+      y: [0, -30, 0, 30, 0],
+      x: [0, 20, 0, -20, 0],
+      scale: [1, 1.2, 1, 0.8, 1],
+      opacity: [0.15, 0.3, 0.15, 0.25, 0.15],
+    }}
+    transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
+  />
+);
+
+const GridLine = ({ orientation, position, delay }: { orientation: 'h' | 'v'; position: string; delay: number }) => (
+  <motion.div
+    className={`absolute ${orientation === 'h' ? 'w-full h-px' : 'h-full w-px'} bg-gradient-to-${orientation === 'h' ? 'r' : 'b'} from-transparent via-primary/[0.07] to-transparent`}
+    style={orientation === 'h' ? { top: position, left: 0 } : { left: position, top: 0 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: [0, 0.5, 0] }}
+    transition={{ duration: 4, delay, repeat: Infinity, ease: 'easeInOut' }}
+  />
+);
+
 const HeroSection = () => {
+  const particles = useMemo(() => 
+    Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: `${Math.random() * 100}%`,
+      y: `${Math.random() * 100}%`,
+      delay: Math.random() * 5,
+      duration: 3 + Math.random() * 4,
+      size: 2 + Math.random() * 3,
+    })), []
+  );
+
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background" style={{ fontFamily: "'Syne', sans-serif" }}>
       {/* Background Video */}
       <video
         autoPlay
@@ -44,6 +80,55 @@ const HeroSection = () => {
 
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-background/80" />
+
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Orbs */}
+        <FloatingOrb delay={0} duration={8} x="10%" y="20%" size="w-72 h-72" color="bg-primary" />
+        <FloatingOrb delay={2} duration={10} x="70%" y="10%" size="w-96 h-96" color="bg-accent" />
+        <FloatingOrb delay={4} duration={12} x="50%" y="60%" size="w-64 h-64" color="bg-emerald" />
+        <FloatingOrb delay={1} duration={9} x="85%" y="70%" size="w-56 h-56" color="bg-yellow" />
+        <FloatingOrb delay={3} duration={7} x="20%" y="75%" size="w-48 h-48" color="bg-pink" />
+
+        {/* Grid Lines */}
+        <GridLine orientation="h" position="25%" delay={0} />
+        <GridLine orientation="h" position="50%" delay={1.5} />
+        <GridLine orientation="h" position="75%" delay={3} />
+        <GridLine orientation="v" position="25%" delay={0.5} />
+        <GridLine orientation="v" position="50%" delay={2} />
+        <GridLine orientation="v" position="75%" delay={3.5} />
+
+        {/* Floating Particles */}
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full bg-primary/40"
+            style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
+            animate={{
+              y: [0, -60, 0],
+              opacity: [0, 0.8, 0],
+            }}
+            transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        ))}
+
+        {/* Diagonal streaks */}
+        <motion.div
+          className="absolute w-[600px] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent rotate-[35deg]"
+          style={{ left: '5%', top: '30%' }}
+          animate={{ x: [-200, 800], opacity: [0, 0.6, 0] }}
+          transition={{ duration: 6, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-[400px] h-px bg-gradient-to-r from-transparent via-pink/20 to-transparent rotate-[-25deg]"
+          style={{ right: '10%', top: '60%' }}
+          animate={{ x: [200, -600], opacity: [0, 0.5, 0] }}
+          transition={{ duration: 5, delay: 2, repeat: Infinity, repeatDelay: 4, ease: 'easeInOut' }}
+        />
+      </div>
+
+      {/* Noise texture overlay */}
+      <div className="absolute inset-0 noise-bg pointer-events-none" />
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center text-center gap-6 sm:gap-8 pt-28 sm:pt-32">
@@ -63,7 +148,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold leading-[1.1] tracking-tight max-w-[900px] text-4xl sm:text-6xl lg:text-8xl font-display"
+          className="text-foreground font-extrabold leading-[1.05] tracking-tight max-w-[900px] text-4xl sm:text-6xl lg:text-8xl"
+          style={{ fontFamily: "'Syne', sans-serif" }}
         >
           Steal the Prompts Behind{' '}
           <span className="gradient-text-animated">Beautiful</span>{' '}
@@ -117,7 +203,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-foreground font-semibold text-sm font-display">{feature.title}</h3>
+                <h3 className="text-foreground font-semibold text-sm" style={{ fontFamily: "'Syne', sans-serif" }}>{feature.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
