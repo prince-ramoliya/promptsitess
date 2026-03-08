@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown, ArrowUp } from 'lucide-react';
+import { Search, Crown, SlidersHorizontal, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, X, LayoutGrid, List } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
@@ -42,8 +42,6 @@ const Library = () => {
   const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null);
-  const sidebarScrollRef = useRef<HTMLDivElement>(null);
-  const [sidebarScrolled, setSidebarScrolled] = useState(false);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -74,13 +72,10 @@ const Library = () => {
       arr.push(cc.category_id);
       compCatMap.set(cc.component_id, arr);
     });
-
-    // Count bookmarks per component
     const bookmarkCounts = new Map<string, number>();
     (bookmarkCountsRes.data || []).forEach((b: any) => {
       bookmarkCounts.set(b.component_id, (bookmarkCounts.get(b.component_id) || 0) + 1);
     });
-
     if (compsRes.data) {
       setComponents(compsRes.data.map((c: any) => {
         const catIds = compCatMap.get(c.id) || (c.category_id ? [c.category_id] : []);
@@ -132,8 +127,8 @@ const Library = () => {
       toast.error('Upgrade to Pro to access this category');
       return;
     }
-    setSelectedCategory(cat.slug);
-    setDiscoverTab('all'); // reset discover tab when selecting category
+    setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug);
+    setDiscoverTab('all');
   };
 
   const handleDiscoverTab = (tab: DiscoverTab) => {
@@ -161,9 +156,7 @@ const Library = () => {
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })
     .sort((a, b) => {
-      if (discoverTab === 'trending') {
-        return b.bookmarkCount - a.bookmarkCount;
-      }
+      if (discoverTab === 'trending') return b.bookmarkCount - a.bookmarkCount;
       switch (sortMode) {
         case 'newest': return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'oldest': return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
@@ -173,11 +166,11 @@ const Library = () => {
       }
     });
 
-  const sortOptions: {value: SortMode; label: string; icon: typeof Clock;}[] = [
-    { value: 'newest', label: 'Newest', icon: Clock },
-    { value: 'oldest', label: 'Oldest', icon: Clock },
-    { value: 'a-z', label: 'A → Z', icon: Star },
-    { value: 'z-a', label: 'Z → A', icon: Star },
+  const sortOptions: {value: SortMode; label: string;}[] = [
+    { value: 'newest', label: 'Newest' },
+    { value: 'oldest', label: 'Oldest' },
+    { value: 'a-z', label: 'A → Z' },
+    { value: 'z-a', label: 'Z → A' },
   ];
 
   const filterOptions: {value: FilterMode; label: string;}[] = [
@@ -197,341 +190,224 @@ const Library = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="pt-16 flex min-h-screen">
-        {/* Sidebar */}
-        <aside className="w-72 border-r-2 border-border/50 bg-card/40 backdrop-blur-xl sticky top-16 h-[calc(100vh-4rem)] hidden lg:flex flex-col shadow-[4px_0_24px_-6px_rgba(0,0,0,0.3)] z-20">
-          {/* Header */}
-          <div className="px-5 pt-6 pb-4 border-b border-border/20 relative z-30">
-            <div className="flex items-center gap-2 mb-5">
-              {selectedCategory &&
-                <button onClick={() => setSelectedCategory(null)} className="p-1.5 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
-                  <ArrowLeft className="w-4 h-4" />
-                </button>
-              }
-              <h3 className="text-sm font-semibold text-foreground">Categories</h3>
-            </div>
-            {/* Sidebar search + filter */}
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-lg bg-muted/30 border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-xs"
-                />
-              </div>
-              <div ref={filterRef} className="relative">
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={`p-2 rounded-lg border transition-all flex-shrink-0 ${
-                    showFilters
-                      ? 'bg-primary/10 border-primary/40 text-primary'
-                      : 'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'
-                  }`}
-                  title="Filters"
-                >
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
-                </button>
-                <AnimatePresence>
-                  {showFilters && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute left-0 top-full mt-2 w-52 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-[100] p-3 space-y-3"
-                    >
-                      <div>
-                        <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Sort by</div>
-                        <div className="space-y-0.5">
-                          {sortOptions.map((opt) => (
-                            <button
-                              key={opt.value}
-                              onClick={() => setSortMode(opt.value)}
-                              className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-colors ${
-                                sortMode === opt.value ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
-                              }`}
-                            >
-                              <opt.icon className="w-3.5 h-3.5" />
-                              {opt.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="border-t border-border/30 pt-3">
-                        <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Show</div>
-                        <div className="flex gap-1.5">
-                          {filterOptions.map((opt) => (
-                            <button
-                              key={opt.value}
-                              onClick={() => setFilterMode(opt.value)}
-                              className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                                filterMode === opt.value
-                                  ? 'bg-primary text-primary-foreground'
-                                  : 'bg-muted/30 text-muted-foreground hover:text-foreground'
-                              }`}
-                            >
-                              {opt.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
 
-          {/* Scrollable content */}
-          <div className="relative flex-1 min-h-0">
-            <div
-              ref={sidebarScrollRef}
-              data-lenis-prevent
-              onWheelCapture={(e) => e.stopPropagation()}
-              onScroll={() => {
-                if (sidebarScrollRef.current) {
-                  setSidebarScrolled(sidebarScrollRef.current.scrollTop > 100);
-                }
-              }}
-              className="sidebar-scroll-area h-full overflow-y-auto"
-            >
-          {/* Discover section */}
-          <div className="px-3 pt-4 pb-2 space-y-0.5">
-            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
-              Discover
-            </div>
-            {discoverItems.map((item) => (
-              <button
-                key={item.tab}
-                onClick={() => handleDiscoverTab(item.tab)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                  !selectedCategory && discoverTab === item.tab
-                    ? 'bg-muted/50 text-foreground font-medium'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
-                }`}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.label}
-                {item.tab === 'bookmarks' && bookmarkedIds.size > 0 && (
-                  <span className="ml-auto text-[10px] tabular-nums bg-primary/15 text-primary px-1.5 py-0.5 rounded-full">
-                    {bookmarkedIds.size}
-                  </span>
-                )}
+      {/* Sticky toolbar */}
+      <div className="sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border/30">
+        {/* Row 1: Search + Sort/Filter */}
+        <div className="px-4 md:px-6 pt-3 pb-2 flex items-center gap-3">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search components..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 rounded-lg bg-muted/30 border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-xs"
+            />
+            {search && (
+              <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <X className="w-3 h-3" />
               </button>
-            ))}
+            )}
           </div>
 
-          {/* Divider */}
-          <div className="mx-5 border-t border-border/20" />
+          <span className="text-[11px] text-muted-foreground tabular-nums whitespace-nowrap hidden sm:block">
+            {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+          </span>
 
-          {/* Categories List */}
-          <div className="px-3 pt-4 pb-6">
-            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
-              Categories
-            </div>
-            <div className="space-y-0.5">
-              {categories.map((cat) => {
-                const count = getCategoryCount(cat.slug);
-                const isLocked = cat.is_pro && !isPremiumUser;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => handleCategoryClick(cat)}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all group ${
-                      selectedCategory === cat.slug
-                        ? 'bg-muted/50 text-foreground font-medium'
-                        : isLocked
-                        ? 'text-muted-foreground/50 cursor-not-allowed'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
-                    }`}
-                    disabled={isLocked}
-                  >
-                    <span className="flex items-center gap-2.5 truncate text-primary-foreground">
-                      {cat.name}
-                      {cat.is_pro && (
-                        <span className="flex-shrink-0 flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]">
-                          <Crown className="w-3 h-3" />PRO
-                        </span>
-                      )}
-                      {isLocked && <Lock className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />}
-                    </span>
-                    <span className="text-xs text-muted-foreground/60 tabular-nums">{count}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-            </div>{/* end scrollable content */}
-
-            {/* Scroll to top button */}
+          {/* Sort dropdown */}
+          <div ref={filterRef} className="relative">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-medium transition-all ${
+                showFilters
+                  ? 'bg-primary/10 border-primary/40 text-primary'
+                  : 'bg-muted/30 border-border/30 text-muted-foreground hover:text-foreground hover:border-primary/30'
+              }`}
+            >
+              <SlidersHorizontal className="w-3 h-3" />
+              <span className="hidden sm:inline">Filters</span>
+            </button>
             <AnimatePresence>
-              {sidebarScrolled && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => sidebarScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="absolute bottom-4 right-4 p-2 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors z-10"
-                  title="Scroll to top"
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                  transition={{ duration: 0.12 }}
+                  className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-card border border-border/40 backdrop-blur-2xl shadow-2xl z-[100] p-2.5 space-y-2.5"
                 >
-                  <ArrowUp className="w-4 h-4" />
-                </motion.button>
+                  <div>
+                    <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-1">Sort</div>
+                    <div className="space-y-0.5">
+                      {sortOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => setSortMode(opt.value)}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                            sortMode === opt.value ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border-t border-border/30 pt-2">
+                    <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-1">Show</div>
+                    <div className="flex gap-1">
+                      {filterOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => setFilterMode(opt.value)}
+                          className={`flex-1 px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            filterMode === opt.value
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-muted/30 text-muted-foreground hover:text-foreground'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>
-        </aside>
+        </div>
 
-        {/* Main Content */}
-        <main className="flex-1 px-4 py-4 lg:px-6 lg:py-6 bg-background">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
-            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight mb-1">
-              <span style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Component</span> <span className="gradient-text" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>Library</span>
-            </h1>
-            <p className="text-muted-foreground text-xs">
-              Browse {components.length} premium UI components with ready-to-use AI prompts.
-            </p>
-          </motion.div>
+        {/* Row 2: Discover tabs + Category chips — horizontally scrollable */}
+        <div className="px-4 md:px-6 pb-2.5 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+          {/* Discover tabs */}
+          {discoverItems.map((item) => (
+            <button
+              key={item.tab}
+              onClick={() => handleDiscoverTab(item.tab)}
+              className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium transition-all ${
+                !selectedCategory && discoverTab === item.tab
+                  ? 'bg-primary text-primary-foreground shadow-[0_0_12px_-3px_hsl(var(--primary)/0.5)]'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+              }`}
+            >
+              <item.icon className="w-3 h-3" />
+              {item.label}
+              {item.tab === 'bookmarks' && bookmarkedIds.size > 0 && (
+                <span className="text-[9px] tabular-nums bg-primary-foreground/20 px-1 py-0.5 rounded-full leading-none">
+                  {bookmarkedIds.size}
+                </span>
+              )}
+            </button>
+          ))}
 
-          {/* Mobile search + category chips */}
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-4 lg:hidden">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search components, tags..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/60 backdrop-blur-xl border border-border/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-all text-sm"
-              />
-            </div>
+          {/* Separator */}
+          <div className="w-px h-4 bg-border/40 flex-shrink-0 mx-1" />
 
-            {/* Mobile discover tabs */}
-            <div className="flex gap-2 flex-wrap lg:hidden mt-4 mb-2">
-              {discoverItems.map((item) => (
-                <button
-                  key={item.tab}
-                  onClick={() => handleDiscoverTab(item.tab)}
-                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                    discoverTab === item.tab
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-card/60 border border-border/40 text-muted-foreground'
-                  }`}
-                >
-                  <item.icon className="w-3.5 h-3.5" />
-                  {item.label}
-                </button>
-              ))}
-            </div>
+          {/* Category chips */}
+          {categories.map((cat) => {
+            const isLocked = cat.is_pro && !isPremiumUser;
+            const isActive = selectedCategory === cat.slug;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => handleCategoryClick(cat)}
+                disabled={isLocked}
+                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium transition-all ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground shadow-[0_0_12px_-3px_hsl(var(--primary)/0.5)]'
+                    : isLocked
+                    ? 'text-muted-foreground/30 cursor-not-allowed'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                }`}
+              >
+                {cat.name}
+                {cat.is_pro && (
+                  <span className="flex items-center gap-0.5 text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background leading-none">
+                    <Crown className="w-2 h-2" />PRO
+                  </span>
+                )}
+                {isLocked && <Lock className="w-2.5 h-2.5" />}
+                <span className="text-[9px] opacity-50 tabular-nums">{getCategoryCount(cat.slug)}</span>
+              </button>
+            );
+          })}
+        </div>
 
-            {/* Mobile category chips */}
-            <div className="flex gap-2 flex-wrap lg:hidden mt-2">
-              {categories.map((cat) => {
-                const isLocked = cat.is_pro && !isPremiumUser;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => !isLocked && setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
-                    disabled={isLocked}
-                    className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                      selectedCategory === cat.slug
-                        ? 'bg-primary text-primary-foreground'
-                        : isLocked
-                        ? 'bg-card/40 border border-border/20 text-muted-foreground/40 cursor-not-allowed'
-                        : 'bg-card/60 border border-border/40 text-muted-foreground'
-                    }`}
-                  >
-                    {cat.name}
-                    {cat.is_pro && (
-                      <span className="flex items-center gap-1 text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[hsl(var(--yellow))] to-[hsl(45,100%,45%)] text-background shadow-[0_0_12px_-2px_hsl(var(--yellow)/0.5)]">
-                        <Crown className="w-2.5 h-2.5" />PRO
-                      </span>
-                    )}
-                    {isLocked && <Lock className="w-2.5 h-2.5" />}
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
-
-          {/* Result count + active filters */}
-          <div className="mb-4 flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-muted-foreground">
-              {filtered.length} component{filtered.length !== 1 ? 's' : ''}
-            </span>
+        {/* Active filter pills */}
+        {(selectedCategory || filterMode !== 'all') && (
+          <div className="px-4 md:px-6 pb-2 flex items-center gap-2">
             {selectedCategory && (
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors flex items-center gap-1"
+                className="text-[10px] px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors flex items-center gap-1"
               >
                 {categories.find((c) => c.slug === selectedCategory)?.name}
-                <span className="ml-1">×</span>
+                <X className="w-2.5 h-2.5" />
               </button>
             )}
             {filterMode !== 'all' && (
               <button
                 onClick={() => setFilterMode('all')}
-                className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-colors flex items-center gap-1"
+                className="text-[10px] px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-colors flex items-center gap-1"
               >
                 {filterMode === 'pro' ? 'Pro only' : 'Free only'}
-                <span className="ml-1">×</span>
+                <X className="w-2.5 h-2.5" />
               </button>
             )}
           </div>
+        )}
+      </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="glass-card animate-pulse">
-                  <div className="aspect-[16/10] bg-muted/20 rounded-t-xl" />
-                  <div className="p-3 space-y-2">
-                    <div className="h-3.5 bg-muted/30 rounded-full w-2/3" />
-                    <div className="h-2.5 bg-muted/20 rounded-full w-1/3" />
-                  </div>
+      {/* Grid content — full width, dense */}
+      <div className="px-3 md:px-4 py-3">
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className="glass-card animate-pulse">
+                <div className="aspect-[16/10] bg-muted/20 rounded-t-xl" />
+                <div className="p-2.5 space-y-1.5">
+                  <div className="h-3 bg-muted/30 rounded-full w-3/4" />
                 </div>
-              ))}
-            </div>
-          ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filtered.map((comp, i) => (
-                <motion.div
-                  key={comp.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.04, duration: 0.3 }}
-                >
-                  <ComponentCard
-                    id={comp.id}
-                    title={comp.title}
-                    previewUrl={comp.preview_url}
-                    secretPrompt={comp.secret_prompt}
-                    isPro={isEffectivelyPro(comp)}
-                    isBookmarked={bookmarkedIds.has(comp.id)}
-                    onToggleBookmark={toggleBookmark}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-24">
-              <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
-                {discoverTab === 'bookmarks' ? (
-                  <Bookmark className="w-7 h-7 text-muted-foreground/50" />
-                ) : (
-                  <Search className="w-7 h-7 text-muted-foreground/50" />
-                )}
               </div>
-              <p className="text-muted-foreground text-sm">
-                {discoverTab === 'bookmarks'
-                  ? 'No bookmarked components yet. Browse and bookmark your favorites!'
-                  : 'No components found matching your criteria.'}
-              </p>
-            </motion.div>
-          )}
-        </main>
+            ))}
+          </div>
+        ) : filtered.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {filtered.map((comp, i) => (
+              <motion.div
+                key={comp.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(i * 0.02, 0.3), duration: 0.25 }}
+              >
+                <ComponentCard
+                  id={comp.id}
+                  title={comp.title}
+                  previewUrl={comp.preview_url}
+                  secretPrompt={comp.secret_prompt}
+                  isPro={isEffectivelyPro(comp)}
+                  isBookmarked={bookmarkedIds.has(comp.id)}
+                  onToggleBookmark={toggleBookmark}
+                />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+            <div className="w-12 h-12 rounded-xl bg-muted/30 flex items-center justify-center mx-auto mb-3">
+              {discoverTab === 'bookmarks' ? (
+                <Bookmark className="w-5 h-5 text-muted-foreground/50" />
+              ) : (
+                <Search className="w-5 h-5 text-muted-foreground/50" />
+              )}
+            </div>
+            <p className="text-muted-foreground text-xs">
+              {discoverTab === 'bookmarks'
+                ? 'No bookmarked components yet. Browse and bookmark your favorites!'
+                : 'No components found matching your criteria.'}
+            </p>
+          </motion.div>
+        )}
       </div>
       <Footer />
     </div>
