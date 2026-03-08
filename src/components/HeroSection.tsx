@@ -184,9 +184,6 @@ const HeroSection = () => {
           <a href="#gallery" className="glow-button flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
             Browse Components <ArrowRight className="w-4 h-4" />
           </a>
-          <Link to="/pricing" className="glow-button-outline flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
-            Get Pro Access
-          </Link>
         </motion.div>
       </div>
 
