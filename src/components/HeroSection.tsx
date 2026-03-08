@@ -168,7 +168,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-muted-foreground text-sm sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
+          className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
         >
           Browse premium UI components and copy the exact AI prompts used to build them.
           Paste into Lovable, Cursor, or Bolt to generate instantly.
