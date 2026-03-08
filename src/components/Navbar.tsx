@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Home, BookOpen, Tag, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import logo from '@/assets/logo.png';
 
 const navItems = [
@@ -32,25 +31,49 @@ const Navbar = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="group transition-transform duration-300 hover:scale-105 active:scale-95">
-          <img src={logo} alt="PromptSites" className="h-6 sm:h-7 object-contain" />
+      {/* Mobile layout: logo left, toggle right */}
+      <div className="flex md:hidden items-center justify-between px-4 h-14">
+        <Link to="/" className="transition-transform duration-300 hover:scale-105 active:scale-95">
+          <img src={logo} alt="PromptSites" className="h-6 object-contain" />
         </Link>
-
-        {/* Nav toggle — visible on all sizes */}
-        <div className="flex items-center gap-1 sm:gap-1.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-1.5 sm:px-2 py-1.5 sm:py-2">
+        <div className="flex items-center gap-0.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-1 py-1">
           {navItems.map(({ path, label, icon }) => (
             <Link
               key={path}
               to={path}
-              className={`relative px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
+              className={`relative px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all duration-300 ${
+                isActive(path)
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <span className="flex items-center gap-1">
+                {icon}
+                {label}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden md:flex max-w-7xl mx-auto px-6 h-20 items-center justify-between">
+        <Link to="/" className="group transition-transform duration-300 hover:scale-105 active:scale-95">
+          <img src={logo} alt="PromptSites" className="h-7 object-contain" />
+        </Link>
+
+        <div className="flex items-center gap-1.5 bg-card/40 backdrop-blur-xl border border-border/30 rounded-full px-2 py-2">
+          {navItems.map(({ path, label, icon }) => (
+            <Link
+              key={path}
+              to={path}
+              className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 isActive(path)
                   ? 'bg-primary/10 text-primary'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
               }`}
             >
-              <span className="flex items-center gap-1.5 sm:gap-2">
+              <span className="flex items-center gap-2">
                 {icon}
                 {label}
               </span>
@@ -59,7 +82,7 @@ const Navbar = () => {
           {isAdmin && (
             <Link
               to="/admin"
-              className={`relative px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
+              className={`relative px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 isActive('/admin')
                   ? 'bg-accent/10 text-accent'
                   : 'text-accent/70 hover:text-accent hover:bg-accent/5'
@@ -70,8 +93,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Auth — desktop only */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="flex items-center gap-3">
           {user ? (
             <>
               <span className="text-xs text-muted-foreground bg-muted/30 px-3 py-1.5 rounded-full border border-border/30">
@@ -102,9 +124,6 @@ const Navbar = () => {
             </>
           )}
         </div>
-
-        {/* Spacer for mobile to balance layout */}
-        <div className="w-6 md:hidden" />
       </div>
     </nav>
   );
