@@ -245,7 +245,7 @@ const Library = () => {
                     
                     <span className="flex items-center gap-2.5 truncate text-primary-foreground">
                       {cat.name}
-                      {cat.is_pro && <Crown className="w-3 h-3 text-accent flex-shrink-0" />}
+                      {cat.is_pro && <Crown className="w-3.5 h-3.5 text-[hsl(var(--yellow))] flex-shrink-0" />}
                       {isLocked && <Lock className="w-3 h-3 text-muted-foreground/40 flex-shrink-0" />}
                     </span>
                     <span className="text-xs text-muted-foreground/60 tabular-nums">{count}</span>
