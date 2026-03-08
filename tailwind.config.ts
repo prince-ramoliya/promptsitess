@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Bricolage Grotesque", "system-ui", "sans-serif"],
-        display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
-        accent: ["Bricolage Grotesque", "system-ui", "sans-serif"],
+        sans: ["Urbanist", "system-ui", "sans-serif"],
+        display: ["Urbanist", "system-ui", "sans-serif"],
+        accent: ["Urbanist", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
