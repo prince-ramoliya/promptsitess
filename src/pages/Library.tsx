@@ -297,7 +297,7 @@ const Library = () => {
                     }>
                     
                     {cat.name}
-                    {cat.is_pro && <Crown className="w-3 h-3" />}
+                    {cat.is_pro && <Crown className="w-3 h-3 text-[hsl(var(--yellow))]" />}
                     {isLocked && <Lock className="w-2.5 h-2.5" />}
                   </button>);
 
