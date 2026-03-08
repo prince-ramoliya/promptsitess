@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign, Users } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign, Users, BarChart3 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Logo from '@/components/Logo';
 
@@ -51,6 +51,7 @@ const Admin = () => {
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
     { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus, badge: unreadSuggestions },
     { path: '/admin/subscriptions', label: 'Subscriptions', icon: Users },
+    { path: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
     { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   ];
 

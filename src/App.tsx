@@ -17,6 +17,7 @@ import AdminCategories from "./pages/AdminCategories";
 import AdminSuggestions from "./components/AdminSuggestions";
 import AdminPricing from "./pages/AdminPricing";
 import AdminSubscriptions from "./pages/AdminSubscriptions";
+import AdminAnalytics from "./pages/AdminAnalytics";
 import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 
@@ -66,6 +67,7 @@ const App = () => {
               <Route path="suggestions" element={<AdminSuggestions />} />
               <Route path="pricing" element={<AdminPricing />} />
               <Route path="subscriptions" element={<AdminSubscriptions />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
