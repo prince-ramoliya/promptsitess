@@ -159,7 +159,7 @@ const HeroSection = () => {
           className="text-foreground font-extrabold leading-[1.08] tracking-tight max-w-[900px] text-2xl sm:text-5xl lg:text-6xl"
         >
           Steal the Prompts Behind{' '}
-          <span className="gradient-text-animated">Beautiful</span>{' '}
+          <span className="gradient-text">Beautiful</span>{' '}
           <span className="gradient-text">Websites</span>
         </motion.h1>
 
@@ -181,7 +181,7 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
         >
-          <a href="#gallery" className="glow-button flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
+          <a href="#gallery" className="glow-button glow-button-animated flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center">
             Browse Components <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
