@@ -40,9 +40,7 @@ const Navbar = () => {
 
       {/* Desktop layout */}
       <div className="hidden md:flex max-w-7xl mx-auto px-6 h-20 items-center justify-between">
-        <Link to="/" className="group transition-transform duration-300 hover:scale-105 active:scale-95">
-          <img src={logo} alt="PromptSites" className="h-7 object-contain" />
-        </Link>
+        <Logo size="lg" />
 
         <div className="flex items-center gap-1.5 bg-card/50 backdrop-blur-2xl border border-border/40 rounded-full px-2 py-2 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)_inset]">
           {navItems.map(({ path, label, icon }) =>
