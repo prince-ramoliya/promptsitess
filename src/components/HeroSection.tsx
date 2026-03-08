@@ -64,13 +64,13 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
-      {/* Background Video */}
+      {/* Background Video — hidden on mobile, shown on sm+ */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover scale-150 object-left-top origin-top-left"
+        className="absolute inset-0 w-full h-full object-cover scale-150 object-left-top origin-top-left hidden sm:block"
       >
         <source
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260207_050933_33e2620d-09cd-43a2-80ef-4cdbb42f4194.mp4"
@@ -78,8 +78,16 @@ const HeroSection = () => {
         />
       </video>
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-background/80" />
+      {/* Dark overlay — desktop only over video */}
+      <div className="absolute inset-0 bg-background sm:bg-background/80" />
+
+      {/* Mobile gradient background */}
+      <div className="absolute inset-0 sm:hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background to-background" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]" />
+        <div className="absolute bottom-1/3 right-0 w-[300px] h-[300px] rounded-full bg-accent/8 blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] rounded-full bg-emerald/6 blur-[80px]" />
+      </div>
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
