@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 import { z } from 'zod';
-import { Zap } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const emailSchema = z.string().trim().email('Invalid email').max(255);
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(128);
