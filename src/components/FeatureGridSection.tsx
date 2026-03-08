@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Cpu, Search, LayoutGrid, Eye, ClipboardCopy, Heart, RefreshCw, Users } from 'lucide-react';
+import { BookOpen, Cpu, Search, LayoutGrid } from 'lucide-react';
 
 const platformBadges = [
   { name: 'Lovable', logo: '/logos/lovable.svg' },
