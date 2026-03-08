@@ -108,11 +108,6 @@ const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }:
         {categoryName && (
           <span className="badge-tag text-xs mb-3 inline-block">{categoryName}</span>
         )}
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {tags?.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] px-2.5 py-0.5 rounded-full bg-muted/60 text-muted-foreground border border-border/30">{tag}</span>
-          ))}
-        </div>
       </div>
     </motion.div>
   );
