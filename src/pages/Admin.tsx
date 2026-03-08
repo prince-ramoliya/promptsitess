@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Logo from '@/components/Logo';
 
@@ -17,7 +17,6 @@ const Admin = () => {
     }
   }, [user, isAdmin, loading, navigate]);
 
-  // Fetch unread suggestions count
   useEffect(() => {
     if (!user || !isAdmin) return;
 
@@ -51,12 +50,12 @@ const Admin = () => {
     { path: '/admin/components', label: 'Components', icon: LayoutGrid },
     { path: '/admin/categories', label: 'Categories', icon: FolderOpen },
     { path: '/admin/suggestions', label: 'Suggestions', icon: MessageSquarePlus, badge: unreadSuggestions },
+    { path: '/admin/subscriptions', label: 'Subscriptions', icon: Users },
     { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   ];
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
       <aside className="w-64 border-r border-border/50 bg-card/30 flex flex-col">
         <div className="p-6 border-b border-border/50">
           <Logo size="md" />
@@ -90,7 +89,6 @@ const Admin = () => {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="flex-1 p-8 overflow-auto">
         <Outlet />
       </main>
