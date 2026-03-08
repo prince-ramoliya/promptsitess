@@ -127,35 +127,24 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
 
       {/* Card content */}
       <div className="p-5 flex items-center justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-foreground text-sm font-display truncate">{title}</h3>
-            <button
-              onClick={handleBookmark}
-              className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
-                isBookmarked
-                  ? 'text-primary hover:text-primary/80'
-                  : 'text-muted-foreground/40 hover:text-primary'
-              }`}
-            >
-              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-primary' : ''}`} />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1">
-            {categoryNames && categoryNames.length > 0 ? (
-              categoryNames.map((name) => (
-                <span key={name} className="badge-tag text-xs inline-block">{name}</span>
-              ))
-            ) : categoryName ? (
-              <span className="badge-tag text-xs inline-block">{categoryName}</span>
-            ) : null}
-          </div>
+        <h3 className="font-semibold text-foreground text-sm font-display truncate flex-1 min-w-0">{title}</h3>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {isPro && (
+            <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)]">
+              <Crown className="w-3 h-3" /> PRO
+            </span>
+          )}
+          <button
+            onClick={handleBookmark}
+            className={`p-1.5 rounded-lg transition-all duration-200 ${
+              isBookmarked
+                ? 'text-primary hover:text-primary/80'
+                : 'text-muted-foreground/40 hover:text-primary'
+            }`}
+          >
+            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-primary' : ''}`} />
+          </button>
         </div>
-        {isPro && (
-          <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)] flex-shrink-0">
-            <Crown className="w-3 h-3" /> PRO
-          </span>
-        )}
       </div>
     </motion.div>
       <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />

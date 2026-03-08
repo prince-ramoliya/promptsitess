@@ -473,7 +473,6 @@ const Library = () => {
                     id={comp.id}
                     title={comp.title}
                     previewUrl={comp.preview_url}
-                    categoryNames={comp.categoryNames}
                     secretPrompt={comp.secret_prompt}
                     isPro={isEffectivelyPro(comp)}
                     isBookmarked={bookmarkedIds.has(comp.id)}
