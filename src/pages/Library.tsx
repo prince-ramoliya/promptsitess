@@ -90,7 +90,7 @@ const Library = () => {
   comp.is_pro || comp.categoryIsPro;
 
   const getCategoryCount = (slug: string) =>
-  components.filter((c) => c.categories?.slug === slug).length;
+  components.filter((c) => c.categorySlugs.includes(slug)).length;
 
   // TODO: Replace with real premium check when subscription is added
   const isPremiumUser = false;
