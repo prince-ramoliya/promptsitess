@@ -45,9 +45,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
-            <Zap className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="PromptSites" className="w-8 h-8 object-contain" />
           <span className="text-lg font-bold text-foreground tracking-tight">PromptSites</span>
         </Link>
 

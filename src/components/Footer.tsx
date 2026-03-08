@@ -7,9 +7,7 @@ const Footer = () => (
     <div className="absolute inset-0 noise-bg opacity-20" />
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
       <Link to="/" className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
-          <Zap className="w-3.5 h-3.5 text-primary-foreground" />
-        </div>
+        <img src={logo} alt="PromptSites" className="w-7 h-7 object-contain" />
         <span className="font-bold text-foreground font-display tracking-tight">PromptSites</span>
       </Link>
       <div className="flex items-center gap-8">
