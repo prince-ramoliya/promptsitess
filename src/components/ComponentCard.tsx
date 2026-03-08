@@ -14,7 +14,7 @@ interface ComponentCardProps {
   isPro: boolean;
 }
 
-const ComponentCard = ({ title, previewUrl, categoryName, secretPrompt, isPro }: ComponentCardProps) => {
+const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretPrompt, isPro }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const { user } = useAuth();
