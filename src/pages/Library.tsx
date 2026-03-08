@@ -131,7 +131,7 @@ const Library = () => {
       return;
     }
     setSelectedCategory(cat.slug);
-    setDiscoverTab('featured'); // reset discover tab when selecting category
+    setDiscoverTab('all'); // reset discover tab when selecting category
   };
 
   const handleDiscoverTab = (tab: DiscoverTab) => {
