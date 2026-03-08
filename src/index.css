@@ -38,12 +38,12 @@
 
     --sidebar-background: 240 12% 6%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary: 280 70% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 12% 12%;
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 240 10% 14%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-ring: 280 70% 50%;
 
     /* Custom tokens — Instagram gradient palette */
     --gradient-start: 280 70% 50%;
