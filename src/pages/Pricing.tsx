@@ -494,27 +494,67 @@ const Pricing = () => {
             </p>
           </motion.div>
 
-          {/* Horizontal Plan Card */}
+          {/* Pricing Card — Full-width stacked horizontal */}
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[hsl(var(--primary)/0.08)] via-card/60 to-card/40 border-2 border-primary/25 shadow-[0_0_80px_-20px_hsl(var(--primary)/0.25)] backdrop-blur-xl">
-              {/* Badge */}
-              <div className="absolute -top-0.5 left-8 md:left-10 badge-pro flex items-center gap-1.5 px-4 py-1.5 rounded-t-none rounded-b-xl z-10">
-                <Crown className="w-3.5 h-3.5" /> Lifetime Access
+            <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl border-2 border-primary/20 shadow-[0_0_80px_-20px_hsl(var(--primary)/0.2)]">
+
+              {/* Top bar — features strip */}
+              <div className="bg-muted/15 border-b border-border/20 px-8 md:px-12 py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+                {features.map((f) => (
+                  <div key={f} className="flex items-center gap-2 text-sm text-foreground/80">
+                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span>{f}</span>
+                  </div>
+                ))}
               </div>
 
-              <div className="flex flex-col lg:flex-row">
-                {/* Left: Price + CTA */}
-                <div className="lg:w-[400px] p-8 md:p-10 flex flex-col justify-between">
-                  <div>
+              {/* Main content — price center + CTA */}
+              <div className="bg-gradient-to-b from-card/60 to-card/30 px-8 md:px-12 py-12">
+                <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+
+                  {/* Left: Badge + headline */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <div className="badge-pro inline-flex items-center gap-1.5 px-4 py-1.5 mb-4">
+                      <Crown className="w-3.5 h-3.5" /> PRO
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-extrabold font-display tracking-tight text-foreground mb-3">
+                      Lifetime <span className="gradient-text">Access</span>
+                    </h3>
+                    <p className="text-muted-foreground text-sm max-w-sm mx-auto lg:mx-0">
+                      One payment. Unlimited access to every component, prompt, and future update — forever.
+                    </p>
+
+                    {/* Trust pills */}
+                    <div className="flex flex-wrap items-center gap-3 mt-5 justify-center lg:justify-start">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/20 rounded-full px-3 py-1.5 border border-border/20">
+                        <Zap className="w-3 h-3 text-[hsl(var(--yellow))]" />
+                        Instant access
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/20 rounded-full px-3 py-1.5 border border-border/20">
+                        <Sparkles className="w-3 h-3 text-primary" />
+                        Weekly updates
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/20 rounded-full px-3 py-1.5 border border-border/20">
+                        <Layers className="w-3 h-3 text-[hsl(var(--emerald))]" />
+                        No recurring fees
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Center divider */}
+                  <div className="hidden lg:block w-px h-40 bg-border/25" />
+
+                  {/* Right: Price + CTA */}
+                  <div className="flex-shrink-0 w-full lg:w-[340px] text-center">
                     {/* Price */}
-                    <div className="mt-6 mb-2">
-                      <div className="flex items-baseline gap-2">
+                    <div className="mb-1">
+                      <div className="flex items-baseline justify-center gap-2">
                         {appliedDiscount && (
                           <span className="text-2xl font-bold text-muted-foreground line-through font-display">
                             {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
                           </span>
                         )}
-                        <span className="text-6xl font-extrabold text-foreground font-display">{displayPrice}</span>
+                        <span className="text-7xl font-extrabold text-foreground font-display">{displayPrice}</span>
                       </div>
                       {isLocalCurrency && (
                         <p className="text-xs text-muted-foreground mt-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
@@ -536,19 +576,12 @@ const Pricing = () => {
                       )}
                     </div>
 
-                    {/* Lifetime highlight */}
-                    <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
+                    <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
                       <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-                      <span className="text-sm font-semibold text-[hsl(var(--emerald))]">One-time payment · Lifetime</span>
+                      <span className="text-sm font-semibold text-[hsl(var(--emerald))]">One-time payment</span>
                     </div>
 
-                    <p className="text-muted-foreground text-sm mb-6">
-                      Pay once and unlock the entire component library & premium prompts forever. No subscriptions.
-                    </p>
-                  </div>
-
-                  <div>
-                    {/* Discount Code Input */}
+                    {/* Discount */}
                     {!appliedDiscount && (
                       <div className="mb-4">
                         <div className="flex gap-2">
@@ -572,42 +605,10 @@ const Pricing = () => {
                       </div>
                     )}
 
-                    {/* CTA */}
                     <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-4 rounded-xl font-semibold text-sm">
                       Get Lifetime Access — {displayPrice}
                     </Link>
-                    <p className="text-muted-foreground/60 text-xs mt-3 text-center">No hidden fees. No recurring charges.</p>
-                  </div>
-                </div>
-
-                {/* Right: Features grid filling full height */}
-                <div className="flex-1 bg-muted/10 border-t lg:border-t-0 lg:border-l border-border/20 p-8 md:p-10 flex flex-col justify-center">
-                  <h3 className="text-xs font-semibold text-muted-foreground mb-6 uppercase tracking-widest">Everything included</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {features.map((f) => (
-                      <div key={f} className="flex items-start gap-3 p-3 rounded-xl bg-card/40 border border-border/20 hover:border-primary/20 transition-colors">
-                        <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 border border-primary/20 mt-0.5">
-                          <Check className="w-3.5 h-3.5 text-primary" />
-                        </div>
-                        <span className="text-sm text-foreground font-medium">{f}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Trust indicators filling bottom space */}
-                  <div className="mt-8 flex flex-wrap items-center gap-4">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Zap className="w-3.5 h-3.5 text-[hsl(var(--yellow))]" />
-                      <span>Instant access</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Sparkles className="w-3.5 h-3.5 text-primary" />
-                      <span>Weekly updates</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Crown className="w-3.5 h-3.5 text-[hsl(var(--pink))]" />
-                      <span>7-day money-back guarantee</span>
-                    </div>
+                    <p className="text-muted-foreground/50 text-xs mt-3">No hidden fees · No subscriptions</p>
                   </div>
                 </div>
               </div>
