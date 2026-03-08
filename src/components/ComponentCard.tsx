@@ -15,7 +15,7 @@ interface ComponentCardProps {
   onToggleBookmark?: (componentId: string) => void;
 }
 
-const ComponentCard = ({ id, title, previewUrl, categoryName, categoryNames, secretPrompt, isPro, isBookmarked, onToggleBookmark }: ComponentCardProps) => {
+const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarked, onToggleBookmark }: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
