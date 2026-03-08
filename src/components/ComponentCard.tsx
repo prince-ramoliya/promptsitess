@@ -25,6 +25,15 @@ const ComponentCard = ({ title, previewUrl, categoryName, categoryNames, secretP
   const canCopy = !isPro || isPremiumUser;
 
   const handleCopy = async () => {
+    if (!user) {
+      toast.error('Please log in or sign up to copy prompts', {
+        action: {
+          label: 'Sign In',
+          onClick: () => window.location.href = '/auth',
+        },
+      });
+      return;
+    }
     if (!canCopy) {
       toast.error('Upgrade to Pro to access this prompt');
       return;
