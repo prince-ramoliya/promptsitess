@@ -226,7 +226,11 @@ const Pricing = () => {
         </div>
       </section>
 
+      {/* Pricing FAQ */}
+      <PricingFAQ />
+
       <Footer />
+    </div>
     </div>
   );
 };
