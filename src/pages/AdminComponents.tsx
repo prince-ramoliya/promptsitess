@@ -32,11 +32,20 @@ const AdminComponents = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async () => {
-    const [comps, cats] = await Promise.all([
+    const [comps, cats, compCats] = await Promise.all([
       supabase.from('components').select('*').order('created_at', { ascending: false }),
       supabase.from('categories').select('id, name'),
+      supabase.from('component_categories').select('component_id, category_id'),
     ]);
-    if (comps.data) setComponents(comps.data);
+    if (comps.data) {
+      const catMap = new Map<string, string[]>();
+      (compCats.data || []).forEach((cc: any) => {
+        const arr = catMap.get(cc.component_id) || [];
+        arr.push(cc.category_id);
+        catMap.set(cc.component_id, arr);
+      });
+      setComponents(comps.data.map(c => ({ ...c, categoryIds: catMap.get(c.id) || [] })));
+    }
     if (cats.data) setCategories(cats.data);
   };
 
