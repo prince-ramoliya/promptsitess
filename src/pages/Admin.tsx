@@ -35,9 +35,8 @@ const Admin = () => {
       {/* Sidebar */}
       <aside className="w-64 border-r border-border/50 bg-card/30 flex flex-col">
         <div className="p-6 border-b border-border/50">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="PromptSites" className="w-8 h-8 object-contain" />
-            <span className="font-bold text-foreground">PromptSites</span>
+          <Link to="/">
+            <img src={logo} alt="PromptSites" className="h-9 object-contain" />
           </Link>
         </div>
         <nav className="flex-1 p-4 space-y-1">

@@ -42,9 +42,8 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <img src={logo} alt="PromptSites" className="w-8 h-8 object-contain" />
-          <span className="text-lg font-bold text-foreground tracking-tight">PromptSites</span>
+        <Link to="/" className="group">
+          <img src={logo} alt="PromptSites" className="h-9 object-contain" />
         </Link>
 
         {/* Desktop nav links */}
