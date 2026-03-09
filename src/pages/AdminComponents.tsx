@@ -363,11 +363,20 @@ const AdminComponents = () => {
                     ✦ NEWEST
                   </span>
                 )}
+                {comp.is_pinned && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+                    📌 PINNED
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                <Pencil className="w-4 h-4 text-muted-foreground" />
+              <button
+                onClick={() => togglePinned(comp)}
+                className={`p-2 rounded-lg transition-colors ${comp.is_pinned ? 'bg-primary/10 text-primary' : 'hover:bg-muted/50 text-muted-foreground'}`}
+                title={comp.is_pinned ? 'Unpin component' : 'Pin component'}
+              >
+                <Pin className={`w-4 h-4 ${comp.is_pinned ? 'fill-current' : ''}`} />
               </button>
               <button onClick={() => handleDelete(comp.id)} className="p-2 rounded-lg hover:bg-destructive/10 transition-colors">
                 <Trash2 className="w-4 h-4 text-destructive" />
