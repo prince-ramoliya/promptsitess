@@ -148,7 +148,7 @@ const AdminComponents = () => {
     return components.filter(comp => {
       const matchesSearch = !searchQuery || comp.title.toLowerCase().includes(searchQuery.toLowerCase()) || comp.secret_prompt.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
-      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : filterProStatus === 'featured' ? comp.is_featured : !comp.is_pro);
+      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
