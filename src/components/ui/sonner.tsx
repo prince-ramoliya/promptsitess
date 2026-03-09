@@ -7,26 +7,25 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       position="bottom-center"
+      theme="dark"
       className="toaster group"
       toastOptions={{
+        unstyled: true,
         classNames: {
           toast:
-            "group toast group-[.toaster]:rounded-xl group-[.toaster]:px-5 group-[.toaster]:py-3.5 group-[.toaster]:font-semibold group-[.toaster]:text-sm group-[.toaster]:shadow-2xl group-[.toaster]:border-0 group-[.toaster]:min-w-[320px] group-[.toaster]:justify-center",
-          description: "group-[.toast]:text-sm group-[.toast]:opacity-90",
-          actionButton: "group-[.toast]:bg-white/20 group-[.toast]:text-white",
-          cancelButton: "group-[.toast]:bg-white/10 group-[.toast]:text-white/80",
-          success:
-            "group-[.toaster]:!bg-emerald-500 group-[.toaster]:!text-white",
-          error:
-            "group-[.toaster]:!bg-red-500 group-[.toaster]:!text-white",
-          warning:
-            "group-[.toaster]:!bg-orange-500 group-[.toaster]:!text-white",
+            "flex items-center gap-3 w-full rounded-xl px-5 py-3.5 font-semibold text-sm shadow-2xl border-0 min-w-[320px] justify-center text-white",
+          description: "text-sm opacity-90",
+          actionButton: "bg-white/20 text-white",
+          cancelButton: "bg-white/10 text-white/80",
+          success: "!bg-emerald-500 !text-white",
+          error: "!bg-red-500 !text-white",
+          warning: "!bg-orange-500 !text-white",
         },
       }}
       icons={{
-        success: <CheckCircle className="w-5 h-5" />,
-        error: <XCircle className="w-5 h-5" />,
-        warning: <AlertTriangle className="w-5 h-5" />,
+        success: <CheckCircle className="w-5 h-5 shrink-0" />,
+        error: <XCircle className="w-5 h-5 shrink-0" />,
+        warning: <AlertTriangle className="w-5 h-5 shrink-0" />,
       }}
       {...props}
     />
