@@ -189,7 +189,6 @@ const AdminComponents = () => {
           <option value="all">All Types</option>
           <option value="pro">Pro Only</option>
           <option value="free">Free Only</option>
-          <option value="featured">Featured Only</option>
         </select>
         <span className="text-xs text-muted-foreground">{filteredComponents.length} of {components.length}</span>
       </div>
