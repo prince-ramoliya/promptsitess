@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, TrendingUp, Clock } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, TrendingUp, Clock, Pin } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -14,6 +14,7 @@ interface Component {
   is_pro: boolean;
   is_trending: boolean;
   is_newest: boolean;
+  is_pinned: boolean;
   categoryIds?: string[];
 }
 
@@ -53,7 +54,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, is_pinned: (c as any).is_pinned ?? false, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
@@ -127,6 +128,12 @@ const AdminComponents = () => {
     fetchData();
   };
 
+  const togglePinned = async (comp: Component) => {
+    const { error } = await supabase.from('components').update({ is_pinned: !comp.is_pinned } as any).eq('id', comp.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(comp.is_pinned ? 'Unpinned component' : 'Pinned component');
+    fetchData();
+  };
 
   const startEdit = (comp: Component) => {
     setEditing(comp);
@@ -149,6 +156,11 @@ const AdminComponents = () => {
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
       const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
+    }).sort((a, b) => {
+      // Pinned components always first
+      if (a.is_pinned && !b.is_pinned) return -1;
+      if (!a.is_pinned && b.is_pinned) return 1;
+      return 0;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
 
@@ -325,7 +337,7 @@ const AdminComponents = () => {
 
       <div className="space-y-2">
         {filteredComponents.map(comp => (
-          <div key={comp.id} className="glass-card px-6 py-4 flex items-center justify-between">
+          <div key={comp.id} className={`glass-card px-6 py-4 flex items-center justify-between ${comp.is_pinned ? 'border border-primary/30 bg-primary/[0.03]' : ''}`}>
             <div className="flex items-center gap-4">
               <div className="w-12 h-8 rounded-lg bg-muted/50 overflow-hidden flex-shrink-0 flex items-center justify-center">
                 {comp.preview_url ? (
@@ -351,11 +363,20 @@ const AdminComponents = () => {
                     ✦ NEWEST
                   </span>
                 )}
+                {comp.is_pinned && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+                    📌 PINNED
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                <Pencil className="w-4 h-4 text-muted-foreground" />
+              <button
+                onClick={() => togglePinned(comp)}
+                className={`p-2 rounded-lg transition-colors ${comp.is_pinned ? 'bg-primary/10 text-primary' : 'hover:bg-muted/50 text-muted-foreground'}`}
+                title={comp.is_pinned ? 'Unpin component' : 'Pin component'}
+              >
+                <Pin className={`w-4 h-4 ${comp.is_pinned ? 'fill-current' : ''}`} />
               </button>
               <button onClick={() => handleDelete(comp.id)} className="p-2 rounded-lg hover:bg-destructive/10 transition-colors">
                 <Trash2 className="w-4 h-4 text-destructive" />

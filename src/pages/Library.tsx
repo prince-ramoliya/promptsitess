@@ -160,6 +160,12 @@ const Library = () => {
       return matchSearch && matchCat && matchFilter && matchDiscover;
     })
     .sort((a, b) => {
+      // Pinned components always first
+      const aPinned = (a as any).is_pinned === true;
+      const bPinned = (b as any).is_pinned === true;
+      if (aPinned && !bPinned) return -1;
+      if (!aPinned && bPinned) return 1;
+
       if (discoverTab === 'trending') {
         return b.bookmarkCount - a.bookmarkCount;
       }
