@@ -187,7 +187,6 @@ const Library = () => {
 
   const discoverItems: { tab: DiscoverTab; label: string; icon: typeof Sparkles }[] = [
     { tab: 'all', label: 'All', icon: Sparkles },
-    { tab: 'featured', label: 'Featured', icon: Star },
     { tab: 'newest', label: 'Newest', icon: Clock },
     { tab: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
     { tab: 'trending', label: 'Trending', icon: TrendingUp },

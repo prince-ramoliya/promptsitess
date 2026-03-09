@@ -293,16 +293,6 @@ const AdminComponents = () => {
                 </button>
               </div>
               <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Featured</label>
-                <button
-                  type="button"
-                  onClick={() => setIsFeatured(!isFeatured)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isFeatured ? 'bg-[hsl(var(--yellow))]' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
-              <div className="flex items-center gap-3">
                 <label className="text-sm text-muted-foreground">Trending</label>
                 <button
                   type="button"
