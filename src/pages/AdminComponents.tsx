@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, Star, TrendingUp, Clock } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Image, Film, Check, Search, Filter, TrendingUp, Clock } from 'lucide-react';
 
 interface Category { id: string; name: string; }
 interface Component {
@@ -12,7 +12,6 @@ interface Component {
   tags: string[] | null;
   secret_prompt: string;
   is_pro: boolean;
-  is_featured: boolean;
   is_trending: boolean;
   is_newest: boolean;
   categoryIds?: string[];
@@ -31,7 +30,6 @@ const AdminComponents = () => {
   const [tagsStr, setTagsStr] = useState('');
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
   const [isTrending, setIsTrending] = useState(false);
   const [isNewest, setIsNewest] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
@@ -55,7 +53,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_featured: (c as any).is_featured ?? false, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
@@ -63,7 +61,7 @@ const AdminComponents = () => {
   useEffect(() => { fetchData(); }, []);
 
   const resetForm = () => {
-    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsFeatured(false); setIsTrending(false); setIsNewest(false);
+    setTitle(''); setPreviewUrl(''); setSelectedCategoryIds([]); setTagsStr(''); setSecretPrompt(''); setIsPro(false); setIsTrending(false); setIsNewest(false);
     setEditing(null); setShowForm(false);
   };
 
@@ -96,7 +94,6 @@ const AdminComponents = () => {
       tags,
       secret_prompt: secretPrompt,
       is_pro: isPro,
-      is_featured: isFeatured,
       is_trending: isTrending,
       is_newest: isNewest,
     };
@@ -130,12 +127,6 @@ const AdminComponents = () => {
     fetchData();
   };
 
-  const toggleFeatured = async (comp: Component) => {
-    const { error } = await supabase.from('components').update({ is_featured: !comp.is_featured }).eq('id', comp.id);
-    if (error) { toast.error(error.message); return; }
-    toast.success(comp.is_featured ? 'Removed from featured' : 'Added to featured');
-    fetchData();
-  };
 
   const startEdit = (comp: Component) => {
     setEditing(comp);
@@ -145,7 +136,6 @@ const AdminComponents = () => {
     setTagsStr(comp.tags?.join(', ') || '');
     setSecretPrompt(comp.secret_prompt);
     setIsPro(comp.is_pro);
-    setIsFeatured(comp.is_featured);
     setIsTrending(comp.is_trending);
     setIsNewest(comp.is_newest);
     setShowForm(true);
@@ -157,7 +147,7 @@ const AdminComponents = () => {
     return components.filter(comp => {
       const matchesSearch = !searchQuery || comp.title.toLowerCase().includes(searchQuery.toLowerCase()) || comp.secret_prompt.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
-      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : filterProStatus === 'featured' ? comp.is_featured : !comp.is_pro);
+      const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
@@ -198,7 +188,6 @@ const AdminComponents = () => {
           <option value="all">All Types</option>
           <option value="pro">Pro Only</option>
           <option value="free">Free Only</option>
-          <option value="featured">Featured Only</option>
         </select>
         <span className="text-xs text-muted-foreground">{filteredComponents.length} of {components.length}</span>
       </div>
@@ -303,16 +292,6 @@ const AdminComponents = () => {
                 </button>
               </div>
               <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Featured</label>
-                <button
-                  type="button"
-                  onClick={() => setIsFeatured(!isFeatured)}
-                  className={`w-10 h-6 rounded-full transition-colors ${isFeatured ? 'bg-[hsl(var(--yellow))]' : 'bg-muted'} relative`}
-                >
-                  <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-foreground transition-transform ${isFeatured ? 'left-[18px]' : 'left-0.5'}`} />
-                </button>
-              </div>
-              <div className="flex items-center gap-3">
                 <label className="text-sm text-muted-foreground">Trending</label>
                 <button
                   type="button"
@@ -362,11 +341,6 @@ const AdminComponents = () => {
               <div className="flex items-center gap-2">
                 <span className="font-medium text-foreground text-sm">{comp.title}</span>
                 {comp.is_pro && <span className="badge-pro text-[10px]">PRO</span>}
-                {comp.is_featured && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--yellow))]/15 text-[hsl(var(--yellow))] border border-[hsl(var(--yellow))]/20">
-                    ★ FEATURED
-                  </span>
-                )}
                 {comp.is_trending && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/20">
                     ↗ TRENDING
@@ -380,13 +354,6 @@ const AdminComponents = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <button
-                onClick={() => toggleFeatured(comp)}
-                className={`p-2 rounded-lg transition-colors ${comp.is_featured ? 'bg-[hsl(var(--yellow))]/10 text-[hsl(var(--yellow))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
-                title={comp.is_featured ? 'Remove from featured' : 'Add to featured'}
-              >
-                <Star className={`w-4 h-4 ${comp.is_featured ? 'fill-current' : ''}`} />
-              </button>
               <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
                 <Pencil className="w-4 h-4 text-muted-foreground" />
               </button>
