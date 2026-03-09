@@ -27,7 +27,7 @@ interface ComponentData {
 
 type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
 type FilterMode = 'all' | 'pro' | 'free';
-type DiscoverTab = 'all' | 'featured' | 'newest' | 'bookmarks' | 'trending';
+type DiscoverTab = 'all' | 'newest' | 'bookmarks' | 'trending';
 
 const Library = () => {
   const { user } = useAuth();
