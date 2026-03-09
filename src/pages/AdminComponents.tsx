@@ -128,12 +128,6 @@ const AdminComponents = () => {
     fetchData();
   };
 
-  const toggleFeatured = async (comp: Component) => {
-    const { error } = await supabase.from('components').update({ is_featured: !comp.is_featured }).eq('id', comp.id);
-    if (error) { toast.error(error.message); return; }
-    toast.success(comp.is_featured ? 'Removed from featured' : 'Added to featured');
-    fetchData();
-  };
 
   const startEdit = (comp: Component) => {
     setEditing(comp);
