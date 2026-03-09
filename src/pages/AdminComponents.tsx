@@ -360,13 +360,6 @@ const AdminComponents = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <button
-                onClick={() => toggleFeatured(comp)}
-                className={`p-2 rounded-lg transition-colors ${comp.is_featured ? 'bg-[hsl(var(--yellow))]/10 text-[hsl(var(--yellow))]' : 'hover:bg-muted/50 text-muted-foreground'}`}
-                title={comp.is_featured ? 'Remove from featured' : 'Add to featured'}
-              >
-                <Star className={`w-4 h-4 ${comp.is_featured ? 'fill-current' : ''}`} />
-              </button>
               <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
                 <Pencil className="w-4 h-4 text-muted-foreground" />
               </button>
