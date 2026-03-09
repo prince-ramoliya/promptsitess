@@ -154,7 +154,6 @@ const Library = () => {
       const matchDiscover = 
         discoverTab === 'all' ? true :
         discoverTab === 'bookmarks' ? bookmarkedIds.has(c.id) :
-        discoverTab === 'featured' ? (c as any).is_featured === true :
         discoverTab === 'trending' ? (c as any).is_trending === true :
         discoverTab === 'newest' ? (c as any).is_newest === true :
         true;
