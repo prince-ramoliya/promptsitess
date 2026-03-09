@@ -341,11 +341,6 @@ const AdminComponents = () => {
               <div className="flex items-center gap-2">
                 <span className="font-medium text-foreground text-sm">{comp.title}</span>
                 {comp.is_pro && <span className="badge-pro text-[10px]">PRO</span>}
-                {comp.is_featured && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[hsl(var(--yellow))]/15 text-[hsl(var(--yellow))] border border-[hsl(var(--yellow))]/20">
-                    ★ FEATURED
-                  </span>
-                )}
                 {comp.is_trending && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/20">
                     ↗ TRENDING
