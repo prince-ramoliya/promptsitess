@@ -31,7 +31,6 @@ const AdminComponents = () => {
   const [tagsStr, setTagsStr] = useState('');
   const [secretPrompt, setSecretPrompt] = useState('');
   const [isPro, setIsPro] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
   const [isTrending, setIsTrending] = useState(false);
   const [isNewest, setIsNewest] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
