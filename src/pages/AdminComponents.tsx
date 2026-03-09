@@ -156,6 +156,11 @@ const AdminComponents = () => {
       const matchesCategory = filterCategoryId === 'all' || (comp.categoryIds || []).includes(filterCategoryId);
       const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
+    }).sort((a, b) => {
+      // Pinned components always first
+      if (a.is_pinned && !b.is_pinned) return -1;
+      if (!a.is_pinned && b.is_pinned) return 1;
+      return 0;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
 
