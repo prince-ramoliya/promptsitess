@@ -107,6 +107,7 @@ export type Database = {
           id: string
           is_featured: boolean
           is_newest: boolean
+          is_pinned: boolean
           is_pro: boolean
           is_trending: boolean
           preview_url: string | null
@@ -120,6 +121,7 @@ export type Database = {
           id?: string
           is_featured?: boolean
           is_newest?: boolean
+          is_pinned?: boolean
           is_pro?: boolean
           is_trending?: boolean
           preview_url?: string | null
@@ -133,6 +135,7 @@ export type Database = {
           id?: string
           is_featured?: boolean
           is_newest?: boolean
+          is_pinned?: boolean
           is_pro?: boolean
           is_trending?: boolean
           preview_url?: string | null
