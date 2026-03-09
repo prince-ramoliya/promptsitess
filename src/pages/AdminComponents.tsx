@@ -128,6 +128,12 @@ const AdminComponents = () => {
     fetchData();
   };
 
+  const togglePinned = async (comp: Component) => {
+    const { error } = await supabase.from('components').update({ is_pinned: !comp.is_pinned } as any).eq('id', comp.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(comp.is_pinned ? 'Unpinned component' : 'Pinned component');
+    fetchData();
+  };
 
   const startEdit = (comp: Component) => {
     setEditing(comp);
