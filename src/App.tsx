@@ -22,29 +22,6 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 0.8,
-      easing: (t) => 1 - Math.pow(1 - t, 4),
-      smoothWheel: true,
-      touchMultiplier: 1.5,
-      wheelMultiplier: 0.9,
-      infinite: false,
-    });
-
-    let animationId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      animationId = requestAnimationFrame(raf);
-    }
-    animationId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      lenis.destroy();
-    };
-  }, []);
-
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
