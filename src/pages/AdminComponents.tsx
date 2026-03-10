@@ -107,7 +107,8 @@ const AdminComponents = () => {
       componentId = editing.id;
       await supabase.from('component_categories').delete().eq('component_id', editing.id);
     } else {
-      const { data, error } = await supabase.from('components').insert(payload).select('id').single();
+      const maxOrder = components.reduce((max, c) => Math.max(max, c.display_order), -1);
+      const { data, error } = await supabase.from('components').insert({ ...payload, display_order: maxOrder + 1 }).select('id').single();
       if (error || !data) { toast.error(error?.message || 'Failed'); return; }
       componentId = data.id;
     }

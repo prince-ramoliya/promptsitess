@@ -181,6 +181,7 @@ const Library = () => {
     });
 
   const sortOptions: {value: SortMode; label: string; icon: typeof Clock;}[] = [
+    { value: 'default', label: 'Default Order', icon: SlidersHorizontal },
     { value: 'newest', label: 'Newest', icon: Clock },
     { value: 'oldest', label: 'Oldest', icon: Clock },
     { value: 'a-z', label: 'A → Z', icon: Star },
