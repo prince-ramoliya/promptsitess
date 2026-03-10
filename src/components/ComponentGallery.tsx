@@ -24,7 +24,7 @@ const ComponentGallery = () => {
 
   const fetchData = async () => {
     const [compsRes, catsRes, compCatsRes] = await Promise.all([
-      supabase.from('components').select('*'),
+      supabase.from('components').select('*').order('display_order', { ascending: true }),
       supabase.from('categories').select('*'),
       supabase.from('component_categories').select('component_id, category_id'),
     ]);

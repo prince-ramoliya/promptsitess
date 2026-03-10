@@ -395,9 +395,20 @@ const AdminComponents = () => {
       )}
 
       <div className="space-y-2">
-        {filteredComponents.map(comp => (
-          <div key={comp.id} className={`glass-card px-6 py-4 flex items-center justify-between ${comp.is_pinned ? 'border border-primary/30 bg-primary/[0.03]' : ''}`}>
+        {filteredComponents.map((comp, index) => (
+          <div
+            key={comp.id}
+            draggable
+            onDragStart={() => handleDragStart(index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDrop={() => handleDrop(index)}
+            onDragEnd={handleDragEnd}
+            className={`glass-card px-6 py-4 flex items-center justify-between transition-all ${comp.is_pinned ? 'border border-primary/30 bg-primary/[0.03]' : ''} ${dragIndex === index ? 'opacity-50 scale-[0.98]' : ''} ${dragOverIndex === index && dragIndex !== index ? 'border-t-2 border-t-primary' : ''}`}
+          >
             <div className="flex items-center gap-4">
+              <div className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors">
+                <GripVertical className="w-4 h-4" />
+              </div>
               <div className="w-12 h-8 rounded-lg bg-muted/50 overflow-hidden flex-shrink-0 flex items-center justify-center">
                 {comp.preview_url ? (
                   isVideo(comp.preview_url) ? (
@@ -410,6 +421,7 @@ const AdminComponents = () => {
                 )}
               </div>
               <div className="flex items-center gap-2">
+                <span className="text-[10px] text-muted-foreground/50 font-mono w-6">#{index + 1}</span>
                 <span className="font-medium text-foreground text-sm">{comp.title}</span>
                 {comp.is_pro && <span className="badge-pro text-[10px]">PRO</span>}
                 {comp.is_trending && (
@@ -436,6 +448,9 @@ const AdminComponents = () => {
                 title={comp.is_pinned ? 'Unpin component' : 'Pin component'}
               >
                 <Pin className={`w-4 h-4 ${comp.is_pinned ? 'fill-current' : ''}`} />
+              </button>
+              <button onClick={() => startEdit(comp)} className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                <Pencil className="w-4 h-4 text-muted-foreground" />
               </button>
               <button onClick={() => handleDelete(comp.id)} className="p-2 rounded-lg hover:bg-destructive/10 transition-colors">
                 <Trash2 className="w-4 h-4 text-destructive" />
