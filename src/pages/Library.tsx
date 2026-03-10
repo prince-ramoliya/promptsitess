@@ -36,7 +36,7 @@ const Library = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sortMode, setSortMode] = useState<SortMode>('newest');
+  const [sortMode, setSortMode] = useState<SortMode>('default');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [showFilters, setShowFilters] = useState(false);
   const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
