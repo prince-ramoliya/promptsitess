@@ -170,11 +170,12 @@ const Library = () => {
         return b.bookmarkCount - a.bookmarkCount;
       }
       switch (sortMode) {
+        case 'default': return (a as any).display_order - (b as any).display_order;
         case 'newest': return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'oldest': return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         case 'a-z': return a.title.localeCompare(b.title);
         case 'z-a': return b.title.localeCompare(a.title);
-        default: return 0;
+        default: return (a as any).display_order - (b as any).display_order;
       }
     });
 
