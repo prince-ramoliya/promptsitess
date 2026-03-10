@@ -140,7 +140,8 @@ const Library = () => {
     setDiscoverTab(tab);
     setSelectedCategory(null);
     if (tab === 'newest') setSortMode('newest');
-    if (tab === 'trending') setSortMode('newest');
+    else if (tab === 'trending') setSortMode('newest');
+    else setSortMode('default');
   };
 
   const filtered = components
