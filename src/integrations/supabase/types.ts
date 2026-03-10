@@ -104,6 +104,7 @@ export type Database = {
         Row: {
           category_id: string | null
           created_at: string
+          display_order: number
           id: string
           is_featured: boolean
           is_newest: boolean
@@ -118,6 +119,7 @@ export type Database = {
         Insert: {
           category_id?: string | null
           created_at?: string
+          display_order?: number
           id?: string
           is_featured?: boolean
           is_newest?: boolean
@@ -132,6 +134,7 @@ export type Database = {
         Update: {
           category_id?: string | null
           created_at?: string
+          display_order?: number
           id?: string
           is_featured?: boolean
           is_newest?: boolean
