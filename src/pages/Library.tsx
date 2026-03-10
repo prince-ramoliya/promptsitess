@@ -25,7 +25,7 @@ interface ComponentData {
   bookmarkCount: number;
 }
 
-type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
+type SortMode = 'default' | 'newest' | 'oldest' | 'a-z' | 'z-a';
 type FilterMode = 'all' | 'pro' | 'free';
 type DiscoverTab = 'all' | 'newest' | 'bookmarks' | 'trending';
 
