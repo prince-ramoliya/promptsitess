@@ -15,6 +15,7 @@ interface Component {
   is_trending: boolean;
   is_newest: boolean;
   is_pinned: boolean;
+  display_order: number;
   categoryIds?: string[];
 }
 
