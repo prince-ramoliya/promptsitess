@@ -44,7 +44,7 @@ const AdminComponents = () => {
 
   const fetchData = async () => {
     const [comps, cats, compCats] = await Promise.all([
-      supabase.from('components').select('*').order('created_at', { ascending: false }),
+      supabase.from('components').select('*').order('display_order', { ascending: true }),
       supabase.from('categories').select('id, name'),
       supabase.from('component_categories').select('component_id, category_id'),
     ]);
