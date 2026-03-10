@@ -55,7 +55,7 @@ const AdminComponents = () => {
         arr.push(cc.category_id);
         catMap.set(cc.component_id, arr);
       });
-      setComponents(comps.data.map(c => ({ ...c, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, is_pinned: (c as any).is_pinned ?? false, categoryIds: catMap.get(c.id) || [] })));
+      setComponents(comps.data.map(c => ({ ...c, is_trending: (c as any).is_trending ?? false, is_newest: (c as any).is_newest ?? false, is_pinned: (c as any).is_pinned ?? false, display_order: (c as any).display_order ?? 0, categoryIds: catMap.get(c.id) || [] })));
     }
     if (cats.data) setCategories(cats.data);
   };
