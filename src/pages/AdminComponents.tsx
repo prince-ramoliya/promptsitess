@@ -158,12 +158,70 @@ const AdminComponents = () => {
       const matchesPro = filterProStatus === 'all' || (filterProStatus === 'pro' ? comp.is_pro : !comp.is_pro);
       return matchesSearch && matchesCategory && matchesPro;
     }).sort((a, b) => {
-      // Pinned components always first
       if (a.is_pinned && !b.is_pinned) return -1;
       if (!a.is_pinned && b.is_pinned) return 1;
-      return 0;
+      return a.display_order - b.display_order;
     });
   }, [components, searchQuery, filterCategoryId, filterProStatus]);
+
+  // Drag reorder state
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const handleDragStart = (index: number) => {
+    setDragIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    setDragOverIndex(index);
+  };
+
+  const handleDrop = async (index: number) => {
+    if (dragIndex === null || dragIndex === index) {
+      setDragIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+
+    const reordered = [...filteredComponents];
+    const [moved] = reordered.splice(dragIndex, 1);
+    reordered.splice(index, 0, moved);
+
+    // Update display_order for all reordered items
+    const updates = reordered.map((comp, i) => ({ id: comp.id, display_order: i }));
+
+    // Optimistic update
+    setComponents(prev => {
+      const updated = [...prev];
+      updates.forEach(u => {
+        const found = updated.find(c => c.id === u.id);
+        if (found) found.display_order = u.display_order;
+      });
+      return updated;
+    });
+
+    setDragIndex(null);
+    setDragOverIndex(null);
+
+    // Persist to DB
+    const promises = updates.map(u =>
+      supabase.from('components').update({ display_order: u.display_order } as any).eq('id', u.id)
+    );
+    const results = await Promise.all(promises);
+    const hasError = results.some(r => r.error);
+    if (hasError) {
+      toast.error('Failed to save order');
+      fetchData();
+    } else {
+      toast.success('Order updated');
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
 
   return (
     <div>
