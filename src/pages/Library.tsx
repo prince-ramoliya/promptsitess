@@ -25,7 +25,7 @@ interface ComponentData {
   bookmarkCount: number;
 }
 
-type SortMode = 'newest' | 'oldest' | 'a-z' | 'z-a';
+type SortMode = 'default' | 'newest' | 'oldest' | 'a-z' | 'z-a';
 type FilterMode = 'all' | 'pro' | 'free';
 type DiscoverTab = 'all' | 'newest' | 'bookmarks' | 'trending';
 
@@ -36,7 +36,7 @@ const Library = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sortMode, setSortMode] = useState<SortMode>('newest');
+  const [sortMode, setSortMode] = useState<SortMode>('default');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [showFilters, setShowFilters] = useState(false);
   const [discoverTab, setDiscoverTab] = useState<DiscoverTab>('all');
@@ -140,7 +140,8 @@ const Library = () => {
     setDiscoverTab(tab);
     setSelectedCategory(null);
     if (tab === 'newest') setSortMode('newest');
-    if (tab === 'trending') setSortMode('newest');
+    else if (tab === 'trending') setSortMode('newest');
+    else setSortMode('default');
   };
 
   const filtered = components
@@ -170,15 +171,17 @@ const Library = () => {
         return b.bookmarkCount - a.bookmarkCount;
       }
       switch (sortMode) {
+        case 'default': return (a as any).display_order - (b as any).display_order;
         case 'newest': return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'oldest': return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         case 'a-z': return a.title.localeCompare(b.title);
         case 'z-a': return b.title.localeCompare(a.title);
-        default: return 0;
+        default: return (a as any).display_order - (b as any).display_order;
       }
     });
 
   const sortOptions: {value: SortMode; label: string; icon: typeof Clock;}[] = [
+    { value: 'default', label: 'Default Order', icon: SlidersHorizontal },
     { value: 'newest', label: 'Newest', icon: Clock },
     { value: 'oldest', label: 'Oldest', icon: Clock },
     { value: 'a-z', label: 'A → Z', icon: Star },
