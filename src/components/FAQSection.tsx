@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-const faqs = [
+const getFaqs = (price: number) => [
   {
     question: 'What is Code Prompt Canvas?',
     answer: 'Code Prompt Canvas is a curated library of premium UI prompts that you can paste into AI tools like Lovable, Cursor, or Bolt to instantly generate production-ready components and sections.',
@@ -17,7 +18,7 @@ const faqs = [
   },
   {
     question: 'Is there a free plan?',
-    answer: 'Yes! We offer free prompts so you can try the platform. Pro prompts are available with a premium subscription for access to the full library.',
+    answer: `Yes! We offer free prompts so you can try the platform. Pro prompts are available with a one-time payment of $${price} for lifetime access to the full library.`,
   },
   {
     question: 'How often are new prompts added?',
