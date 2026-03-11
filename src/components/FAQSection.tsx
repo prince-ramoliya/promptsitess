@@ -32,6 +32,26 @@ const getFaqs = (price: number) => [
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [basePriceUsd, setBasePriceUsd] = useState(19);
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
+      if (data) setBasePriceUsd(Number((data as any).base_price_usd));
+    };
+    fetchPrice();
+
+    const channel = supabase
+      .channel('faq-pricing-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pricing_config' }, (payload: any) => {
+        if (payload.new?.base_price_usd) setBasePriceUsd(Number(payload.new.base_price_usd));
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  const faqs = getFaqs(basePriceUsd);
 
   return (
     <section className="relative py-20 sm:py-28 lg:py-32 overflow-hidden">
