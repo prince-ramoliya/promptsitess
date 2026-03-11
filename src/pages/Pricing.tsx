@@ -106,7 +106,7 @@ const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
         </motion.div>
 
         <div className="space-y-3">
-          {pricingFaqs.map((faq, i) => (
+          {getPricingFaqs(basePriceUsd).map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 12 }}
