@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign, Users, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, FolderOpen, LogOut, MessageSquarePlus, DollarSign, Users, BarChart3, CreditCard } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Logo from '@/components/Logo';
 
