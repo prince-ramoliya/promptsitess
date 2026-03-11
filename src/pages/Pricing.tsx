@@ -64,10 +64,10 @@ const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: st
   </motion.div>
 );
 
-const pricingFaqs = [
+const getPricingFaqs = (price: number) => [
   {
     question: 'Is this really a one-time payment?',
-    answer: 'Yes! You pay $19 once and get lifetime access to the entire component library, all premium prompts, and every future update. No subscriptions, no recurring charges.',
+    answer: `Yes! You pay $${price} once and get lifetime access to the entire component library, all premium prompts, and every future update. No subscriptions, no recurring charges.`,
   },
   {
     question: 'What do I get with Pro access?',
