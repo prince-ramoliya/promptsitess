@@ -64,10 +64,10 @@ const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: st
   </motion.div>
 );
 
-const pricingFaqs = [
+const getPricingFaqs = (price: number) => [
   {
     question: 'Is this really a one-time payment?',
-    answer: 'Yes! You pay $19 once and get lifetime access to the entire component library, all premium prompts, and every future update. No subscriptions, no recurring charges.',
+    answer: `Yes! You pay $${price} once and get lifetime access to the entire component library, all premium prompts, and every future update. No subscriptions, no recurring charges.`,
   },
   {
     question: 'What do I get with Pro access?',
@@ -87,7 +87,7 @@ const pricingFaqs = [
   },
 ];
 
-const PricingFAQ = () => {
+const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -106,7 +106,7 @@ const PricingFAQ = () => {
         </motion.div>
 
         <div className="space-y-3">
-          {pricingFaqs.map((faq, i) => (
+          {getPricingFaqs(basePriceUsd).map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 12 }}
@@ -644,7 +644,7 @@ const Pricing = () => {
       </section>
 
       {/* Pricing FAQ */}
-      <PricingFAQ />
+      <PricingFAQ basePriceUsd={basePriceUsd} />
 
       <Footer />
     </div>
