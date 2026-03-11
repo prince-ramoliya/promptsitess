@@ -644,7 +644,7 @@ const Pricing = () => {
       </section>
 
       {/* Pricing FAQ */}
-      <PricingFAQ />
+      <PricingFAQ basePriceUsd={basePriceUsd} />
 
       <Footer />
     </div>
