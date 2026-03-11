@@ -87,7 +87,7 @@ const getPricingFaqs = (price: number) => [
   },
 ];
 
-const PricingFAQ = () => {
+const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
