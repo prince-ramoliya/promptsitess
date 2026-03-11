@@ -17,6 +17,7 @@ import AdminSuggestions from "./components/AdminSuggestions";
 import AdminPricing from "./pages/AdminPricing";
 import AdminSubscriptions from "./pages/AdminSubscriptions";
 import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminUsers from "./pages/AdminUsers";
 import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 
