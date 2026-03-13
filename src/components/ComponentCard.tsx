@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Lock, Crown, Sparkles, Bookmark } from 'lucide-react';
+import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
+import ComponentDetailModal from '@/components/ComponentDetailModal';
 
 interface ComponentCardProps {
   id?: string;
@@ -20,13 +21,15 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const isPremiumUser = false;
   const canCopy = !isPro || isPremiumUser;
 
-  const handleCopy = async () => {
+  const handleCopy = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (!user) {
       setShowAuthModal(true);
       return;
@@ -40,8 +43,6 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       setCopied(true);
       toast.success('Prompt copied!');
       setTimeout(() => setCopied(false), 2000);
-
-      // Track the copy event
       if (id) {
         await supabase.from('prompt_copies').insert({
           component_id: id,
@@ -62,6 +63,11 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
     if (id && onToggleBookmark) {
       onToggleBookmark(id);
     }
+  };
+
+  const handleOpenDetail = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDetail(true);
   };
 
   return (
@@ -87,7 +93,7 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
           </div>
         )}
 
-        {/* Hover overlay */}
+        {/* Hover overlay with two buttons */}
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -95,28 +101,41 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center"
+              className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center gap-3"
             >
               {!user ? (
                 <motion.button
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                   onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
+                  className="glow-button flex items-center gap-2 text-sm !px-5 !py-2.5"
                 >
                   <Lock className="w-4 h-4" />
                   Sign in to Copy
                 </motion.button>
               ) : canCopy ? (
-                <motion.button
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  onClick={handleCopy}
-                  className="glow-button flex items-center gap-2 text-sm !px-6 !py-3"
-                >
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Copied!' : 'Copy Prompt'}
-                </motion.button>
+                <>
+                  <motion.button
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.05 }}
+                    onClick={handleCopy}
+                    className="glow-button flex items-center gap-2 text-sm !px-5 !py-2.5"
+                  >
+                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    {copied ? 'Copied!' : 'Copy Prompt'}
+                  </motion.button>
+                  <motion.button
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    onClick={handleOpenDetail}
+                    className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-[200px] bg-muted/50 border border-border/40 text-foreground hover:bg-muted/70 transition-all font-medium backdrop-blur-sm"
+                  >
+                    <Eye className="w-4 h-4" />
+                    View Details
+                  </motion.button>
+                </>
                ) : (
                  <motion.div
                    initial={{ scale: 0.9 }}
@@ -155,7 +174,19 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
         </div>
       </div>
     </motion.div>
-      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
+
+    <ComponentDetailModal
+      open={showDetail}
+      onClose={() => setShowDetail(false)}
+      id={id}
+      title={title}
+      previewUrl={previewUrl}
+      secretPrompt={secretPrompt}
+      isPro={isPro}
+      isBookmarked={isBookmarked}
+      onToggleBookmark={onToggleBookmark}
+    />
+    <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
   );
 };
