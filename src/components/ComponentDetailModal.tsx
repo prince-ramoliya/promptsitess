@@ -218,24 +218,22 @@ const ComponentDetailModal = ({
   return (
     <>
       <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-        <DialogContent className="max-w-3xl w-[95vw] max-h-[90vh] p-0 overflow-y-auto border-border/30 bg-card/95 backdrop-blur-2xl rounded-2xl gap-0">
+        <DialogContent className="max-w-3xl w-[95vw] p-0 overflow-hidden border-border/30 bg-card/95 backdrop-blur-2xl rounded-2xl gap-0">
           <DialogTitle className="sr-only">{title}</DialogTitle>
           
-          {/* Fixed-ratio preview area */}
-          <div className="relative w-full overflow-hidden rounded-t-2xl bg-muted/20" style={{ paddingBottom: '62.5%' }}>
-            <div className="absolute inset-0">
-              {previewUrl ? (
-                isVideo(previewUrl) ? (
-                  <video src={previewUrl} className="w-full h-full object-cover" muted loop playsInline autoPlay />
-                ) : (
-                  <img src={previewUrl} alt={title} className="w-full h-full object-cover" />
-                )
+          {/* Preview area — compact, no scroll */}
+          <div className="relative w-full h-[40vh] max-h-[360px] overflow-hidden rounded-t-2xl bg-muted/20">
+            {previewUrl ? (
+              isVideo(previewUrl) ? (
+                <video src={previewUrl} className="w-full h-full object-cover" muted loop playsInline autoPlay />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/8 via-accent/5 to-cyan/8 flex items-center justify-center">
-                  <Sparkles className="w-12 h-12 text-muted-foreground/30" />
-                </div>
-              )}
-            </div>
+                <img src={previewUrl} alt={title} className="w-full h-full object-cover" />
+              )
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-primary/8 via-accent/5 to-cyan/8 flex items-center justify-center">
+                <Sparkles className="w-12 h-12 text-muted-foreground/30" />
+              </div>
+            )}
           </div>
 
           {/* Content */}
