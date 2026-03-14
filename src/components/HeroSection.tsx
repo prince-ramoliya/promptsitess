@@ -175,7 +175,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[28px] sm:text-5xl font-display lg:text-6xl"
+          className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[28px] sm:text-5xl font-display lg:text-7xl"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
           The AI Prompt Library{' '}
