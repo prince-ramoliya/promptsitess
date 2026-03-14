@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus, Tag, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus, Tag, X, Loader2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface GeoPricing {
   country: string;
@@ -151,6 +153,9 @@ const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
 };
 
 const Pricing = () => {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
     // Instant currency detection via browser timezone/locale
     try {
@@ -634,9 +639,45 @@ const Pricing = () => {
                 </div>
               )}
 
-              <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-5 rounded-2xl font-bold text-base tracking-wide">
-                Get Lifetime Access — {displayPrice}
-              </Link>
+              <button
+                onClick={async () => {
+                  if (!user) {
+                    navigate('/auth?mode=signup&redirect=pricing');
+                    return;
+                  }
+                  setCheckoutLoading(true);
+                  try {
+                    const { data, error } = await supabase.functions.invoke('create-checkout', {
+                      body: {
+                        return_url: window.location.origin + '/library',
+                        discount_code: appliedDiscount?.code || '',
+                      },
+                    });
+                    if (error || !data?.checkout_url) {
+                      toast.error('Failed to start checkout. Please try again.');
+                      console.error('Checkout error:', error, data);
+                      return;
+                    }
+                    window.location.href = data.checkout_url;
+                  } catch (err) {
+                    toast.error('Something went wrong. Please try again.');
+                    console.error(err);
+                  } finally {
+                    setCheckoutLoading(false);
+                  }
+                }}
+                disabled={checkoutLoading}
+                className="glow-button flex items-center justify-center gap-2 w-full py-5 rounded-2xl font-bold text-base tracking-wide disabled:opacity-70"
+              >
+                {checkoutLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  `Get Lifetime Access — ${displayPrice}`
+                )}
+              </button>
               <p className="text-muted-foreground/50 text-xs mt-4 text-center">No hidden fees · No subscriptions · Instant access</p>
             </div>
           </motion.div>
