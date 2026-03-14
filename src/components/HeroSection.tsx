@@ -204,7 +204,7 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           
            <a href="#gallery" className="glow-button glow-button-animated flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
-             Browse Components <ArrowRight className="w-4 h-4" />
+             Browse Prompts <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
       </div>

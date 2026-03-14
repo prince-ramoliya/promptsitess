@@ -5,28 +5,28 @@ import { supabase } from '@/integrations/supabase/client';
 
 const getFaqs = (price: number) => [
   {
-    question: 'What is Code Prompt Canvas?',
-    answer: 'Code Prompt Canvas is a curated library of premium UI prompts that you can paste into AI tools like Lovable, Cursor, or Bolt to instantly generate production-ready components and sections.',
+    question: 'What is PromptSites?',
+    answer: 'PromptSites is a curated library of premium AI prompts for everything — website UI, photography, logos, graphics, illustrations, 3D animations, backgrounds, cards, buttons, and much more. Copy any prompt and paste it into your favorite AI tool to generate instantly.',
   },
   {
-    question: 'How do I use the prompts?',
-    answer: 'Simply browse the library, find a component you like, copy the secret prompt, and paste it into your favorite AI code generation tool. The AI will generate the full component for you.',
+    question: 'What kinds of prompts do you offer?',
+    answer: 'We offer prompts across a wide range of creative categories: website sections (hero, pricing, navbars), logo designs, photography styles, graphic designs, illustrations, 3D animations, backgrounds, buttons, cards, and more. New categories are added regularly.',
   },
   {
     question: 'Which AI tools are supported?',
-    answer: 'Our prompts are optimized for Lovable, Cursor, and Bolt, but they work with any AI coding assistant that accepts natural language prompts.',
+    answer: 'Our prompts work with a wide range of AI tools — Lovable, Cursor, and Bolt for websites; Midjourney, DALL·E, and Stable Diffusion for images; and any AI assistant that accepts natural language prompts.',
   },
   {
     question: 'Is there a free plan?',
-    answer: `Yes! We offer free prompts so you can try the platform. Pro prompts are available with a one-time payment of $${price} for lifetime access to the full library.`,
+    answer: `Yes! We offer free prompts so you can try the platform. Pro prompts are available with a one-time payment of $${price} for lifetime access to the entire library across all categories.`,
   },
   {
     question: 'How often are new prompts added?',
-    answer: 'We add new premium prompts every week, covering hero sections, pricing tables, navbars, bento grids, dashboards, and much more.',
+    answer: 'We add new premium prompts every week across all categories — website components, photography styles, logo concepts, graphic designs, illustrations, 3D art, and more.',
   },
   {
     question: 'Can I submit my own prompts?',
-    answer: 'Absolutely! Our community prompts feature lets you submit and share prompts with other users. Help the community grow by contributing your best work.',
+    answer: 'Absolutely! Our community feature lets you submit and share prompts with other users. Help the community grow by contributing your best creative work.',
   },
 ];
 

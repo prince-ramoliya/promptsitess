@@ -47,10 +47,10 @@ const HowItWorksSection = () => (
       >
         <span className="badge-tag text-[10px] mb-4 inline-block">HOW IT WORKS</span>
         <h2 className="text-4xl md:text-6xl font-extrabold mb-5 font-display tracking-tight">
-          From Browse to <span className="gradient-text">Build</span>
+          From Browse to <span className="gradient-text">Create</span>
         </h2>
         <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto">
-          Four simple steps to transform any design into production-ready code.
+          Four simple steps to turn any prompt into a stunning AI-generated creation.
         </p>
       </motion.div>
 

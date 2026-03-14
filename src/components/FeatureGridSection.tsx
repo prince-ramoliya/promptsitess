@@ -67,7 +67,7 @@ const FeatureGridSection = () => {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-4xl lg:text-[48px] font-bold text-foreground font-display tracking-tight"
           >
-            All The Tools You Need
+            Everything You Need to Create
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -76,7 +76,7 @@ const FeatureGridSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-muted-foreground text-sm sm:text-base lg:text-lg mt-3 sm:mt-4 max-w-[560px] mx-auto leading-relaxed px-2"
           >
-            AI powered tools to build and generate modern UI components instantly
+            AI-powered prompts to generate websites, logos, photos, graphics, and more — instantly
           </motion.p>
 
           <motion.div
