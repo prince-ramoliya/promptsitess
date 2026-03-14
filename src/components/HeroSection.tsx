@@ -178,10 +178,10 @@ const HeroSection = () => {
           className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[28px] sm:text-5xl font-display lg:text-6xl"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          The Ultimate{' '}
+          The AI Prompt Library{' '}
           <br className="sm:hidden" />
-          <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>AI Prompt</span>{' '}
-          <span className="gradient-text">Library</span>
+          Behind <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>Great</span>{' '}
+          <span className="gradient-text">Ideas</span>
         </motion.h1>
 
         {/* Subtitle */}
