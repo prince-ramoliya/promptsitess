@@ -639,9 +639,45 @@ const Pricing = () => {
                 </div>
               )}
 
-              <Link to="/auth?mode=signup" className="glow-button block text-center w-full py-5 rounded-2xl font-bold text-base tracking-wide">
-                Get Lifetime Access — {displayPrice}
-              </Link>
+              <button
+                onClick={async () => {
+                  if (!user) {
+                    navigate('/auth?mode=signup&redirect=pricing');
+                    return;
+                  }
+                  setCheckoutLoading(true);
+                  try {
+                    const { data, error } = await supabase.functions.invoke('create-checkout', {
+                      body: {
+                        return_url: window.location.origin + '/library',
+                        discount_code: appliedDiscount?.code || '',
+                      },
+                    });
+                    if (error || !data?.checkout_url) {
+                      toast.error('Failed to start checkout. Please try again.');
+                      console.error('Checkout error:', error, data);
+                      return;
+                    }
+                    window.location.href = data.checkout_url;
+                  } catch (err) {
+                    toast.error('Something went wrong. Please try again.');
+                    console.error(err);
+                  } finally {
+                    setCheckoutLoading(false);
+                  }
+                }}
+                disabled={checkoutLoading}
+                className="glow-button flex items-center justify-center gap-2 w-full py-5 rounded-2xl font-bold text-base tracking-wide disabled:opacity-70"
+              >
+                {checkoutLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  `Get Lifetime Access — ${displayPrice}`
+                )}
+              </button>
               <p className="text-muted-foreground/50 text-xs mt-4 text-center">No hidden fees · No subscriptions · Instant access</p>
             </div>
           </motion.div>
