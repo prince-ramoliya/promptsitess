@@ -178,10 +178,10 @@ const HeroSection = () => {
           className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[28px] sm:text-5xl font-display lg:text-6xl"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          Steal the Prompts{' '}
+          The Ultimate{' '}
           <br className="sm:hidden" />
-          Behind <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>Beautiful</span>{' '}
-          <span className="gradient-text">Websites</span>
+          <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>AI Prompt</span>{' '}
+          <span className="gradient-text">Library</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -192,8 +192,8 @@ const HeroSection = () => {
           className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          Browse premium UI components and copy the exact AI prompts used to build them.
-          Paste into Lovable, Cursor, or Bolt to generate instantly.
+          Premium prompts for websites, logos, photography, graphics, illustrations, 3D art & more.
+          Copy, paste into any AI tool, and generate instantly.
         </motion.p>
 
         {/* CTA */}
