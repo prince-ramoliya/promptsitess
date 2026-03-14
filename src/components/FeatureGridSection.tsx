@@ -12,8 +12,8 @@ const platformBadges = [
 const allFeatures = [
   {
     icon: <BookOpen className="w-6 h-6" />,
-    title: 'Smart Prompt Library',
-    description: 'Access hundreds of premium UI prompts ready to generate sections instantly.',
+    title: 'Multi-Category Library',
+    description: 'Prompts for UI components, photography, logos, graphics, illustrations, 3D animations, and much more.',
     badge: 'Included',
     gradient: 'from-[hsl(var(--primary)/0.15)] via-transparent to-[hsl(var(--accent)/0.1)]',
     borderGlow: 'from-[hsl(var(--primary)/0.4)] via-[hsl(var(--primary)/0.08)] to-[hsl(var(--accent)/0.35)]',
@@ -22,8 +22,8 @@ const allFeatures = [
   },
   {
     icon: <Cpu className="w-6 h-6" />,
-    title: 'Component Generator',
-    description: 'Paste prompts into Lovable, Cursor, or Bolt and instantly generate production ready UI.',
+    title: 'Instant Generation',
+    description: 'Paste any prompt into Lovable, Cursor, Bolt, Midjourney, DALL·E, or any AI tool to generate instantly.',
     badge: 'Included',
     gradient: 'from-[hsl(var(--primary)/0.12)] via-transparent to-[hsl(var(--pink)/0.12)]',
     borderGlow: 'from-[hsl(var(--primary)/0.35)] via-[hsl(var(--primary)/0.06)] to-[hsl(var(--pink)/0.4)]',
@@ -32,8 +32,8 @@ const allFeatures = [
   },
   {
     icon: <Search className="w-6 h-6" />,
-    title: 'Prompt Search',
-    description: 'Quickly find prompts using tags, categories, and filters.',
+    title: 'Smart Search',
+    description: 'Quickly find the perfect prompt using tags, categories, and filters across all creative domains.',
     gradient: 'from-[hsl(var(--cyan)/0.1)] via-transparent to-[hsl(var(--primary)/0.08)]',
     borderGlow: 'from-[hsl(var(--cyan)/0.3)] via-[hsl(var(--cyan)/0.05)] to-[hsl(var(--primary)/0.25)]',
     iconColor: 'text-[hsl(var(--cyan))]',
@@ -41,8 +41,8 @@ const allFeatures = [
   },
   {
     icon: <LayoutGrid className="w-6 h-6" />,
-    title: 'Prompt Categories',
-    description: 'Browse prompts for hero sections, pricing tables, navbars, bento grids, and more.',
+    title: 'Rich Categories',
+    description: 'Browse prompts for websites, buttons, cards, backgrounds, logos, photography, 3D art, and more.',
     gradient: 'from-[hsl(var(--accent)/0.1)] via-transparent to-[hsl(var(--pink)/0.08)]',
     borderGlow: 'from-[hsl(var(--accent)/0.3)] via-[hsl(var(--accent)/0.05)] to-[hsl(var(--pink)/0.3)]',
     iconColor: 'text-[hsl(var(--accent))]',
