@@ -55,7 +55,7 @@ const SuggestionSection = () => {
             Drop a <span className="gradient-text">Suggestion</span>
           </h2>
           <p className="text-sm text-muted-foreground mb-8 max-w-md mx-auto">
-            Have a component idea or feature request? Let us know and we'll build it for the community.
+            Have a prompt idea or feature request? Let us know and we'll create it for the community.
           </p>
         </motion.div>
 
