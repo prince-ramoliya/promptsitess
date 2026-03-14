@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
 import ComponentDetailModal from '@/components/ComponentDetailModal';
