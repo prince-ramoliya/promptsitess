@@ -153,6 +153,9 @@ const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
 };
 
 const Pricing = () => {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
     // Instant currency detection via browser timezone/locale
     try {
