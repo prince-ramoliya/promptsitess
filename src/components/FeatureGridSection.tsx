@@ -93,7 +93,11 @@ const FeatureGridSection = () => {
                 whileHover={{ scale: 1.08, boxShadow: '0 0 20px -4px hsl(var(--primary) / 0.3)' }}
                 className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border/40 bg-card/60 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground hover:border-primary/30 cursor-default"
               >
-                <img src={badge.logo} alt={badge.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                {'logo' in badge && badge.logo ? (
+                  <img src={badge.logo} alt={badge.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                ) : (
+                  ('icon' in badge && badge.icon)
+                )}
                 {badge.name}
               </motion.span>
             ))}
