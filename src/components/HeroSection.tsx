@@ -165,7 +165,7 @@ const HeroSection = () => {
           
           <span className="text-[11px] sm:text-sm text-muted-foreground font-medium">Join 3k+ members</span>
           
-          <Link to="/library" className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[hsl(var(--yellow))] text-background text-[11px] sm:text-xs font-bold hover:brightness-110 transition-all">
+          <Link to="/pricing" className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[hsl(var(--yellow))] text-background text-[11px] sm:text-xs font-bold hover:brightness-110 transition-all">
             Join Now
           </Link>
         </motion.div>
