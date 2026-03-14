@@ -7,22 +7,22 @@ const platformFeatures = [
 {
   icon: <Copy className="w-5 h-5" />,
   title: 'Copy Any Prompt',
-  description: 'Browse components, click copy, and get the exact AI prompt used to build it.'
+  description: 'Browse prompts for UI, logos, photography, graphics & more — one click to copy.'
 },
 {
   icon: <Sparkles className="w-5 h-5" />,
   title: 'Paste & Generate',
-  description: 'Drop the prompt into Lovable, Cursor, or Bolt and watch it come to life.'
+  description: 'Drop the prompt into any AI tool and watch stunning creations come to life instantly.'
 },
 {
   icon: <Layers className="w-5 h-5" />,
-  title: 'Premium Library',
-  description: 'Access 100+ hand-crafted UI components across 50+ categories.'
+  title: 'Massive Library',
+  description: 'Access 100+ hand-crafted prompts across UI, photography, logos, 3D, illustrations & more.'
 },
 {
   icon: <Zap className="w-5 h-5" />,
-  title: 'Ship 10x Faster',
-  description: 'Stop writing prompts from scratch. Use battle-tested ones that actually work.'
+  title: 'Create 10x Faster',
+  description: 'Stop writing prompts from scratch. Use battle-tested ones that deliver results every time.'
 }];
 
 
