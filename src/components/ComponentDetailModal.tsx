@@ -175,8 +175,8 @@ const ComponentDetailModal = ({
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
   const { user } = useAuth();
-  const isPremiumUser = false;
-  const canCopy = !isPro || isPremiumUser;
+  const { isPremium } = usePurchaseStatus();
+  const canCopy = !isPro || isPremium;
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const shareUrl = `${window.location.origin}/library?component=${id}`;

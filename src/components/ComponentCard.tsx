@@ -24,10 +24,10 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
+  const { isPremium } = usePurchaseStatus();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  const isPremiumUser = false;
-  const canCopy = !isPro || isPremiumUser;
+  const canCopy = !isPro || isPremium;
 
   const handleCopy = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
