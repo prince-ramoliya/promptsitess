@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
 import ComponentDetailModal from '@/components/ComponentDetailModal';
@@ -23,10 +24,10 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
+  const { isPremium } = usePurchaseStatus();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  const isPremiumUser = false;
-  const canCopy = !isPro || isPremiumUser;
+  const canCopy = !isPro || isPremium;
 
   const handleCopy = async (e?: React.MouseEvent) => {
     e?.stopPropagation();

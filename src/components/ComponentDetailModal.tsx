@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Share2, Bookmark, Crown, Sparkles, Link, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import AuthModal from '@/components/AuthModal';
@@ -174,8 +175,8 @@ const ComponentDetailModal = ({
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
   const { user } = useAuth();
-  const isPremiumUser = false;
-  const canCopy = !isPro || isPremiumUser;
+  const { isPremium } = usePurchaseStatus();
+  const canCopy = !isPro || isPremium;
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const shareUrl = `${window.location.origin}/library?component=${id}`;

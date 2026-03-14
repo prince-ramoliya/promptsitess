@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { LayoutDashboard, FolderOpen, Copy, TrendingUp } from 'lucide-react';
+import { LayoutDashboard, FolderOpen, Copy, TrendingUp, DollarSign, Users } from 'lucide-react';
 
 interface CopyStats {
   component_id: string;
@@ -9,21 +9,22 @@ interface CopyStats {
 }
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({ components: 0, categories: 0, totalCopies: 0 });
+  const [stats, setStats] = useState({ components: 0, categories: 0, totalCopies: 0, totalRevenue: 0, totalPurchases: 0 });
   const [topCopied, setTopCopied] = useState<CopyStats[]>([]);
 
   const fetchStats = async () => {
-    const [comps, cats, copies, components] = await Promise.all([
+    const [comps, cats, copies, components, purchases] = await Promise.all([
       supabase.from('components').select('id', { count: 'exact', head: true }),
       supabase.from('categories').select('id', { count: 'exact', head: true }),
       supabase.from('prompt_copies').select('component_id'),
       supabase.from('components').select('id, title'),
+      supabase.from('purchases').select('amount'),
     ]);
 
     const copyData = copies.data || [];
     const compMap = new Map((components.data || []).map((c: any) => [c.id, c.title]));
+    const purchaseData = purchases.data || [];
 
-    // Count copies per component
     const countMap = new Map<string, number>();
     copyData.forEach((c: any) => {
       countMap.set(c.component_id, (countMap.get(c.component_id) || 0) + 1);
@@ -34,10 +35,14 @@ const AdminDashboard = () => {
       .sort((a, b) => b.copy_count - a.copy_count)
       .slice(0, 10);
 
+    const totalRevenue = purchaseData.reduce((sum: number, p: any) => sum + Number(p.amount), 0);
+
     setStats({
       components: comps.count || 0,
       categories: cats.count || 0,
       totalCopies: copyData.length,
+      totalRevenue,
+      totalPurchases: purchaseData.length,
     });
     setTopCopied(topList);
   };
@@ -50,6 +55,7 @@ const AdminDashboard = () => {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'prompt_copies' }, () => fetchStats())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'components' }, () => fetchStats())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'purchases' }, () => fetchStats())
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
@@ -60,7 +66,7 @@ const AdminDashboard = () => {
       <h1 className="text-2xl font-bold text-foreground mb-8">Dashboard</h1>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
         <div className="glass-card p-6 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
             <LayoutDashboard className="w-6 h-6 text-primary" />
@@ -85,7 +91,25 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p className="text-3xl font-bold text-foreground">{stats.totalCopies}</p>
-            <p className="text-sm text-muted-foreground">Total Prompt Copies</p>
+            <p className="text-sm text-muted-foreground">Prompt Copies</p>
+          </div>
+        </div>
+        <div className="glass-card p-6 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+            <DollarSign className="w-6 h-6 text-green-500" />
+          </div>
+          <div>
+            <p className="text-3xl font-bold text-foreground">${stats.totalRevenue.toFixed(2)}</p>
+            <p className="text-sm text-muted-foreground">Revenue</p>
+          </div>
+        </div>
+        <div className="glass-card p-6 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+            <Users className="w-6 h-6 text-blue-500" />
+          </div>
+          <div>
+            <p className="text-3xl font-bold text-foreground">{stats.totalPurchases}</p>
+            <p className="text-sm text-muted-foreground">Purchases</p>
           </div>
         </div>
       </div>
