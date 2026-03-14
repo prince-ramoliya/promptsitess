@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Cpu, Search, LayoutGrid } from 'lucide-react';
+import { BookOpen, Cpu, Search, LayoutGrid, Sparkles, Bot, Wand2, Palette, PenTool } from 'lucide-react';
 
 const platformBadges = [
   { name: 'Lovable', logo: '/logos/lovable.svg' },
   { name: 'Cursor', logo: '/logos/cursor.svg' },
-  { name: 'Bolt', logo: '/logos/bolt.svg' },
-  { name: 'React', logo: '/logos/react.svg' },
-  { name: 'Tailwind', logo: '/logos/tailwind.svg' },
+  { name: 'ChatGPT', icon: <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  { name: 'Gemini', icon: <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  { name: 'Midjourney', icon: <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  { name: 'DALL·E', icon: <Wand2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
 ];
 
 const allFeatures = [
