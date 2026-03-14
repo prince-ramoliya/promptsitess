@@ -78,10 +78,10 @@ const ComponentGallery = () => {
         >
           <span className="badge-tag text-[10px] mb-4 inline-block">CURATED COLLECTION</span>
           <h2 className="text-3xl md:text-5xl font-extrabold mb-4 font-display tracking-tight">
-            Component <span className="gradient-text">Library</span>
+            Prompt <span className="gradient-text">Library</span>
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base">
-            Browse our collection of premium UI components with ready-to-use AI prompts.
+            Browse our collection of premium AI prompts — websites, logos, photography, graphics & more.
           </p>
         </motion.div>
 

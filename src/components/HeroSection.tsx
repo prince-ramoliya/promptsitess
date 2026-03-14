@@ -7,22 +7,22 @@ const platformFeatures = [
 {
   icon: <Copy className="w-5 h-5" />,
   title: 'Copy Any Prompt',
-  description: 'Browse components, click copy, and get the exact AI prompt used to build it.'
+  description: 'Browse prompts for UI, logos, photography, graphics & more — one click to copy.'
 },
 {
   icon: <Sparkles className="w-5 h-5" />,
   title: 'Paste & Generate',
-  description: 'Drop the prompt into Lovable, Cursor, or Bolt and watch it come to life.'
+  description: 'Drop the prompt into any AI tool and watch stunning creations come to life instantly.'
 },
 {
   icon: <Layers className="w-5 h-5" />,
-  title: 'Premium Library',
-  description: 'Access 100+ hand-crafted UI components across 50+ categories.'
+  title: 'Massive Library',
+  description: 'Access 100+ hand-crafted prompts across UI, photography, logos, 3D, illustrations & more.'
 },
 {
   icon: <Zap className="w-5 h-5" />,
-  title: 'Ship 10x Faster',
-  description: 'Stop writing prompts from scratch. Use battle-tested ones that actually work.'
+  title: 'Create 10x Faster',
+  description: 'Stop writing prompts from scratch. Use battle-tested ones that deliver results every time.'
 }];
 
 
@@ -178,10 +178,10 @@ const HeroSection = () => {
           className="text-foreground font-extrabold tracking-tight max-w-[900px] leading-[1.15] text-[28px] sm:text-5xl font-display lg:text-6xl"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          Steal the Prompts{' '}
+          The Ultimate{' '}
           <br className="sm:hidden" />
-          Behind <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>Beautiful</span>{' '}
-          <span className="gradient-text">Websites</span>
+          <span className="gradient-text text-[40px] sm:text-6xl font-extrabold" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>AI Prompt</span>{' '}
+          <span className="gradient-text">Library</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -192,8 +192,8 @@ const HeroSection = () => {
           className="text-muted-foreground text-base sm:text-lg max-w-[640px] leading-relaxed px-2 sm:px-0"
           style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
           
-          Browse premium UI components and copy the exact AI prompts used to build them.
-          Paste into Lovable, Cursor, or Bolt to generate instantly.
+          Premium prompts for websites, logos, photography, graphics, illustrations, 3D art & more.
+          Copy, paste into any AI tool, and generate instantly.
         </motion.p>
 
         {/* CTA */}
@@ -204,7 +204,7 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           
            <a href="#gallery" className="glow-button glow-button-animated flex items-center gap-2.5 text-sm w-full sm:w-auto justify-center" style={{ fontFamily: "'Syne', system-ui, sans-serif" }}>
-             Browse Components <ArrowRight className="w-4 h-4" />
+             Browse Prompts <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
       </div>

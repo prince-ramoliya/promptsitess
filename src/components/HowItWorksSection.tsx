@@ -4,29 +4,29 @@ import { Search, Copy, Code2, Sparkles } from 'lucide-react';
 const steps = [
   {
     icon: Search,
-    title: 'Browse Components',
-    desc: 'Explore our curated library of premium UI sections — hero blocks, pricing tables, feature grids, and more.',
+    title: 'Browse Prompts',
+    desc: 'Explore our curated library — website sections, photography prompts, logo designs, 3D art, illustrations, and more.',
     number: '01',
     glow: 'hsl(var(--cyan))',
   },
   {
     icon: Copy,
     title: 'Copy the Prompt',
-    desc: 'Each component includes a carefully crafted AI prompt. One click copies it to your clipboard — no code needed.',
+    desc: 'Each creation includes a carefully crafted AI prompt. One click copies it to your clipboard — ready to use.',
     number: '02',
     glow: 'hsl(var(--pink))',
   },
   {
     icon: Code2,
     title: 'Paste into AI Tool',
-    desc: 'Open Lovable, Cursor, or Bolt and paste the prompt. The AI instantly understands the layout and styling.',
+    desc: 'Open Lovable, Cursor, Bolt, Midjourney, DALL·E, or any AI tool and paste the prompt to generate.',
     number: '03',
     glow: 'hsl(var(--yellow))',
   },
   {
     icon: Sparkles,
-    title: 'Generate the UI',
-    desc: 'Watch as AI generates a pixel-perfect recreation. Production-ready, fully responsive, ready to ship.',
+    title: 'Get Your Creation',
+    desc: 'Watch as AI generates stunning results — websites, logos, photos, graphics, 3D models — all production-ready.',
     number: '04',
     glow: 'hsl(var(--emerald))',
   },
@@ -47,10 +47,10 @@ const HowItWorksSection = () => (
       >
         <span className="badge-tag text-[10px] mb-4 inline-block">HOW IT WORKS</span>
         <h2 className="text-4xl md:text-6xl font-extrabold mb-5 font-display tracking-tight">
-          From Browse to <span className="gradient-text">Build</span>
+          From Browse to <span className="gradient-text">Create</span>
         </h2>
         <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto">
-          Four simple steps to transform any design into production-ready code.
+          Four simple steps to turn any prompt into a stunning AI-generated creation.
         </p>
       </motion.div>
 

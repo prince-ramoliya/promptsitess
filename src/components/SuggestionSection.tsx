@@ -55,7 +55,7 @@ const SuggestionSection = () => {
             Drop a <span className="gradient-text">Suggestion</span>
           </h2>
           <p className="text-sm text-muted-foreground mb-8 max-w-md mx-auto">
-            Have a component idea or feature request? Let us know and we'll build it for the community.
+            Have a prompt idea or feature request? Let us know and we'll create it for the community.
           </p>
         </motion.div>
 
@@ -71,7 +71,7 @@ const SuggestionSection = () => {
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Describe the component or feature you'd love to see..."
+              placeholder="Describe the prompt or creative idea you'd love to see..."
               maxLength={500}
               className="bg-background/50 border-border/50 focus:border-primary/50 min-h-[100px] resize-none text-sm"
             />
