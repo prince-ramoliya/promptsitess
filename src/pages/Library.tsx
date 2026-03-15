@@ -344,7 +344,7 @@ const Library = () => {
             <div className="space-y-0.5">
               {categories.map((cat) => {
                 const count = getCategoryCount(cat.slug);
-                const isLocked = cat.is_pro && !isPremiumUser;
+                const isLocked = cat.is_pro && !purchaseLoading && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}

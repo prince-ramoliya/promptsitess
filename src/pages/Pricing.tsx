@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { toast } from 'sonner';
 
 interface GeoPricing {
