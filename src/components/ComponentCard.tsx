@@ -188,19 +188,6 @@ const ComponentCard = ({
       </div>
     </motion.div>
 
-    <ComponentDetailModal
-      open={showDetail}
-      onClose={() => setShowDetail(false)}
-      id={id}
-      title={title}
-      previewUrl={previewUrl}
-      secretPrompt={secretPrompt}
-      isPro={isPro}
-      isPremiumUser={isPremiumUser}
-      premiumStatusLoading={premiumStatusLoading}
-      isBookmarked={isBookmarked}
-      onToggleBookmark={onToggleBookmark}
-    />
     <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
   );
