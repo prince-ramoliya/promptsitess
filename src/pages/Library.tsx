@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown, ArrowUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
@@ -31,6 +32,7 @@ type DiscoverTab = 'all' | 'newest' | 'bookmarks' | 'trending';
 
 const Library = () => {
   const { user } = useAuth();
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
   const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState('');
@@ -125,10 +127,10 @@ const Library = () => {
 
   const isEffectivelyPro = (comp: ComponentData) => comp.is_pro || comp.categoryIsPro;
   const getCategoryCount = (slug: string) => components.filter((c) => c.categorySlugs.includes(slug)).length;
-  const isPremiumUser = false;
+  const isPremiumUser = isPremium;
 
   const handleCategoryClick = (cat: Category) => {
-    if (cat.is_pro && !isPremiumUser) {
+    if (cat.is_pro && !purchaseLoading && !isPremiumUser) {
       toast.error('Upgrade to Pro to access this category');
       return;
     }
@@ -342,7 +344,7 @@ const Library = () => {
             <div className="space-y-0.5">
               {categories.map((cat) => {
                 const count = getCategoryCount(cat.slug);
-                const isLocked = cat.is_pro && !isPremiumUser;
+                const isLocked = cat.is_pro && !purchaseLoading && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}
@@ -437,7 +439,7 @@ const Library = () => {
             {/* Mobile category chips */}
             <div className="flex gap-2 flex-wrap lg:hidden mt-2">
               {categories.map((cat) => {
-                const isLocked = cat.is_pro && !isPremiumUser;
+                const isLocked = cat.is_pro && !purchaseLoading && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}
@@ -516,6 +518,8 @@ const Library = () => {
                     previewUrl={comp.preview_url}
                     secretPrompt={comp.secret_prompt}
                     isPro={isEffectivelyPro(comp)}
+                    isPremiumUser={isPremiumUser}
+                    premiumStatusLoading={purchaseLoading}
                     isBookmarked={bookmarkedIds.has(comp.id)}
                     onToggleBookmark={toggleBookmark}
                   />

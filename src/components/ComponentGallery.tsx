@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import ComponentCard from './ComponentCard';
 
 interface ComponentData {
@@ -21,6 +22,7 @@ const ComponentGallery = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
 
   const fetchData = async () => {
     const [compsRes, catsRes, compCatsRes] = await Promise.all([
@@ -113,6 +115,8 @@ const ComponentGallery = () => {
                   previewUrl={comp.preview_url}
                   secretPrompt={comp.secret_prompt}
                   isPro={comp.is_pro}
+                  isPremiumUser={isPremium}
+                  premiumStatusLoading={purchaseLoading}
                 />
               </motion.div>
             ))}

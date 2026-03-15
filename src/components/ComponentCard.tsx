@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
-import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
 import ComponentDetailModal from '@/components/ComponentDetailModal';
@@ -14,25 +13,40 @@ interface ComponentCardProps {
   previewUrl: string | null;
   secretPrompt: string;
   isPro: boolean;
+  isPremiumUser: boolean;
+  premiumStatusLoading?: boolean;
   isBookmarked?: boolean;
   onToggleBookmark?: (componentId: string) => void;
 }
 
-const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarked, onToggleBookmark }: ComponentCardProps) => {
+const ComponentCard = ({
+  id,
+  title,
+  previewUrl,
+  secretPrompt,
+  isPro,
+  isPremiumUser,
+  premiumStatusLoading = false,
+  isBookmarked,
+  onToggleBookmark,
+}: ComponentCardProps) => {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
-  const { isPremium } = usePurchaseStatus();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
-  const canCopy = !isPro || isPremium;
+  const canCopy = !isPro || isPremiumUser;
 
   const handleCopy = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     if (!user) {
       setShowAuthModal(true);
+      return;
+    }
+    if (isPro && premiumStatusLoading) {
+      toast.message('Checking membership status...');
       return;
     }
     if (!canCopy) {
@@ -184,6 +198,8 @@ const ComponentCard = ({ id, title, previewUrl, secretPrompt, isPro, isBookmarke
       previewUrl={previewUrl}
       secretPrompt={secretPrompt}
       isPro={isPro}
+      isPremiumUser={isPremiumUser}
+      premiumStatusLoading={premiumStatusLoading}
       isBookmarked={isBookmarked}
       onToggleBookmark={onToggleBookmark}
     />

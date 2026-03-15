@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { toast } from 'sonner';
 
 interface GeoPricing {
@@ -154,6 +155,7 @@ const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
 
 const Pricing = () => {
   const { user, loading: authLoading } = useAuth();
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
   const navigate = useNavigate();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
@@ -223,6 +225,12 @@ const Pricing = () => {
   const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; amount: number } | null>(null);
   const [discountError, setDiscountError] = useState('');
   const [checkingCode, setCheckingCode] = useState(false);
+
+  useEffect(() => {
+    if (!purchaseLoading && isPremium) {
+      navigate('/membership', { replace: true });
+    }
+  }, [isPremium, navigate, purchaseLoading]);
 
   // Fetch base price from DB and update geo pricing
   useEffect(() => {
