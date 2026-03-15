@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Sparkles, ArrowRight } from 'lucide-react';
+import { CheckCircle, Sparkles, ArrowRight, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(8);
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
+  const { user } = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -22,6 +29,25 @@ const PaymentSuccess = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, [navigate]);
+
+  const handleRefresh = async () => {
+    if (!user) return;
+    setRefreshing(true);
+    const { data } = await supabase
+      .from('purchases')
+      .select('id')
+      .eq('user_id', user.id)
+      .in('status', ['active', 'succeeded'])
+      .limit(1);
+
+    setRefreshing(false);
+    if (data && data.length > 0) {
+      toast.success('Membership activated! Redirecting...');
+      setTimeout(() => navigate('/library'), 1200);
+    } else {
+      toast.info('Payment is still processing. Please wait a moment and try again.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -89,6 +115,32 @@ const PaymentSuccess = () => {
             <p className="text-sm text-muted-foreground">
               Redirecting to library in {countdown}s...
             </p>
+
+            {/* Refresh membership status */}
+            {!isPremium && !purchaseLoading && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+                onClick={handleRefresh}
+                disabled={refreshing}
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors mt-2 px-4 py-2 rounded-xl bg-muted/20 border border-border/30 hover:border-primary/30 disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
+                {refreshing ? 'Checking...' : 'Refresh membership status'}
+              </motion.button>
+            )}
+
+            {isPremium && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xs text-primary font-medium flex items-center gap-1.5"
+              >
+                <CheckCircle className="w-3.5 h-3.5" />
+                Pro membership active
+              </motion.p>
+            )}
           </motion.div>
         </motion.div>
       </div>
