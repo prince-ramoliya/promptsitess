@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
       customer: {
         email: userEmail,
       },
-      return_url: return_url || "https://promptsitess.lovable.app/library",
+      return_url: return_url || "https://promptsitess.lovable.app/payment-success",
       metadata: {
         user_id: userId,
         discount_code: discount_code || "",
