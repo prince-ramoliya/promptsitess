@@ -22,6 +22,7 @@ const ComponentGallery = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
 
   const fetchData = async () => {
     const [compsRes, catsRes, compCatsRes] = await Promise.all([
