@@ -6,6 +6,9 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const LEMONSQUEEZY_CHECKOUT_URL =
+  "https://promptsites.lemonsqueezy.com/checkout/buy/0a5c0ecb-bc33-4b2d-9bb7-13e43f11f8b3";
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -34,64 +37,18 @@ Deno.serve(async (req) => {
       });
     }
 
-    const userId = user.id;
-    const userEmail = user.email || "";
-
     const { return_url } = await req.json();
 
-    const DODO_API_KEY = Deno.env.get("DODO_PAYMENTS_API_KEY");
-    if (!DODO_API_KEY) {
-      return new Response(JSON.stringify({ error: "Payment gateway not configured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    // Build LemonSqueezy checkout URL with user metadata
+    const checkoutUrl = new URL(LEMONSQUEEZY_CHECKOUT_URL);
+    checkoutUrl.searchParams.set("checkout[custom][user_id]", user.id);
+    checkoutUrl.searchParams.set("checkout[email]", user.email || "");
+    if (return_url) {
+      checkoutUrl.searchParams.set("checkout[custom][return_url]", return_url);
     }
-
-    // Create checkout session via DodoPayments API (live mode)
-    const checkoutPayload: Record<string, unknown> = {
-      product_cart: [
-        {
-          product_id: "pdt_0NaWOASe1AtojecbekwE3",
-          quantity: 1,
-        },
-      ],
-      customer: {
-        email: userEmail,
-      },
-      return_url: return_url || "https://promptsitess.lovable.app/membership",
-      metadata: {
-        user_id: userId,
-      },
-    };
-
-    const response = await fetch("https://api.dodopayments.com/checkouts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${DODO_API_KEY}`,
-      },
-      body: JSON.stringify(checkoutPayload),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("DodoPayments error:", errorText);
-      return new Response(
-        JSON.stringify({ error: "Failed to create checkout session" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
-
-    const session = await response.json();
 
     return new Response(
-      JSON.stringify({
-        checkout_url: session.checkout_url,
-        session_id: session.session_id,
-      }),
+      JSON.stringify({ checkout_url: checkoutUrl.toString() }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
