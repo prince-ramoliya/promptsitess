@@ -125,7 +125,7 @@ const iconAnimations = [
   { hover: { rotate: [0, -10, 10, -5, 0], transition: { duration: 0.6 } } },
   { hover: { scale: [1, 1.2, 0.9, 1.1, 1], transition: { duration: 0.5 } } },
   { hover: { y: [0, -6, 2, -3, 0], transition: { duration: 0.5 } } },
-  { hover: { rotate: [0, 360], transition: { duration: 0.7, ease: 'easeInOut' } } },
+  { hover: { rotate: [0, 360], transition: { duration: 0.7, ease: 'easeInOut' as const } } },
 ];
 
 const FeatureCard = ({ feature, index, large }: FeatureCardProps) => (
