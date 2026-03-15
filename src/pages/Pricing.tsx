@@ -559,7 +559,7 @@ const Pricing = () => {
                   try {
                     const { data, error } = await supabase.functions.invoke('create-checkout', {
                       body: {
-                        return_url: window.location.origin + '/membership',
+                        return_url: window.location.origin + '/payment-success',
                       },
                     });
                     if (error || !data?.checkout_url) {
