@@ -115,6 +115,8 @@ const ComponentGallery = () => {
                   previewUrl={comp.preview_url}
                   secretPrompt={comp.secret_prompt}
                   isPro={comp.is_pro}
+                  isPremiumUser={isPremium}
+                  premiumStatusLoading={purchaseLoading}
                 />
               </motion.div>
             ))}

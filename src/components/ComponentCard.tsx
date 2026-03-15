@@ -198,6 +198,8 @@ const ComponentCard = ({
       previewUrl={previewUrl}
       secretPrompt={secretPrompt}
       isPro={isPro}
+      isPremiumUser={isPremiumUser}
+      premiumStatusLoading={premiumStatusLoading}
       isBookmarked={isBookmarked}
       onToggleBookmark={onToggleBookmark}
     />
