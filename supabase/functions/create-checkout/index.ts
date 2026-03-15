@@ -36,17 +36,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { return_url } = await req.json();
+    const { return_url } = await req.json().catch(() => ({}));
 
-    // Build LemonSqueezy checkout URL with user metadata and success redirect
+    // Build LemonSqueezy checkout URL with user metadata
     const baseUrl = `https://promptsites.lemonsqueezy.com/checkout/buy/${LEMONSQUEEZY_PRODUCT_ID}`;
     const checkoutUrl = new URL(baseUrl);
     checkoutUrl.searchParams.set("checkout[custom][user_id]", user.id);
     checkoutUrl.searchParams.set("checkout[email]", user.email || "");
-
-    // Set the success redirect URL back to our app
-    const successUrl = return_url || `${req.headers.get("origin") || "https://promptsitess.lovable.app"}/payment-success`;
-    checkoutUrl.searchParams.set("checkout[success_url]", successUrl);
 
     return new Response(
       JSON.stringify({ checkout_url: checkoutUrl.toString() }),
