@@ -155,6 +155,7 @@ const PricingFAQ = ({ basePriceUsd }: { basePriceUsd: number }) => {
 
 const Pricing = () => {
   const { user, loading: authLoading } = useAuth();
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
   const navigate = useNavigate();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
