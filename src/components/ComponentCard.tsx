@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
+import { Copy, Check, Lock, Crown, Sparkles, Bookmark, ArrowUpRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
-import ComponentDetailModal from '@/components/ComponentDetailModal';
 
 interface ComponentCardProps {
   id?: string;
