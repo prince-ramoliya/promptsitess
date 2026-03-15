@@ -213,7 +213,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-3">
           {user ? (
-            <UserMenu user={user} isAdmin={isAdmin} signOut={signOut} />
+            <UserMenu user={user} isAdmin={isAdmin} signOut={signOut} isPremium={isPremium} />
           ) : (
             <>
               <Link
