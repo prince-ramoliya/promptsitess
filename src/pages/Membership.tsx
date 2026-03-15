@@ -127,8 +127,8 @@ const Membership = () => {
             <div className="bg-muted/15 rounded-xl p-4 border border-border/20">
               <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Status</p>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-emerald-400" />
-                <span className="font-semibold text-emerald-400">Active</span>
+                <CheckCircle className="w-4 h-4 text-primary" />
+                <span className="font-semibold text-primary">Active</span>
               </div>
             </div>
             <div className="bg-muted/15 rounded-xl p-4 border border-border/20">
