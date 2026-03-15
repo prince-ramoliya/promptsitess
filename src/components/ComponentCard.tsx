@@ -80,9 +80,9 @@ const ComponentCard = ({
     }
   };
 
-  const handleOpenDetail = (e: React.MouseEvent) => {
+  const handleUpgrade = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowDetail(true);
+    navigate('/pricing');
   };
 
   return (
