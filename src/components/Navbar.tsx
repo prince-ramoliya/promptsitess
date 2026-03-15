@@ -9,11 +9,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const getNavItems = (isPremium: boolean) => [
-  { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
-  { path: '/library', label: 'Library', icon: <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  { path: '/', label: 'Home', icon: <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  { path: '/library', label: 'Library', icon: <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
   isPremium
     ? { path: '/membership', label: 'Membership', icon: <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> }
-    : { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+    : { path: '/pricing', label: 'Pricing', icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
 ];
 
 const UserMenu = ({ user, isAdmin, signOut, isPremium }: { user: any; isAdmin: boolean; signOut: () => void; isPremium: boolean }) => {
