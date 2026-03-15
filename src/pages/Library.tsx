@@ -439,7 +439,7 @@ const Library = () => {
             {/* Mobile category chips */}
             <div className="flex gap-2 flex-wrap lg:hidden mt-2">
               {categories.map((cat) => {
-                const isLocked = cat.is_pro && !isPremiumUser;
+                const isLocked = cat.is_pro && !purchaseLoading && !isPremiumUser;
                 return (
                   <button
                     key={cat.id}
