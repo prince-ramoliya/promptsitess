@@ -1,15 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Home, BookOpen, Tag, ChevronRight, LogOut, Settings } from 'lucide-react';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
+import { Home, BookOpen, Tag, ChevronRight, LogOut, Settings, Crown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Logo from '@/components/Logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const navItems = [
+const getNavItems = (isPremium: boolean) => [
   { path: '/', label: 'Home', icon: <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
   { path: '/library', label: 'Library', icon: <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
-  { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  isPremium
+    ? { path: '/membership', label: 'Membership', icon: <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> }
+    : { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
 ];
 
 const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; signOut: () => void }) => {
