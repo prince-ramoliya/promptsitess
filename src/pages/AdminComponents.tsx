@@ -374,7 +374,7 @@ const AdminComponents = () => {
                 </button>
               </div>
               <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Newest</label>
+                <label className="text-sm text-muted-foreground">Latest</label>
                 <button
                   type="button"
                   onClick={() => setIsNewest(!isNewest)}
