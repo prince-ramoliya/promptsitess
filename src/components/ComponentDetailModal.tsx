@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Share2, Bookmark, Crown, Sparkles, Link, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
-import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import AuthModal from '@/components/AuthModal';
@@ -16,6 +15,8 @@ interface ComponentDetailModalProps {
   previewUrl: string | null;
   secretPrompt: string;
   isPro: boolean;
+  isPremiumUser: boolean;
+  premiumStatusLoading?: boolean;
   isBookmarked?: boolean;
   onToggleBookmark?: (componentId: string) => void;
 }

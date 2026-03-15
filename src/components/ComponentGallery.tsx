@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import ComponentCard from './ComponentCard';
 
 interface ComponentData {
