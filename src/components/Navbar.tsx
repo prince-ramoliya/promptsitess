@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import { supabase } from '@/integrations/supabase/client';
-import { Home, BookOpen, Tag, ChevronRight, LogOut, Settings, Crown, CheckCircle, Calendar, Sparkles } from 'lucide-react';
+import { Compass, LayoutGrid, Zap, ChevronRight, LogOut, Settings, Crown, CheckCircle, Calendar, Sparkles } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Logo from '@/components/Logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
