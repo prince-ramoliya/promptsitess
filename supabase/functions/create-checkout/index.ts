@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
       checkoutPayload.discount_code = discount_code;
     }
 
-    const response = await fetch("https://test.dodopayments.com/checkouts", {
+    const response = await fetch("https://api.dodopayments.com/checkouts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
