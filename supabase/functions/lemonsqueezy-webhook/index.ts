@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, webhook-id, webhook-timestamp, webhook-signature",
+    "authorization, x-client-info, apikey, content-type, x-signature",
 };
 
 Deno.serve(async (req) => {
@@ -15,15 +15,33 @@ Deno.serve(async (req) => {
     const body = await req.text();
     const payload = JSON.parse(body);
 
-    console.log("DodoPayments webhook received:", JSON.stringify({
-      payment_id: payload.payment_id,
-      status: payload.status,
-      metadata: payload.metadata,
-    }));
+    const eventName = payload.meta?.event_name;
+    console.log("LemonSqueezy webhook received:", eventName);
 
-    // Only process succeeded payments
-    if (payload.status !== "succeeded") {
-      console.log("Skipping non-succeeded payment:", payload.status);
+    // Only process successful order events
+    if (eventName !== "order_created") {
+      console.log("Skipping event:", eventName);
+      return new Response(JSON.stringify({ received: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const orderData = payload.data?.attributes;
+    const customData = payload.meta?.custom_data || {};
+
+    const userId = customData.user_id;
+    if (!userId) {
+      console.error("No user_id in custom data");
+      return new Response(JSON.stringify({ error: "Missing user_id" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Only process paid orders
+    if (orderData?.status !== "paid") {
+      console.log("Order not paid, status:", orderData?.status);
       return new Response(JSON.stringify({ received: true }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -35,23 +53,12 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const userId = payload.metadata?.user_id;
-    if (!userId) {
-      console.error("No user_id in payment metadata");
-      return new Response(JSON.stringify({ error: "Missing user_id in metadata" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const customerEmail = orderData.user_email || "";
+    const customerName = orderData.user_name || "";
+    const amount = orderData.total ? orderData.total / 100 : 0;
+    const currency = orderData.currency?.toUpperCase() || "USD";
 
-    const customerEmail = payload.customer?.email || "";
-    const customerName = payload.customer?.name || "";
-    const customerPhone = payload.customer?.phone_number || null;
-    const amount = payload.total_amount ? payload.total_amount / 100 : 0; // Convert from cents
-    const currency = payload.currency || "USD";
-    const paymentId = payload.payment_id || "";
-
-    // Upsert purchase record (use payment_id to prevent duplicates)
+    // Upsert purchase record
     const { error: upsertError } = await supabase
       .from("purchases")
       .upsert(
@@ -59,7 +66,6 @@ Deno.serve(async (req) => {
           user_id: userId,
           user_email: customerEmail,
           user_name: customerName,
-          user_phone: customerPhone,
           amount,
           currency,
           status: "active",
@@ -69,15 +75,13 @@ Deno.serve(async (req) => {
       );
 
     if (upsertError) {
-      console.error("Failed to record purchase:", upsertError);
-      // Try insert instead (user might have multiple purchases)
+      console.error("Upsert failed, trying insert:", upsertError);
       const { error: insertError } = await supabase
         .from("purchases")
         .insert({
           user_id: userId,
           user_email: customerEmail,
           user_name: customerName,
-          user_phone: customerPhone,
           amount,
           currency,
           status: "active",
@@ -85,7 +89,7 @@ Deno.serve(async (req) => {
         });
 
       if (insertError) {
-        console.error("Failed to insert purchase:", insertError);
+        console.error("Insert failed:", insertError);
         return new Response(JSON.stringify({ error: "Database error" }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
