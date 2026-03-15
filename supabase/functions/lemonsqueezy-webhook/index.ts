@@ -58,43 +58,41 @@ Deno.serve(async (req) => {
     const amount = orderData.total ? orderData.total / 100 : 0;
     const currency = orderData.currency?.toUpperCase() || "USD";
 
-    // Upsert purchase record
-    const { error: upsertError } = await supabase
+    // Check if purchase already exists for this user
+    const { data: existing } = await supabase
       .from("purchases")
-      .upsert(
-        {
-          user_id: userId,
-          user_email: customerEmail,
-          user_name: customerName,
-          amount,
-          currency,
-          status: "active",
-          purchased_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id" }
-      );
+      .select("id")
+      .eq("user_id", userId)
+      .eq("status", "active")
+      .limit(1);
 
-    if (upsertError) {
-      console.error("Upsert failed, trying insert:", upsertError);
-      const { error: insertError } = await supabase
-        .from("purchases")
-        .insert({
-          user_id: userId,
-          user_email: customerEmail,
-          user_name: customerName,
-          amount,
-          currency,
-          status: "active",
-          purchased_at: new Date().toISOString(),
-        });
+    if (existing && existing.length > 0) {
+      console.log("Purchase already exists for user:", userId);
+      return new Response(JSON.stringify({ received: true, already_exists: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-      if (insertError) {
-        console.error("Insert failed:", insertError);
-        return new Response(JSON.stringify({ error: "Database error" }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+    // Insert new purchase record
+    const { error: insertError } = await supabase
+      .from("purchases")
+      .insert({
+        user_id: userId,
+        user_email: customerEmail,
+        user_name: customerName,
+        amount,
+        currency,
+        status: "active",
+        purchased_at: new Date().toISOString(),
+      });
+
+    if (insertError) {
+      console.error("Insert failed:", insertError);
+      return new Response(JSON.stringify({ error: "Database error" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     console.log("Purchase recorded for user:", userId);

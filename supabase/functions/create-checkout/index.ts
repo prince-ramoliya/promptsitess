@@ -6,8 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const LEMONSQUEEZY_CHECKOUT_URL =
-  "https://promptsites.lemonsqueezy.com/checkout/buy/0a5c0ecb-bc33-4b2d-9bb7-13e43f11f8b3";
+const LEMONSQUEEZY_PRODUCT_ID = "0a5c0ecb-bc33-4b2d-9bb7-13e43f11f8b3";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -39,13 +38,15 @@ Deno.serve(async (req) => {
 
     const { return_url } = await req.json();
 
-    // Build LemonSqueezy checkout URL with user metadata
-    const checkoutUrl = new URL(LEMONSQUEEZY_CHECKOUT_URL);
+    // Build LemonSqueezy checkout URL with user metadata and success redirect
+    const baseUrl = `https://promptsites.lemonsqueezy.com/checkout/buy/${LEMONSQUEEZY_PRODUCT_ID}`;
+    const checkoutUrl = new URL(baseUrl);
     checkoutUrl.searchParams.set("checkout[custom][user_id]", user.id);
     checkoutUrl.searchParams.set("checkout[email]", user.email || "");
-    if (return_url) {
-      checkoutUrl.searchParams.set("checkout[custom][return_url]", return_url);
-    }
+
+    // Set the success redirect URL back to our app
+    const successUrl = return_url || `${req.headers.get("origin") || "https://promptsitess.lovable.app"}/payment-success`;
+    checkoutUrl.searchParams.set("checkout[success_url]", successUrl);
 
     return new Response(
       JSON.stringify({ checkout_url: checkoutUrl.toString() }),
