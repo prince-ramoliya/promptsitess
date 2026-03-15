@@ -33,8 +33,8 @@ const ComponentCard = ({
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const canCopy = !isPro || isPremiumUser;
