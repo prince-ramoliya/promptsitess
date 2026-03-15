@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Crown, SlidersHorizontal, ArrowLeft, Clock, Star, Sparkles, Lock, Bookmark, TrendingUp, ChevronDown, ArrowUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ComponentCard from '@/components/ComponentCard';
