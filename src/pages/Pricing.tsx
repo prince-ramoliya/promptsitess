@@ -226,6 +226,12 @@ const Pricing = () => {
   const [discountError, setDiscountError] = useState('');
   const [checkingCode, setCheckingCode] = useState(false);
 
+  useEffect(() => {
+    if (!purchaseLoading && isPremium) {
+      navigate('/membership', { replace: true });
+    }
+  }, [isPremium, navigate, purchaseLoading]);
+
   // Fetch base price from DB and update geo pricing
   useEffect(() => {
     const fetchPrice = async () => {

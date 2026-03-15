@@ -518,6 +518,8 @@ const Library = () => {
                     previewUrl={comp.preview_url}
                     secretPrompt={comp.secret_prompt}
                     isPro={isEffectivelyPro(comp)}
+                    isPremiumUser={isPremiumUser}
+                    premiumStatusLoading={purchaseLoading}
                     isBookmarked={bookmarkedIds.has(comp.id)}
                     onToggleBookmark={toggleBookmark}
                   />
