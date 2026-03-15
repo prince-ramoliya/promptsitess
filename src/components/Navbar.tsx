@@ -181,7 +181,7 @@ const Navbar = () => {
       <div className="flex md:hidden items-center justify-between px-4 h-12 my-[18px] py-[36px]">
         <Logo size="md" />
         {user ? (
-          <UserMenu user={user} isAdmin={isAdmin} signOut={signOut} />
+          <UserMenu user={user} isAdmin={isAdmin} signOut={signOut} isPremium={isPremium} />
         ) : (
           <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
             Log In
