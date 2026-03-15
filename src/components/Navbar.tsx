@@ -8,13 +8,19 @@ import Logo from '@/components/Logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const getNavItems = (isPremium: boolean) => [
-  { path: '/', label: 'Home', icon: <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
-  { path: '/library', label: 'Library', icon: <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
-  isPremium
-    ? { path: '/membership', label: 'Membership', icon: <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> }
-    : { path: '/pricing', label: 'Pricing', icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
-];
+const getNavItems = (isPremium: boolean, isAdmin: boolean) => {
+  const items = [
+    { path: '/', label: 'Home', icon: <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+    { path: '/library', label: 'Library', icon: <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+    isPremium
+      ? { path: '/membership', label: 'Membership', icon: <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> }
+      : { path: '/pricing', label: 'Pricing', icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+  ];
+  if (isAdmin) {
+    items.push({ path: '/admin', label: 'Admin', icon: <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> });
+  }
+  return items;
+};
 
 const UserMenu = ({ user, isAdmin, signOut, isPremium }: { user: any; isAdmin: boolean; signOut: () => void; isPremium: boolean }) => {
   const [open, setOpen] = useState(false);
@@ -128,16 +134,6 @@ const UserMenu = ({ user, isAdmin, signOut, isPremium }: { user: any; isAdmin: b
                   Membership
                 </Link>
               )}
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-foreground hover:bg-muted/30 transition-colors"
-                >
-                  <Settings className="w-4 h-4 text-muted-foreground" />
-                  Admin Panel
-                </Link>
-              )}
               <button
                 onClick={() => { setOpen(false); signOut(); }}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-destructive hover:bg-destructive/10 transition-colors"
@@ -158,7 +154,7 @@ const Navbar = () => {
   const { isPremium } = usePurchaseStatus();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const navItems = getNavItems(isPremium);
+  const navItems = getNavItems(isPremium, isAdmin && !!user);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -166,7 +162,10 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/admin') return location.pathname.startsWith('/admin');
+    return location.pathname === path;
+  };
 
   return (
     <>

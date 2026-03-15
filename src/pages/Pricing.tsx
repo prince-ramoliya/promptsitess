@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus, Tag, X, Loader2 } from 'lucide-react';
+import { Check, Sparkles, Crown, Code, Layers, Zap, Layout, Palette, MousePointerClick, Plus, Minus, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import Navbar from '@/components/Navbar';
@@ -19,12 +19,12 @@ interface GeoPricing {
 }
 
 const features = [
-  'Full library access',
-  'Premium AI prompts',
-  'Weekly new components',
-  'Priority support',
-  'Early access to new features',
-  'Copy & paste workflow',
+  { label: 'Full library access', desc: 'Every prompt, every category' },
+  { label: 'Premium AI prompts', desc: 'Pro-grade component prompts' },
+  { label: 'Weekly new components', desc: 'Fresh additions every week' },
+  { label: 'Priority support', desc: 'Fast, dedicated help' },
+  { label: 'Early access to new features', desc: 'Be first to try updates' },
+  { label: 'Copy & paste workflow', desc: 'Instant AI-ready prompts' },
 ];
 
 const FloatingOrb = ({ delay, duration, x, y, size, color }: { delay: number; duration: number; x: string; y: string; size: string; color: string }) => (
@@ -51,7 +51,6 @@ const GridLine = ({ orientation, position, delay }: { orientation: 'h' | 'v'; po
   />
 );
 
-/* Floating icon elements for pricing context */
 const FloatingIcon = ({ icon: Icon, x, y, delay, size = 24 }: { icon: any; x: string; y: string; delay: number; size?: number }) => (
   <motion.div
     className="absolute flex items-center justify-center w-14 h-14 rounded-2xl bg-card/50 backdrop-blur-md border border-border/30 text-muted-foreground/50 shadow-lg shadow-primary/5"
@@ -159,7 +158,6 @@ const Pricing = () => {
   const navigate = useNavigate();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [geoPricing, setGeoPricing] = useState<GeoPricing | null>(() => {
-    // Instant currency detection via browser timezone/locale
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
       const tzCountryMap: Record<string, string> = {
@@ -221,10 +219,6 @@ const Pricing = () => {
     }
   });
   const [basePriceUsd, setBasePriceUsd] = useState(19);
-  const [discountCode, setDiscountCode] = useState('');
-  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; amount: number } | null>(null);
-  const [discountError, setDiscountError] = useState('');
-  const [checkingCode, setCheckingCode] = useState(false);
 
   useEffect(() => {
     if (!purchaseLoading && isPremium) {
@@ -232,7 +226,6 @@ const Pricing = () => {
     }
   }, [isPremium, navigate, purchaseLoading]);
 
-  // Fetch base price from DB and update geo pricing
   useEffect(() => {
     const fetchPrice = async () => {
       const { data } = await supabase.from('pricing_config').select('base_price_usd').limit(1).single();
@@ -268,57 +261,10 @@ const Pricing = () => {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  // Calculate final price
-  const finalPriceUsd = appliedDiscount
-    ? appliedDiscount.percent > 0
-      ? basePriceUsd * (1 - appliedDiscount.percent / 100)
-      : Math.max(0, basePriceUsd - appliedDiscount.amount)
-    : basePriceUsd;
-
-  const geoRate = geoPricing && geoPricing.currency !== 'USD' ? Number(geoPricing.localPrice) / geoPricing.usdPrice : 1;
   const displayPrice = geoPricing && geoPricing.currency !== 'USD'
-    ? `${geoPricing.symbol}${Math.round(finalPriceUsd * geoRate)}`
-    : `$${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)}`;
+    ? `${geoPricing.symbol}${geoPricing.localPrice}`
+    : `$${basePriceUsd}`;
   const isLocalCurrency = geoPricing && geoPricing.currency !== 'USD';
-
-  const handleApplyDiscount = async () => {
-    if (!discountCode.trim()) return;
-    setCheckingCode(true);
-    setDiscountError('');
-    const { data, error } = await supabase
-      .from('discount_codes')
-      .select('*')
-      .eq('code', discountCode.trim().toUpperCase())
-      .eq('is_active', true)
-      .limit(1)
-      .single();
-
-    setCheckingCode(false);
-    if (error || !data) {
-      setDiscountError('Invalid or expired code');
-      setAppliedDiscount(null);
-      return;
-    }
-    const d = data as any;
-    if (d.expires_at && new Date(d.expires_at) < new Date()) {
-      setDiscountError('This code has expired');
-      setAppliedDiscount(null);
-      return;
-    }
-    if (d.max_uses !== null && d.current_uses >= d.max_uses) {
-      setDiscountError('This code has reached its max uses');
-      setAppliedDiscount(null);
-      return;
-    }
-    setAppliedDiscount({ code: d.code, percent: d.discount_percent, amount: Number(d.discount_amount) });
-    setDiscountError('');
-  };
-
-  const removeDiscount = () => {
-    setAppliedDiscount(null);
-    setDiscountCode('');
-    setDiscountError('');
-  };
 
   const particles = useMemo(
     () =>
@@ -339,7 +285,6 @@ const Pricing = () => {
 
       {/* === Animated linear gradient background === */}
       <div className="fixed inset-0 pointer-events-none -z-20">
-        {/* Cycling linear gradient that shifts hue */}
         <motion.div
           className="absolute inset-0"
           animate={{
@@ -353,8 +298,6 @@ const Pricing = () => {
           }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         />
-
-        {/* Diagonal animated gradient band */}
         <motion.div
           className="absolute -inset-[50%] opacity-30"
           style={{
@@ -367,7 +310,6 @@ const Pricing = () => {
 
       {/* === Foreground background elements === */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Gradient mesh */}
         <div className="absolute inset-0">
           <motion.div
             className="absolute inset-0"
@@ -505,7 +447,6 @@ const Pricing = () => {
           }}
           transition={{ duration: 12, delay: 2, repeat: Infinity, ease: 'easeInOut' }}
         />
-        {/* Vertical animated line - left */}
         <motion.div
           className="absolute w-[2px] h-[200px] left-[40%] bg-gradient-to-b from-transparent via-[hsl(var(--cyan)/0.4)] to-transparent"
           animate={{ y: ['-100%', '500%'] }}
@@ -541,7 +482,6 @@ const Pricing = () => {
           }}
           transition={{ duration: 13, delay: 3, repeat: Infinity, ease: 'easeInOut' }}
         />
-        {/* Vertical animated line - right */}
         <motion.div
           className="absolute w-[2px] h-[200px] right-[35%] bg-gradient-to-b from-transparent via-[hsl(var(--pink)/0.4)] to-transparent"
           animate={{ y: ['500%', '-100%'] }}
@@ -562,7 +502,7 @@ const Pricing = () => {
             </p>
           </motion.div>
 
-          {/* Pricing Card — Full-width stacked horizontal */}
+          {/* Pricing Card */}
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             {/* Giant centered price hero */}
             <div className="text-center mb-10">
@@ -571,32 +511,11 @@ const Pricing = () => {
               </div>
 
               <div className="flex items-baseline justify-center gap-3 mb-2">
-                {appliedDiscount && (
-                  <span className="text-3xl font-bold text-muted-foreground line-through font-display">
-                    {isLocalCurrency && geoPricing ? `${geoPricing.symbol}${Math.round(basePriceUsd * geoRate)}` : `$${basePriceUsd}`}
-                  </span>
-                )}
                 <span className="text-8xl md:text-9xl font-extrabold text-foreground leading-none" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>{displayPrice}</span>
               </div>
 
               {isLocalCurrency && (
-                <p className="text-sm text-muted-foreground mb-1">≈ ${finalPriceUsd % 1 === 0 ? finalPriceUsd : finalPriceUsd.toFixed(2)} USD</p>
-              )}
-
-              {appliedDiscount && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[hsl(var(--emerald)/0.15)] border border-[hsl(var(--emerald)/0.3)]"
-                >
-                  <Tag className="w-3.5 h-3.5 text-[hsl(var(--emerald))]" />
-                  <span className="text-sm font-semibold text-[hsl(var(--emerald))]">
-                    {appliedDiscount.percent > 0 ? `${appliedDiscount.percent}% off` : `$${appliedDiscount.amount} off`} — {appliedDiscount.code}
-                  </span>
-                  <button onClick={removeDiscount} className="ml-1 hover:text-foreground transition-colors">
-                    <X className="w-3.5 h-3.5 text-[hsl(var(--emerald))]" />
-                  </button>
-                </motion.div>
+                <p className="text-sm text-muted-foreground mb-1">≈ ${basePriceUsd} USD</p>
               )}
 
               <div className="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[hsl(var(--emerald)/0.1)] border border-[hsl(var(--emerald)/0.25)]">
@@ -605,48 +524,31 @@ const Pricing = () => {
               </div>
             </div>
 
-            {/* Features row */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
-              {features.map((f, i) => (
-                <motion.div
-                  key={f}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.05 }}
-                  className="glass-card p-4 text-center hover:border-primary/25 transition-colors"
-                >
-                  <Check className="w-5 h-5 text-primary mx-auto mb-2" />
-                  <span className="text-xs font-medium text-foreground">{f}</span>
-                </motion.div>
-              ))}
+            {/* Redesigned features — horizontal pill layout */}
+            <div className="max-w-3xl mx-auto mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {features.map((f, i) => (
+                  <motion.div
+                    key={f.label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.06 }}
+                    className="flex items-start gap-3 px-5 py-4 rounded-2xl bg-card/40 backdrop-blur-xl border border-border/30 hover:border-primary/20 transition-all group"
+                  >
+                    <div className="mt-0.5 flex-shrink-0 w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <Check className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-semibold text-foreground block">{f.label}</span>
+                      <span className="text-xs text-muted-foreground">{f.desc}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             {/* CTA area */}
             <div className="max-w-md mx-auto">
-              {/* Discount */}
-              {!appliedDiscount && (
-                <div className="mb-4">
-                  <div className="flex gap-2">
-                    <input
-                      value={discountCode}
-                      onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountError(''); }}
-                      placeholder="Discount code"
-                      className="flex-1 px-4 py-3 rounded-xl bg-card/60 border border-border/40 text-foreground text-sm focus:outline-none focus:border-primary/40 transition-all uppercase placeholder:normal-case backdrop-blur-xl"
-                    />
-                    <button
-                      onClick={handleApplyDiscount}
-                      disabled={checkingCode || !discountCode.trim()}
-                      className="px-6 py-3 rounded-xl bg-muted/50 border border-border/50 text-foreground text-sm font-medium hover:bg-muted/70 transition-all disabled:opacity-50"
-                    >
-                      {checkingCode ? '...' : 'Apply'}
-                    </button>
-                  </div>
-                  {discountError && (
-                    <p className="text-xs text-destructive mt-1.5">{discountError}</p>
-                  )}
-                </div>
-              )}
-
               <button
                 onClick={async () => {
                   if (!user) {
@@ -657,8 +559,7 @@ const Pricing = () => {
                   try {
                     const { data, error } = await supabase.functions.invoke('create-checkout', {
                       body: {
-                        return_url: window.location.origin + '/payment-success',
-                        discount_code: appliedDiscount?.code || '',
+                        return_url: window.location.origin + '/membership',
                       },
                     });
                     if (error || !data?.checkout_url) {
