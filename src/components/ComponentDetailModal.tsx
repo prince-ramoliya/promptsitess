@@ -169,6 +169,8 @@ const ComponentDetailModal = ({
   previewUrl,
   secretPrompt,
   isPro,
+  isPremiumUser,
+  premiumStatusLoading = false,
   isBookmarked,
   onToggleBookmark,
 }: ComponentDetailModalProps) => {
@@ -176,8 +178,7 @@ const ComponentDetailModal = ({
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
   const { user } = useAuth();
-  const { isPremium } = usePurchaseStatus();
-  const canCopy = !isPro || isPremium;
+  const canCopy = !isPro || isPremiumUser;
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const shareUrl = `${window.location.origin}/library?component=${id}`;
