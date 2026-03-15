@@ -45,6 +45,10 @@ const ComponentCard = ({
       setShowAuthModal(true);
       return;
     }
+    if (isPro && premiumStatusLoading) {
+      toast.message('Checking membership status...');
+      return;
+    }
     if (!canCopy) {
       toast.error('Upgrade to Pro to access this prompt');
       return;
