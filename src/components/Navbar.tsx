@@ -87,8 +87,10 @@ const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; sig
 
 const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
+  const { isPremium } = usePurchaseStatus();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const navItems = getNavItems(isPremium);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
