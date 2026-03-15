@@ -49,18 +49,18 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create checkout session via DodoPayments API (test mode)
+    // Create checkout session via DodoPayments API (live mode)
     const checkoutPayload: Record<string, unknown> = {
       product_cart: [
         {
-          product_id: "pdt_0NaRyL48F04QwIYNFjinQ",
+          product_id: "pdt_0NaWOASe1AtojecbekwE3",
           quantity: 1,
         },
       ],
       customer: {
         email: userEmail,
       },
-      return_url: return_url || "https://promptsitess.lovable.app/payment-success",
+      return_url: return_url || "https://promptsitess.lovable.app/membership",
       metadata: {
         user_id: userId,
         discount_code: discount_code || "",
