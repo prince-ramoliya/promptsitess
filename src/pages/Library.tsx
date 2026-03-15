@@ -32,6 +32,7 @@ type DiscoverTab = 'all' | 'newest' | 'bookmarks' | 'trending';
 
 const Library = () => {
   const { user } = useAuth();
+  const { isPremium, loading: purchaseLoading } = usePurchaseStatus();
   const [components, setComponents] = useState<ComponentData[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState('');
@@ -126,10 +127,10 @@ const Library = () => {
 
   const isEffectivelyPro = (comp: ComponentData) => comp.is_pro || comp.categoryIsPro;
   const getCategoryCount = (slug: string) => components.filter((c) => c.categorySlugs.includes(slug)).length;
-  const isPremiumUser = false;
+  const isPremiumUser = isPremium;
 
   const handleCategoryClick = (cat: Category) => {
-    if (cat.is_pro && !isPremiumUser) {
+    if (cat.is_pro && !purchaseLoading && !isPremiumUser) {
       toast.error('Upgrade to Pro to access this category');
       return;
     }
