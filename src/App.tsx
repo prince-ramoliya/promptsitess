@@ -38,6 +38,7 @@ const App = () => {
             <Route path="/library" element={<Library />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/membership" element={<Membership />} />
             
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />}>
