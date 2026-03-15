@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Lock, Crown, Sparkles, Bookmark, Eye } from 'lucide-react';
+import { Copy, Check, Lock, Crown, Sparkles, Bookmark, ArrowUpRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import AuthModal from '@/components/AuthModal';
-import ComponentDetailModal from '@/components/ComponentDetailModal';
 
 interface ComponentCardProps {
   id?: string;
@@ -33,8 +33,8 @@ const ComponentCard = ({
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const isVideo = (url: string) => /\.(mp4|webm|mov|avi)(\?|$)/i.test(url);
   const canCopy = !isPro || isPremiumUser;
@@ -80,9 +80,9 @@ const ComponentCard = ({
     }
   };
 
-  const handleOpenDetail = (e: React.MouseEvent) => {
+  const handleUpgrade = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowDetail(true);
+    navigate('/pricing');
   };
 
   return (
@@ -129,37 +129,35 @@ const ComponentCard = ({
                   Sign in to Copy
                 </motion.button>
               ) : canCopy ? (
-                <>
-                  <motion.button
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.05 }}
-                    onClick={handleCopy}
-                    className="glow-button flex items-center gap-2 text-sm !px-5 !py-2.5"
-                  >
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    {copied ? 'Copied!' : 'Copy Prompt'}
-                  </motion.button>
-                  <motion.button
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                    onClick={handleOpenDetail}
-                    className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-[200px] bg-muted/50 border border-border/40 text-foreground hover:bg-muted/70 transition-all font-medium backdrop-blur-sm"
-                  >
-                    <Eye className="w-4 h-4" />
-                    View Details
-                  </motion.button>
-                </>
+                <motion.button
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.05 }}
+                  onClick={handleCopy}
+                  className="glow-button flex items-center gap-2 text-sm !px-5 !py-2.5"
+                >
+                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? 'Copied!' : 'Copy Prompt'}
+                </motion.button>
                ) : (
                  <motion.div
                    initial={{ scale: 0.9 }}
                    animate={{ scale: 1 }}
-                   className="flex flex-col items-center gap-2"
+                   className="flex flex-col items-center gap-3"
                  >
-                   <Lock className="w-6 h-6 text-primary" />
-                   <span className="text-sm text-foreground font-medium">Pro Content Locked</span>
-                   <span className="text-xs text-muted-foreground">This is a premium prompt</span>
+                   <Lock className="w-6 h-6 text-[hsl(var(--yellow))]" />
+                   <span className="text-sm text-foreground font-medium">This is a Pro component</span>
+                   <span className="text-xs text-muted-foreground">Upgrade to copy the prompt</span>
+                   <motion.button
+                     whileHover={{ scale: 1.05 }}
+                     whileTap={{ scale: 0.95 }}
+                     onClick={handleUpgrade}
+                     className="glow-button flex items-center gap-2 text-sm !px-6 !py-2.5 mt-1"
+                   >
+                     <Crown className="w-4 h-4" />
+                     Upgrade Now
+                     <ArrowUpRight className="w-3.5 h-3.5" />
+                   </motion.button>
                  </motion.div>
                )}
             </motion.div>
@@ -190,19 +188,6 @@ const ComponentCard = ({
       </div>
     </motion.div>
 
-    <ComponentDetailModal
-      open={showDetail}
-      onClose={() => setShowDetail(false)}
-      id={id}
-      title={title}
-      previewUrl={previewUrl}
-      secretPrompt={secretPrompt}
-      isPro={isPro}
-      isPremiumUser={isPremiumUser}
-      premiumStatusLoading={premiumStatusLoading}
-      isBookmarked={isBookmarked}
-      onToggleBookmark={onToggleBookmark}
-    />
     <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
   );

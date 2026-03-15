@@ -121,6 +121,13 @@ interface FeatureCardProps {
   large?: boolean;
 }
 
+const iconAnimations = [
+  { hover: { rotate: [0, -10, 10, -5, 0], transition: { duration: 0.6 } } },
+  { hover: { scale: [1, 1.2, 0.9, 1.1, 1], transition: { duration: 0.5 } } },
+  { hover: { y: [0, -6, 2, -3, 0], transition: { duration: 0.5 } } },
+  { hover: { rotate: [0, 360], transition: { duration: 0.7, ease: 'easeInOut' as const } } },
+];
+
 const FeatureCard = ({ feature, index, large }: FeatureCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 28 }}
@@ -143,9 +150,12 @@ const FeatureCard = ({ feature, index, large }: FeatureCardProps) => (
 
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-4 sm:mb-5">
-          <div className={`${large ? 'w-11 h-11 sm:w-12 sm:h-12' : 'w-10 h-10'} rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.iconBg} ${feature.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+          <motion.div
+            whileHover={iconAnimations[index % 4].hover}
+            className={`${large ? 'w-11 h-11 sm:w-12 sm:h-12' : 'w-10 h-10'} rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.iconBg} ${feature.iconColor} transition-transform duration-300`}
+          >
             {feature.icon}
-          </div>
+          </motion.div>
           {feature.badge && (
             <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[hsl(var(--yellow)/0.15)] text-[hsl(var(--yellow))] border border-[hsl(var(--yellow)/0.25)]">
               {feature.badge}
