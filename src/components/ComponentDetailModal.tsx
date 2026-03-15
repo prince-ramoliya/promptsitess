@@ -248,7 +248,7 @@ const ComponentDetailModal = ({
             {/* Title + Pro badge */}
             <div className="flex items-center gap-3 min-h-[32px]">
               <h2 className="text-xl font-bold text-foreground tracking-tight flex-1 truncate">{title}</h2>
-              {isPro && !isPremiumUser && (
+              {isPro && (
                 <span className="flex items-center gap-1 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-full bg-[hsl(var(--yellow))] text-background shadow-[0_0_16px_-4px_hsl(var(--yellow)/0.6)] flex-shrink-0">
                   <Crown className="w-3 h-3" /> PRO
                 </span>
