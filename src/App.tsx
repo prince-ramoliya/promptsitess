@@ -19,7 +19,7 @@ import AdminSubscriptions from "./pages/AdminSubscriptions";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminUsers from "./pages/AdminUsers";
 import Library from "./pages/Library";
-import PaymentSuccess from "./pages/PaymentSuccess";
+
 import Membership from "./pages/Membership";
 import NotFound from "./pages/NotFound";
 
@@ -37,7 +37,7 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/library" element={<Library />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
+            
             <Route path="/membership" element={<Membership />} />
             
             <Route path="/auth" element={<Auth />} />

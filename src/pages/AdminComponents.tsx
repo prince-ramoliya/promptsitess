@@ -374,7 +374,7 @@ const AdminComponents = () => {
                 </button>
               </div>
               <div className="flex items-center gap-3">
-                <label className="text-sm text-muted-foreground">Newest</label>
+                <label className="text-sm text-muted-foreground">Latest</label>
                 <button
                   type="button"
                   onClick={() => setIsNewest(!isNewest)}
@@ -432,7 +432,7 @@ const AdminComponents = () => {
                 )}
                 {comp.is_newest && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
-                    ✦ NEWEST
+                    ✦ LATEST
                   </span>
                 )}
                 {comp.is_pinned && (
