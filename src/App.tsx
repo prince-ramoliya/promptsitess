@@ -19,6 +19,7 @@ import AdminSubscriptions from "./pages/AdminSubscriptions";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminUsers from "./pages/AdminUsers";
 import Library from "./pages/Library";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

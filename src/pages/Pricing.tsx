@@ -649,7 +649,7 @@ const Pricing = () => {
                   try {
                     const { data, error } = await supabase.functions.invoke('create-checkout', {
                       body: {
-                        return_url: window.location.origin + '/library',
+                        return_url: window.location.origin + '/payment-success',
                         discount_code: appliedDiscount?.code || '',
                       },
                     });
