@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { usePurchaseStatus } from '@/hooks/usePurchaseStatus';
-import { Home, BookOpen, Tag, ChevronRight, LogOut, Settings, Crown } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Home, BookOpen, Tag, ChevronRight, LogOut, Settings, Crown, CheckCircle, Calendar, Sparkles } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Logo from '@/components/Logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -15,9 +16,10 @@ const getNavItems = (isPremium: boolean) => [
     : { path: '/pricing', label: 'Pricing', icon: <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
 ];
 
-const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; signOut: () => void }) => {
+const UserMenu = ({ user, isAdmin, signOut, isPremium }: { user: any; isAdmin: boolean; signOut: () => void; isPremium: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [purchaseDate, setPurchaseDate] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -26,6 +28,27 @@ const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; sig
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
+
+  useEffect(() => {
+    if (!isPremium || !user?.id) return;
+    supabase
+      .from('purchases')
+      .select('purchased_at')
+      .eq('user_id', user.id)
+      .in('status', ['active', 'succeeded'])
+      .order('purchased_at', { ascending: false })
+      .limit(1)
+      .single()
+      .then(({ data }) => {
+        if (data) {
+          setPurchaseDate(
+            new Date(data.purchased_at).toLocaleDateString('en-US', {
+              month: 'short', day: 'numeric', year: 'numeric',
+            })
+          );
+        }
+      });
+  }, [isPremium, user?.id]);
 
   const initials = user.email ? user.email.slice(0, 2).toUpperCase() : 'U';
 
@@ -43,6 +66,9 @@ const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; sig
         <span className="text-sm font-medium text-foreground max-w-[120px] truncate hidden lg:block">
           {user.email?.split('@')[0]}
         </span>
+        {isPremium && (
+          <Crown className="w-3.5 h-3.5 text-[hsl(var(--yellow))] hidden lg:block" />
+        )}
       </button>
 
       <AnimatePresence>
@@ -52,14 +78,56 @@ const UserMenu = ({ user, isAdmin, signOut }: { user: any; isAdmin: boolean; sig
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-card/95 backdrop-blur-2xl border border-border/30 shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5)] overflow-hidden z-50"
+            className="absolute right-0 top-full mt-2 w-72 rounded-2xl bg-card/95 backdrop-blur-2xl border border-border/30 shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5)] overflow-hidden z-50"
           >
             <div className="px-4 py-3.5 border-b border-border/20 bg-muted/10">
               <p className="text-sm font-semibold text-foreground truncate">{user.email?.split('@')[0]}</p>
               <p className="text-xs text-muted-foreground truncate mt-0.5">{user.email}</p>
             </div>
 
+            {/* Membership badge */}
+            {isPremium && (
+              <div className="mx-3 mt-3 mb-1 rounded-xl bg-gradient-to-br from-[hsl(var(--yellow))/0.08] to-[hsl(var(--yellow))/0.02] border border-[hsl(var(--yellow))/0.2] p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-[hsl(var(--yellow))/0.15]">
+                    <Crown className="w-3.5 h-3.5 text-[hsl(var(--yellow))]" />
+                  </div>
+                  <span className="text-xs font-bold tracking-wide text-[hsl(var(--yellow))]">PRO MEMBER</span>
+                  <CheckCircle className="w-3.5 h-3.5 text-primary ml-auto" />
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <Sparkles className="w-3 h-3 text-muted-foreground" />
+                    <span className="text-muted-foreground">Plan:</span>
+                    <span className="text-foreground font-medium">Lifetime Pro</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <CheckCircle className="w-3 h-3 text-muted-foreground" />
+                    <span className="text-muted-foreground">Status:</span>
+                    <span className="text-primary font-medium">Active</span>
+                  </div>
+                  {purchaseDate && (
+                    <div className="flex items-center gap-2 text-[11px]">
+                      <Calendar className="w-3 h-3 text-muted-foreground" />
+                      <span className="text-muted-foreground">Since:</span>
+                      <span className="text-foreground font-medium">{purchaseDate}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="p-1.5">
+              {isPremium && (
+                <Link
+                  to="/membership"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-foreground hover:bg-muted/30 transition-colors"
+                >
+                  <Crown className="w-4 h-4 text-[hsl(var(--yellow))]" />
+                  Membership
+                </Link>
+              )}
               {isAdmin && (
                 <Link
                   to="/admin"
